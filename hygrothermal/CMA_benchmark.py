@@ -259,7 +259,7 @@ def main():
         # Update statistics
         record = stats.compile(population)
         logbook.record(gen=gen, evals=len(population), **record)
-        print logbook.stream
+        print(logbook.stream)
         
         gen +=1
         

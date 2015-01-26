@@ -8,21 +8,21 @@ from hamopy.classes import Mesh, Boundary, Time
 # Choix des materiaux et de la geometrie
 from hamopy.materials.virtuel import isolant
 
-
+"""
 isolant.set_capacity(cp_0 = 1963.148)
 isolant.set_conduc(lambda_0 = 0.049, lambda_m = 0.514, lambda_t = 1.029e-4)
 isolant.set_isotherm('slope', **{"HR" : [0.25, 0.5, 0.75],
                                  "XI" : [20.703, 18.844, 50.068] })
 isolant.set_perm_vapor('interp', **{"HR" : [0.25, 0.75],
                                     "dp" : [5.16e-11, 9.947e-11] } )
-
+"""
 
 mesh = Mesh(**{"materials"    : [isolant],
                "sizes"        : [0.1],
                "nbr_elements" : [20] })
 
 # Conditions aux limites
-fichier_climat = 'D:\MCF\Simulation\Python\inversion_benchmark/benchmark_mesure_bruit.txt'
+fichier_climat = 'benchmark_mesure_bruit.txt'
 
 clim1 = Boundary('Dirichlet',**{"file" : fichier_climat,
                                 "time" : "t (s)",

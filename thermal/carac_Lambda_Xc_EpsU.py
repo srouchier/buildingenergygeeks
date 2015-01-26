@@ -1,18 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-Simple case
-u, Te and xc are known
-lambda_ and eps_ (the noise on Ti) are unknown, and given uniform priors
-"""
-
-
-from __future__ import division
-
 from scipy.interpolate import interp1d
 import numpy as np
 import pandas as pd
 import os
-os.chdir('D:\\MCF\\Simulation\\Python\\Bayes\\Benchmark_thermique')
+os.chdir('/home/simon/Simulation/InverseBuilding/thermal')
 
 """ Discretisation et conditions aux limites """
 
@@ -35,19 +25,19 @@ rho_cp  = 1.2e6
 
 """ Vraies valeurs des variables d'entree """
 
-xc_true     = 0.05 / 2
-eps_T_true  = 0.1 # bruit sur la temperature
-eps_u_true  = 4
 lambda_true = 0.3
-# Input data : heat flow
-data_direct = pd.read_csv('input_to_forward_problem.txt', delimiter='\t')
-time_direct = data_direct['t (s)']
-u_mesure = np.array( data_direct['U (W/m2)'] )
+xc_true     = 0.05 / 2
+eps_T_true  = 0.2
+eps_u_true  = 10
+
+""" Reading measurements """
+inputs = pd.read_csv('inputs.txt', delimiter='\t')
+time_mesure = inputs['t (s)']
+# Surface heat flow
+u_mesure  = np.array( inputs['U (W/m2)'] )
 u_mesure += np.random.normal(0, eps_u_true, size=np.size(u_mesure))
-# Test data : measured temperature
-data_inverse = pd.read_csv('input_to_inverse_problem.txt', delimiter='\t')
-time_mesure = data_inverse['t (s)']
-T_mesure = np.array( data_inverse['T(e/2)'] )
+# Sensor temperature
+T_mesure  = np.array( inputs['T(e/2)'] )
 T_mesure += np.random.normal(0, eps_T_true, size=np.size(T_mesure))
 
 """ Reseau bayesien """
@@ -61,7 +51,7 @@ eps_T_pm = pm.Uniform('temperature noise', 0., 2.)
 # Prior sur la position du capteur
 xc_pm = pm.Normal('xc', 0.025, 1/0.003**2)
 # Prior sur le bruit du flux
-eps_u_pm = pm.Uniform('flow noise', 0., 10.)
+eps_u_pm = pm.Uniform('flow noise', 0., 30.)
 # Estimated real heat flow
 u_pm = pm.Normal('real heat flow', mu = u_mesure, tau = 1./eps_u_pm**2)
 
@@ -87,7 +77,7 @@ def temperature(lambda_=lambda_pm, xc = xc_pm, u = u_pm):
     T = T_initial * np.ones((N_samples, N_nodes))
     X = np.eye(N_nodes) - time_step * A
     for t in range(len(time_)-1):
-        Y = T[t] + time_step*np.interp(time_[t+1], time_direct, u)*b
+        Y = T[t] + time_step*np.interp(time_[t+1], time_mesure, u)*b
         T[t+1] = np.linalg.solve(X,Y)
     
     # Interpolation to get the temperature evolution at the sensor position
@@ -124,3 +114,8 @@ plt.subplot(3,1,2)
 plt.hist(xc_samples, bins=30)
 plt.subplot(3,1,3)
 plt.hist(eps_T_samples, bins=30)
+
+plt.boxplot((lambda_samples / lambda_true,
+             xc_samples / xc_true,
+             eps_T_samples / eps_T_true,
+             eps_u_samples / eps_u_true))

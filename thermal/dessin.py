@@ -7,7 +7,7 @@ Created on Wed Oct 29 09:17:03 2014
 
 from matplotlib import rc
 rc("font", family="serif", size=16)
-rc("text", usetex=True)
+#rc("text", usetex=True)
 # rc("./weaklensing.tex")
 
 import daft
@@ -41,7 +41,7 @@ pgm.add_edge("T", "obsT")
 pgm.add_edge("epsT", "obsT")
 
 pgm.render()
-pgm.ax.text(5.5,4,"deterministic")
+pgm.ax.text(5.5,4,"deterministic", fontdict={'size':14, 'color':'green'})
 
 """
 pgm = daft.PGM([4.7, 2.35], origin=[-1.35, 2.2])
