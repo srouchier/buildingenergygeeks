@@ -40,11 +40,11 @@ init = {'T'  : 292.15,
         'HR' : 0.5}
 
 # Discretisation temporelle
-time = Time('variable',**{"delta_t"  : 600,
+time = Time('variable',**{"delta_t"  : 3600,
                           "t_max"    : 7*24*3600,
                           "iter_max" : 12,
                           "delta_min": 1e-3,
-                          "delta_max": 600 } )
+                          "delta_max": 3600 } )
 
 if __name__ == "__main__":
     

@@ -23,7 +23,7 @@ mesh = Mesh(**{"materials"    : [wood_fibre],
                "nbr_elements" : [16] })
 
 # Conditions aux limites
-fichier_climat = 'D:\MCF\Simulation\Python\Hygrobat\PASSYS_01.txt'
+fichier_climat = 'PASSYS_01.txt'
 data0 = pd.read_csv(fichier_climat, delimiter='\t')
 
 clim1 = Boundary('Dirichlet',**{"file"      : fichier_climat,
