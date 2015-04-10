@@ -24,12 +24,12 @@ T_file   += np.random.normal(0, sigma_T_true, size=np.size(T_file))
 import pymc as pm
 
 # Priors on the unknowns
-lambda_pm = pm.Uniform("conductivity", 0.1, 1)
-xc_pm     = pm.Normal('xc', 0.025, 1/0.001**2)
-eps_T_pm  = pm.Exponential('temperature noise', 1.)
-eps_u_pm  = pm.Uniform('flow noise', 0., 10.)
+lambda_pm   = pm.Uniform("conductivity", 0.1, 1)
+xc_pm       = pm.Normal('xc', 0.025, 1/0.001**2)
+sigma_T_pm  = pm.Exponential('temperature noise', 1.)
+sigma_u_pm  = pm.Uniform('flow noise', 0., 20.)
 
-u_pm      = pm.Normal('real heat flow', mu = u_file, tau = 1./eps_u_pm**2)
+u_pm        = pm.Normal('real heat flow', mu = u_file, tau = 1./sigma_u_pm**2)
 
 # Deterministic function to calculate the temperature
 from simulate_temperature import T_func
@@ -38,16 +38,16 @@ def temperature(lambda_=lambda_pm, xc = xc_pm, u = u_pm):
     return T_func(lambda_, xc, u, time_file)
     
 # Likelihood
-observation = pm.Normal("obs", mu = temperature, tau = 1./eps_T_pm**2, value = T_file, observed=True)
+observation = pm.Normal("obs", mu = temperature, tau = 1./sigma_T_pm**2, value = T_file, observed=True)
 
 """ Inference """
 
-R = pm.MCMC([u_pm, lambda_pm, xc_pm, eps_T_pm, eps_u_pm, observation])
+R = pm.MCMC([u_pm, lambda_pm, xc_pm, sigma_T_pm, sigma_u_pm, observation])
 R.sample(10000, burn = 5000, thin = 5)
 
-lambda_samples = R.trace('conductivity')[:]
-eps_T_samples = R.trace('temperature noise')[:]
-eps_u_samples = R.trace('flow noise')[:]
+lambda_samples  = R.trace('conductivity')[:]
+sigma_T_samples = R.trace('temperature noise')[:]
+sigma_u_samples = R.trace('flow noise')[:]
 xc_samples = R.trace('xc')[:]
 u_samples = R.trace('real heat flow')[:]
 
