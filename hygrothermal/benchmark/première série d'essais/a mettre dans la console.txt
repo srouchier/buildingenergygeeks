@@ -1,1 +1,0 @@
-python -m scoop -n 2 CMAES_isolant_SCOOP.py
