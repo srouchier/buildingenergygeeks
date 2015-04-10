@@ -7,8 +7,8 @@ import numpy as np
 # True value of unknown parameters
 xc_true       = 0.05 / 2  # sensor position
 lambda_true   = 0.3       # thermal conductivity
-sigma_T_true  = 0.1       # temperature noise
-sigma_u_true  = 4         # heat flow noise
+sigma_T_true  = 0.2       # temperature noise
+sigma_u_true  = 10         # heat flow noise
 
 # Input data
 import pandas as pd
