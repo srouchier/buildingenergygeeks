@@ -45,6 +45,10 @@ observation = pm.Normal("obs", mu = temperature, tau = 1./sigma_T_pm**2, value =
 R = pm.MCMC([u_pm, lambda_pm, xc_pm, sigma_T_pm, sigma_u_pm, observation])
 R.sample(10000, burn = 5000, thin = 5)
 
+# Convergence diagnostics
+pm.Matplot.plot(lambda_pm)
+
+# Exporting the posteriors as numpy arrays
 lambda_samples  = R.trace('conductivity')[:]
 sigma_T_samples = R.trace('temperature noise')[:]
 sigma_u_samples = R.trace('flow noise')[:]
@@ -53,4 +57,5 @@ u_samples = R.trace('real heat flow')[:]
 
 u_est = u_samples.mean(axis=0)
 
-pm.Matplot.plot(R)
+
+

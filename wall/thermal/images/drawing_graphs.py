@@ -1,6 +1,6 @@
 
 """
-Quelques graphes qui apparaissent sur le wordpress mais pas dans les notebooks
+Code for plotting the graphs displayed in the notebook
 """
 
 #%%
@@ -8,7 +8,7 @@ from matplotlib import rc
 rc("font", family="serif", size=14)
 
 #%%
-""" Pour tracer u et T """
+""" PLotting the measurements of u and T """
 
 figsize(10, 4)
 
@@ -33,7 +33,7 @@ fig = plt.gcf()
 fig.savefig('fig_input_output.png', format='png', dpi = 300)
 
 #%%
-""" Pour tracer les priors """
+""" Plotting the priors """
 
 figsize(10, 8)
 
@@ -88,7 +88,7 @@ fig = plt.gcf()
 fig.savefig('fig_priors.png', format='png', dpi = 300)
 
 #%%
-""" Pour tracer les posteriors """
+""" Plotting posteriors """
 
 figsize(10, 8)
 
@@ -96,42 +96,47 @@ ax = plt.subplot(221)
 
 plt.hist(lambda_samples, bins = 20, normed = True, color="#990022", alpha = 0.5,
          label = "Post.")
-plt.plot([0.3, 0.3],[0, 40], 'k--', linewidth = 2, label = 'True')
-plt.legend(loc = "upper right")
+plt.plot([0.3, 0.3],[0, 50], 'k--', linewidth = 2, label = 'True')
+plt.legend(loc = "upper left")
 plt.xlabel(r'Thermal conductivity $k$')
-plt.xlim([0.25, 0.35])
-plt.ylim([0, 40])
+#plt.xlim([0.25, 0.35])
+#plt.ylim([0, 40])
 
 ax = plt.subplot(222)
 
 plt.hist(xc_samples, bins = 20, normed = True, color="#77AA00", alpha = 0.5,
          label = "Post.")
-plt.plot([0.025, 0.025],[0, 2500], 'k--', linewidth = 2, label = 'True')
-plt.legend(loc = "upper right")
+plt.plot([0.025, 0.025],[0, 3000], 'k--', linewidth = 2, label = 'True')
+plt.legend(loc = "upper left")
 plt.xlabel(r'Sensor position $x_c$')
-plt.xlim([0.024, 0.026])
-plt.ylim([0, 2500])
+#plt.xlim([0.024, 0.026])
+#plt.ylim([0, 2500])
 
 ax = plt.subplot(223)
 
-plt.hist(eps_T_samples, bins = 20, normed = True, color="#ffab00", alpha = 0.5,
+plt.hist(sigma_T_samples, bins = 20, normed = True, color="#ffab00", alpha = 0.5,
          label = "Post.")
-plt.plot([0.2, 0.2],[0, 18], 'k--', linewidth = 2, label = 'True')
+plt.plot([0.2, 0.2],[0, 20], 'k--', linewidth = 2, label = 'True')
 plt.legend(loc = "upper right")
 plt.xlabel(r'Temperature noise $\sigma_T$')
-plt.xlim([0.15, 0.45])
-plt.ylim([0, 18])
+plt.xticks([0.16, 0.20, 0.24, 0.28, 0.32])
+#plt.xlim([0.15, 0.45])
+#plt.ylim([0, 18])
 
 ax = plt.subplot(224)
 
-plt.hist(eps_u_samples, bins = 20, normed = True, color="#660099", alpha = 0.5,
+plt.hist(sigma_u_samples, bins = 20, normed = True, color="#660099", alpha = 0.5,
          label = "Post.")
-plt.plot([10, 10], [0, 0.25], 'k--', linewidth = 2, label = 'True')
-plt.legend(loc = "upper left")
+plt.plot([10, 10], [0, 0.35], 'k--', linewidth = 2, label = 'True')
+plt.legend(loc = "upper right")
 plt.xlabel(r'Heat flow noise $\sigma_u$')
-plt.xlim([8, 20])
-plt.ylim([0, 0.25])
+#plt.xlim([8, 20])
+#plt.ylim([0, 0.25])
 
 fig = plt.gcf()
 fig.savefig('fig_posteriors.png', format='png', dpi = 300)
 
+#%%
+
+if __name__ == '__main__':
+    pass
