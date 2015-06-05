@@ -77,7 +77,7 @@ ax = plt.subplot(224)
 sigmaU_prior = np.random.uniform(0, 20, size = 10000)
 plt.hist(sigmaU_prior, bins = 30, normed = True, color="#660099", alpha = 0.5,
          label = "Prior")
-plt.plot([4, 4],[0, 1], 'k--', linewidth = 2, label = 'True')
+plt.plot([10, 10],[0, 1], 'k--', linewidth = 2, label = 'True')
 plt.legend(loc = "lower right")
 plt.xlabel(r'Heat flow noise $\sigma_u$')
 #plt.xticks([0.021, 0.023, 0.025, 0.027, 0.029])
@@ -85,7 +85,7 @@ plt.xlim([-1, 22])
 plt.ylim([0, 0.06])
 
 fig = plt.gcf()
-fig.savefig('fig_priors.png', format='png', dpi = 300)
+fig.savefig('priors.png', format='png', dpi = 300)
 
 #%%
 """ Plotting posteriors """
@@ -134,7 +134,7 @@ plt.xlabel(r'Heat flow noise $\sigma_u$')
 #plt.ylim([0, 0.25])
 
 fig = plt.gcf()
-fig.savefig('fig_posteriors.png', format='png', dpi = 300)
+fig.savefig('posteriors.png', format='png', dpi = 300)
 
 #%%
 
