@@ -5,14 +5,9 @@ u, Te and xc are known
 lambda_ and eps_ (the noise on Ti) are unknown, and given uniform priors
 """
 
-
-from __future__ import division
-
 from scipy.interpolate import interp1d
 import numpy as np
 import pandas as pd
-import os
-os.chdir('D:\\MCF\\Simulation\\Python\\Bayes\\Benchmark_thermique')
 
 """ Discretisation et conditions aux limites """
 
@@ -51,7 +46,7 @@ T_mesure += np.random.normal(0, eps_T_true, size=np.size(T_mesure))
 
 """ Parametrisation des fonctions d'entree """
 # Choix du nombre de modes
-N_modes = 40
+N_modes = 20
 t_modes = np.linspace(0, time_mesure[-1], N_modes)
 # Fonctions f
 def f_hat(t, j):
