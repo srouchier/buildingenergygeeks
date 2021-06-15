@@ -1,0 +1,19 @@
+--- 
+title: "Building energy statistical modelling"
+author: "Simon Rouchier"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: srouchier/buildingenergygeeks
+description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+---
+
+# Foreword {-}
+
+This website is being rebuilt from scratch. It will hopefully be ready in time for the Building Simulation 2021 conference.
+
+Stay tuned!

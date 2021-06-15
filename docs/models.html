@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Building energy statistical modelling | Building energy statistical modelling</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Building energy statistical modelling | Building energy statistical modelling" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="github-repo" content="srouchier/buildingenergygeeks" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Building energy statistical modelling | Building energy statistical modelling" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+<meta name="author" content="Simon Rouchier" />
+
+
+<meta name="date" content="2021-06-15" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="scope.html"/>
+<link rel="next" href="workflow.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">Building energy statistical modelling</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a></li>
+<li class="part"><span><b>I Theory and workflow</b></span></li>
+<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> From data to energy savings</a></li>
+<li class="chapter" data-level="2" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a></li>
+<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A data analysis workflow</a></li>
+<li class="part"><span><b>II Temporally independent data</b></span></li>
+<li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a><ul>
+<li class="chapter" data-level="4.1" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#frequentist-olr"><i class="fa fa-check"></i><b>4.1</b> Frequentist OLR</a></li>
+<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-olr"><i class="fa fa-check"></i><b>4.2</b> Bayesian OLR</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="change-point-models-for-mv.html"><a href="change-point-models-for-mv.html"><i class="fa fa-check"></i><b>5</b> Change-point models for M&amp;V</a></li>
+<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a></li>
+<li class="part"><span><b>III Time-series modelling</b></span></li>
+<li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a></li>
+<li class="chapter" data-level="8" data-path="hidden-markov-models.html"><a href="hidden-markov-models.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a></li>
+<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a></li>
+<li class="part"><span><b>IV State-space models</b></span></li>
+<li class="chapter" data-level="10" data-path="the-most-simple-ssm.html"><a href="the-most-simple-ssm.html"><i class="fa fa-check"></i><b>10</b> The most simple SSM</a></li>
+<li class="chapter" data-level="11" data-path="the-kalman-filter.html"><a href="the-kalman-filter.html"><i class="fa fa-check"></i><b>11</b> The Kalman filter</a></li>
+<li class="chapter" data-level="12" data-path="the-pysip-library.html"><a href="the-pysip-library.html"><i class="fa fa-check"></i><b>12</b> The pySIP library</a></li>
+<li class="part"><span><b>V Gaussian Process models</b></span></li>
+<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Building energy statistical modelling</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="models" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Building energy statistical modelling</h1>
+<p>Placeholder text</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="scope.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="workflow.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/A02-modelling.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["buildingenergygeeks.pdf", "buildingenergygeeks.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

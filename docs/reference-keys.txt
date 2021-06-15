@@ -1,0 +1,15 @@
+scope
+models
+workflow
+ordinary-linear-regression
+frequentist-olr
+bayesian-olr
+change-point-models-for-mv
+finite-mixture-models
+autoregressive-models
+hidden-markov-models
+markov-switching-models
+the-most-simple-ssm
+the-kalman-filter
+the-pysip-library
+gaussian-process-models
