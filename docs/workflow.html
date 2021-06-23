@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 A data analysis workflow | Building energy statistical modelling</title>
+  <title>Chapter 3 A Bayesian data analysis workflow | Building energy statistical modelling</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 A data analysis workflow | Building energy statistical modelling" />
+  <meta property="og:title" content="Chapter 3 A Bayesian data analysis workflow | Building energy statistical modelling" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="srouchier/buildingenergygeeks" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 A data analysis workflow | Building energy statistical modelling" />
+  <meta name="twitter:title" content="Chapter 3 A Bayesian data analysis workflow | Building energy statistical modelling" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Simon Rouchier" />
 
 
-<meta name="date" content="2021-06-15" />
+<meta name="date" content="2021-06-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,6 +55,70 @@
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -75,16 +139,69 @@
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a></li>
 <li class="part"><span><b>I Theory and workflow</b></span></li>
-<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> From data to energy savings</a></li>
-<li class="chapter" data-level="2" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a></li>
-<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A data analysis workflow</a></li>
+<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> From data to energy savings</a><ul>
+<li class="chapter" data-level="1.1" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.1</b> From data to energy savings</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="scope.html"><a href="scope.html#formalisation-of-the-system"><i class="fa fa-check"></i><b>1.1.1</b> Formalisation of the system</a></li>
+<li class="chapter" data-level="1.1.2" data-path="scope.html"><a href="scope.html#some-uses-of-data"><i class="fa fa-check"></i><b>1.1.2</b> Some uses of data</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#inverseproblems"><i class="fa fa-check"></i><b>1.2</b> Inverse problems</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="scope.html"><a href="scope.html#model-calibration-as-the-key-to-data-analysis"><i class="fa fa-check"></i><b>1.2.1</b> Model calibration as the key to data analysis</a></li>
+<li class="chapter" data-level="1.2.2" data-path="scope.html"><a href="scope.html#the-difficulty-of-inverse-problems"><i class="fa fa-check"></i><b>1.2.2</b> The difficulty of inverse problems</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories-of-data-driven-modelling-approaches"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="scope.html"><a href="scope.html#either-physical-interpretability-or-prediction-accuracy"><i class="fa fa-check"></i><b>1.3.1</b> Either physical interpretability or prediction accuracy</a></li>
+<li class="chapter" data-level="1.3.2" data-path="scope.html"><a href="scope.html#calibrated-simulation-white-box"><i class="fa fa-check"></i><b>1.3.2</b> Calibrated simulation (white-box)</a></li>
+<li class="chapter" data-level="1.3.3" data-path="scope.html"><a href="scope.html#machine-learning-black-box"><i class="fa fa-check"></i><b>1.3.3</b> Machine learning (black-box)</a></li>
+<li class="chapter" data-level="1.3.4" data-path="scope.html"><a href="scope.html#statistical-modelling-and-inference-grey-box"><i class="fa fa-check"></i><b>1.3.4</b> Statistical modelling and inference (grey-box)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a><ul>
+<li class="chapter" data-level="2.1" data-path="models.html"><a href="models.html#sec:modelling_1"><i class="fa fa-check"></i><b>2.1</b> Building physics in a nutshell</a></li>
+<li class="chapter" data-level="2.2" data-path="models.html"><a href="models.html#sec:modelling_2"><i class="fa fa-check"></i><b>2.2</b> Measurement and modelling boundaries</a></li>
+<li class="chapter" data-level="2.3" data-path="models.html"><a href="models.html#sec:modelling_3"><i class="fa fa-check"></i><b>2.3</b> Categories of statistical models</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a><ul>
+<li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="workflow.html"><a href="workflow.html#motivation-for-a-bayesian-approach"><i class="fa fa-check"></i><b>3.1.1</b> Motivation for a Bayesian approach</a></li>
+<li class="chapter" data-level="3.1.2" data-path="workflow.html"><a href="workflow.html#theory-of-bayesian-inference-and-prediction"><i class="fa fa-check"></i><b>3.1.2</b> Theory of Bayesian inference and prediction</a></li>
+<li class="chapter" data-level="3.1.3" data-path="workflow.html"><a href="workflow.html#bayesian-formulation-of-common-models"><i class="fa fa-check"></i><b>3.1.3</b> Bayesian formulation of common models</a></li>
+<li class="chapter" data-level="3.1.4" data-path="workflow.html"><a href="workflow.html#computation-markov-chain-monte-carlo"><i class="fa fa-check"></i><b>3.1.4</b> Computation: Markov Chain Monte Carlo</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="workflow.html"><a href="workflow.html#overview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
+<li class="chapter" data-level="3.2.2" data-path="workflow.html"><a href="workflow.html#model-specification-and-prior-checking"><i class="fa fa-check"></i><b>3.2.2</b> Model specification and prior checking</a></li>
+<li class="chapter" data-level="3.2.3" data-path="workflow.html"><a href="workflow.html#identifiability-analysis"><i class="fa fa-check"></i><b>3.2.3</b> Identifiability analysis</a></li>
+<li class="chapter" data-level="3.2.4" data-path="workflow.html"><a href="workflow.html#convergence-diagnostics"><i class="fa fa-check"></i><b>3.2.4</b> Convergence diagnostics</a></li>
+<li class="chapter" data-level="3.2.5" data-path="workflow.html"><a href="workflow.html#residuals-analysis"><i class="fa fa-check"></i><b>3.2.5</b> Residuals analysis</a></li>
+<li class="chapter" data-level="3.2.6" data-path="workflow.html"><a href="workflow.html#posterior-predictive-checking"><i class="fa fa-check"></i><b>3.2.6</b> Posterior predictive checking</a></li>
+<li class="chapter" data-level="3.2.7" data-path="workflow.html"><a href="workflow.html#inference-diagnostics-and-practical-identifiabiltiy"><i class="fa fa-check"></i><b>3.2.7</b> Inference diagnostics and practical identifiabiltiy</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a></li>
+</ul></li>
 <li class="part"><span><b>II Temporally independent data</b></span></li>
 <li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a><ul>
-<li class="chapter" data-level="4.1" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#frequentist-olr"><i class="fa fa-check"></i><b>4.1</b> Frequentist OLR</a></li>
-<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-olr"><i class="fa fa-check"></i><b>4.2</b> Bayesian OLR</a></li>
+<li class="chapter" data-level="4.1" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#introduction-to-olr"><i class="fa fa-check"></i><b>4.1</b> Introduction to OLR</a></li>
+<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#simple-linear-regression-with-r"><i class="fa fa-check"></i><b>4.2</b> Simple linear regression with R</a></li>
+<li class="chapter" data-level="4.3" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-linear-regression-with-stan"><i class="fa fa-check"></i><b>4.3</b> Bayesian linear regression with STAN</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="change-point-models-for-mv.html"><a href="change-point-models-for-mv.html"><i class="fa fa-check"></i><b>5</b> Change-point models for M&amp;V</a></li>
-<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a></li>
+<li class="chapter" data-level="5" data-path="bayesian-mv.html"><a href="bayesian-mv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a><ul>
+<li class="chapter" data-level="5.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#a-bayesian-workflow-for-mv"><i class="fa fa-check"></i><b>5.1</b> A Bayesian workflow for M&amp;V</a></li>
+<li class="chapter" data-level="5.2" data-path="bayesian-mv.html"><a href="bayesian-mv.html#change-point-models"><i class="fa fa-check"></i><b>5.2</b> Change-point models</a></li>
+<li class="chapter" data-level="5.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#ipmvp-option-c-example"><i class="fa fa-check"></i><b>5.3</b> IPMVP option C example</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#loading-and-displaying-the-data"><i class="fa fa-check"></i><b>5.3.1</b> Loading and displaying the data</a></li>
+<li class="chapter" data-level="5.3.2" data-path="bayesian-mv.html"><a href="bayesian-mv.html#daily-averaged-data"><i class="fa fa-check"></i><b>5.3.2</b> Daily averaged data</a></li>
+<li class="chapter" data-level="5.3.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-definition"><i class="fa fa-check"></i><b>5.3.3</b> Model definition</a></li>
+<li class="chapter" data-level="5.3.4" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-specification-with-stan"><i class="fa fa-check"></i><b>5.3.4</b> Model specification with STAN</a></li>
+<li class="chapter" data-level="5.3.5" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-fitting"><i class="fa fa-check"></i><b>5.3.5</b> Model fitting</a></li>
+<li class="chapter" data-level="5.3.6" data-path="bayesian-mv.html"><a href="bayesian-mv.html#validation-and-results"><i class="fa fa-check"></i><b>5.3.6</b> Validation and results</a></li>
+<li class="chapter" data-level="5.3.7" data-path="bayesian-mv.html"><a href="bayesian-mv.html#residuals"><i class="fa fa-check"></i><b>5.3.7</b> Residuals</a></li>
+<li class="chapter" data-level="5.3.8" data-path="bayesian-mv.html"><a href="bayesian-mv.html#savings"><i class="fa fa-check"></i><b>5.3.8</b> Savings</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a><ul>
+<li class="chapter" data-level="6.1" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#principle"><i class="fa fa-check"></i><b>6.1</b> Principle</a></li>
+<li class="chapter" data-level="6.2" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#example"><i class="fa fa-check"></i><b>6.2</b> Example</a></li>
+</ul></li>
 <li class="part"><span><b>III Time-series modelling</b></span></li>
 <li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a></li>
 <li class="chapter" data-level="8" data-path="hidden-markov-models.html"><a href="hidden-markov-models.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a></li>
@@ -117,13 +234,167 @@
 
             <section class="normal" id="section-">
 <div id="workflow" class="section level1">
-<h1><span class="header-section-number">Chapter 3</span> A data analysis workflow</h1>
-<p>Placeholder text</p>
+<h1><span class="header-section-number">Chapter 3</span> A Bayesian data analysis workflow</h1>
+<div id="bayesian" class="section level2">
+<h2><span class="header-section-number">3.1</span> Bayesian inference summarised</h2>
+<div id="motivation-for-a-bayesian-approach" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Motivation for a Bayesian approach</h3>
+<p>Bayesian statistics are mentioned in the Annex B of the ASHRAE Guideline 14, after it has been observed that standard approaches make it difficult to estimate the savings uncertainty when complex models are required:</p>
+<p><em>“Savings uncertainty can only be determined exactly when energy use is a linear function of some independent variable(s). For more complicated models of energy use, such as changepoint models, and for data with serially autocorrelated errors, approximate formulas must be used. These approximations provide reasonable accuracy when compared with simulated data, but in general it is difficult to determine their accuracy in any given situation. One alternative method for determining savings uncertainty to any desired degree of accuracy is to use a Bayesian approach.”</em></p>
+<p>Several advantages and drawbacks of Bayesian approaches are described by (<span class="citation">Carstens, Xia, and Yadavalli (<a href="#ref-carstens2018bayesian" role="doc-biblioref">2018</a>)</span>). Advantages include:</p>
+<ul>
+<li>Because Bayesian models are probabilistic, uncertainty is automatically and exactly quantified. Confidence intervals can be interpreted in the way most people understand them: degrees of belief about the value of the parameter.</li>
+<li>Bayesian models are more universal and flexible than standard methods. Models are also modular and can be designed to suit the problem. For example, it is no different to create terms for serial correlation, or heteroscedasticity (non-constant variance) than it is to specify an ordinary linear model.</li>
+<li>The Bayesian approach allows for the incorporation of prior information where appropriate.</li>
+<li>When the savings need to be calculated for “normalised conditions”, for example, a “typical meteorological year”, rather than the conditions during the post-retrofit monitoring period, it is not possible to quantify uncertainty using current methods. However, (<span class="citation">Shonder and Im (<a href="#ref-shonder2012bayesian" role="doc-biblioref">2012</a>)</span>) have shown that it can be naturally and easily quantified using the Bayesian approach.</li>
+</ul>
+<p>The first two points above are the most relevant to a data analyst: any arbitrary model structure can be defined to explain the data, and the exact same set of formulas can then be used to obtain the savings uncertainty after the models have been fitted.</p>
+</div>
+<div id="theory-of-bayesian-inference-and-prediction" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Theory of Bayesian inference and prediction</h3>
+<p>A Bayesian model is defined by two components:</p>
+<ul>
+<li>An observational model <span class="math inline">\(p\left(y|\theta\right)\)</span>, or likelihood function, which describes the relationship between the data <span class="math inline">\(y\)</span> and the model parameters <span class="math inline">\(\theta\)</span>.</li>
+<li>A prior model <span class="math inline">\(p(\theta)\)</span> which encodes eventual assumptions regarding model parameters, independently of the observed data. Specifying prior densities is not mandatory.</li>
+</ul>
+<p>The target of Bayesian <strong>inference</strong> is the estimation of the posterior density <span class="math inline">\(p\left(\theta|y\right)\)</span>, i.e. the probability distribution of the parameters conditioned on the observed data. As a consequence of Bayes’ rule, the posterior is proportional to the product of the two previous densities:</p>
+<p><span class="math display">\[\begin{equation}
+p(\theta|y) \propto p(y|\theta) p(\theta)
+\end{equation}\]</span></p>
+<p>This formula can be interpreted as follows: the posterior density is a compromise between assumptions and evidence brought by data. The prior can be “strong” or “weak”, to reflect for a more or less confident prior knowledge. The posterior will stray away from the prior as more data is introduced.</p>
+<div class="figure"><span id="fig:priorposterior"></span>
+<img src="figures/300_priorposterior.png" alt="Example of estimating a set point temperature after assuming a Normal prior distribution centred around 20°C. The dashed line is the point estimate which would have been obtained if only the data had been considered. The posterior distribution can be seen as a “refinement” of the prior, given the evidence of the data." width="40%" />
+<p class="caption">
+Figure 3.1: Example of estimating a set point temperature after assuming a Normal prior distribution centred around 20°C. The dashed line is the point estimate which would have been obtained if only the data had been considered. The posterior distribution can be seen as a “refinement” of the prior, given the evidence of the data.
+</p>
+</div>
+<p>In many applications, one is not only interested in estimating parameter values, but also the predictions <span class="math inline">\(\tilde{y}\)</span> of the observable during a new period. The distribution of <span class="math inline">\(\tilde{y}\)</span> conditioned on the observed data <span class="math inline">\(y\)</span> is called the posterior predictive distribution:
+<span class="math display">\[\begin{equation}
+p\left(\tilde{y}|y\right) = \int p\left(\tilde{y}|\theta\right) p\left(\theta|y\right) \mathrm{d}\theta
+\end{equation}\]</span>
+The posterior predictive distribution is an average of the model predictions over the posterior distribution of <span class="math inline">\(\theta\)</span>. This formula is equivalent to the concept of using a trained model for prediction.</p>
+<p>Apart from the possibility to define prior distributions, the main specificity of Bayesian analysis is the fact that all variables are encoded as probability densities. The two main results, the parameter posterior <span class="math inline">\(p(\theta|y)\)</span> and the posterior prediction <span class="math inline">\(p\left(\tilde{y}|y\right)\)</span>, are not only point estimates but complete distributions which include a full description of their uncertainty.</p>
+</div>
+<div id="bayesian-formulation-of-common-models" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> Bayesian formulation of common models</h3>
+<p>If the practitioner wishes to use a regression model to explain the relationship between the parameters and the data, doing so in a Bayesian framework is very similar to the usual (frequentist) framework. As an example, a Bayesian model for linear regression with three parameters <span class="math inline">\((\theta_0,\theta_1,\theta_2)\)</span> and two explanatory variables <span class="math inline">\((X_1,X_2)\)</span> may read:
+<span class="math display">\[\begin{align}
+    p(y|\theta,X) &amp; = N\left(\theta_0, \theta_1 X_1, \theta_2 X_2, \sigma\right) \\
+    p(\theta_i) &amp; = \Gamma(\alpha_i, \beta_i)
+\end{align}\]</span></p>
+<p>This means that <span class="math inline">\(y\)</span> follows a Normal distribution whose expectation is a linear function of <span class="math inline">\(\theta\)</span> and <span class="math inline">\(X\)</span>, with standard deviation <span class="math inline">\(\sigma\)</span> (the measurement error). The second equation is the prior model: in this example, each parameter is assigned a Gamma prior distribution parameterised by a shape <span class="math inline">\(\alpha\)</span> and a scale <span class="math inline">\(\beta\)</span>. Other model structures can be formulated similarly: change-point models, polynomials, models with categorical variables… Bayesian modelling however allows for much more flexibility:</p>
+<ul>
+<li>Other distributions than the Normal distribution can be used in the observational model;</li>
+<li>Hierarchical modelling is possible: parameters can be assigned a prior distribution with parameters which have their own (hyper)prior distribution;</li>
+<li>Heteroscedasticity can be encoded by assuming a relationship between the error term and explanatory variables, etc.</li>
+</ul>
+<p>More complex models with latent variables have separate expressions for the respective conditional probabilities of the observations <span class="math inline">\(y\)</span>, latent variables <span class="math inline">\(z\)</span> and parameters <span class="math inline">\(\theta\)</span>. In this case, there is a <em>joint</em> likelihood function <span class="math inline">\(p(y,z|\theta)\)</span> and a <em>marginal</em> likelihood function <span class="math inline">\(p(y|\theta)\)</span> so that:
+<span class="math display">\[\begin{equation}
+    p(y|\theta) = \int p(y,z|\theta) \mathrm{d}z
+\end{equation}\]</span></p>
+<p>Other applications, such as the IPMVP option D, rely on the use of calibrated building energy simulation (BES) models. These models are described by a much larger number of parameters and equations that the simple regression models typically used for other IPMVP options. In this context, it is not feasible to fully describe BES models in the form of a simple likelihood function <span class="math inline">\(p(y|\theta)\)</span>. In order to apply Bayesian uncertainty analysis to a BES model, it is possible to first approximate it with a Gaussian process (GP) model emulator. This process is denoted Bayesian calibration and was based on the seminal work of (<span class="citation">Kennedy and O’Hagan (<a href="#ref-kennedy2001bayesian" role="doc-biblioref">2001</a>)</span>). As opposed to the manual adjustment of building energy model parameters, Bayesian calibration explicitly quantifies uncertainties in calibration parameters, discrepancies between model predictions and observed values, as well as observation errors (<span class="citation">Chong and Menberg (<a href="#ref-chong2018guidelines" role="doc-biblioref">2018</a>)</span>).</p>
+</div>
+<div id="computation-markov-chain-monte-carlo" class="section level3">
+<h3><span class="header-section-number">3.1.4</span> Computation: Markov Chain Monte Carlo</h3>
+<p>Except in a few convenient situations, the posterior distribution is not analytically tractable. In practice, rather than finding an exact solution for it, it is estimated by approximate methods. The most popular option for approximate posterior inference are Markov Chain Monte Carlo (MCMC) sampling methods.</p>
+<p>An MCMC algorithm returns a series of simulation draws <span class="math inline">\(\left(\theta^{(1)},...,\theta^{(S)}\right)\)</span> which approximate the posterior distribution, provided that the sample size is large enough.
+<span class="math display">\[\begin{equation}
+    \theta^{(s)} \sim p(\theta | y)
+\end{equation}\]</span>
+where each draw <span class="math inline">\(\theta^{(s)}\)</span> contains a value for each of the parameters of the model.</p>
+<p>MCMC methods, Gaussian processes, and other methods for posterior approximation, are implemented in several software platforms. Two free and well-documented examples are: <a href="https://mc-stan.org/">Stan</a>, a platform for statistical modelling which interfaces with most data analysis languages (R, Python, Julia, Matlab); <a href="https://docs.pymc.io/">pyMC3</a>, a Python library for probabilistic programming.</p>
+<p>Convergence diagnostics are an essential step after running an MCMC algorithm for a finite number of simulation draws. It is advised to have several chains run in parallel, in order to compare their distributions. The similarity of estimates between chains is assessed by the <span class="math inline">\(\hat{R}\)</span> convergence diagnostic (<span class="citation">Vehtari et al. (<a href="#ref-vehtari2021rank" role="doc-biblioref">2021</a>)</span>). The second diagnostic is the effective sample size (ESS), an estimate of the number of independent samples from the posterior distribution.</p>
+<p>Once trained, a model may be validated with the same metrics as in a standard M&amp;V approach: <span class="math inline">\(R^2\)</span>, NDB, CV-RMSE, F-statistic, etc. Since the posterior distribution is described by a finite (yet large) set of values, computing the statistics of any function <span class="math inline">\(h\)</span> of the parameters (predictions, savings…) becomes straightforward. Because the series <span class="math inline">\(\left(\theta^{(1)},...,\theta^{(S)}\right)\)</span> approximates the posterior distribution of <span class="math inline">\(\theta\)</span>, then the series <span class="math inline">\(\left(h(\theta^{(1)}),...,h(\theta^{(S)})\right)\)</span> approximates the posterior distribution of <span class="math inline">\(h\)</span>.</p>
+</div>
+</div>
+<div id="workflow-for-one-model" class="section level2">
+<h2><span class="header-section-number">3.2</span> Workflow for one model</h2>
+<div id="overview" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Overview</h3>
+<p>As was mentioned in Sec. <a href="scope.html#inverseproblems">1.2</a>, inverse problems are all but trivial. It is possible that the available data is simply insufficient to bring useful inferences, but that we still try to train an unsuitable model with it. Statistical analysts need the right tools to guide model selection and training, and to warn them when there is a risk of biased inferences and predictions.</p>
+<p>This chapter is an attempt to summarize the essential points of a Bayesian workflow from a building energy perspective. Frequentist inference is also mentioned, but as a particular case of Bayesian inference.</p>
+<p>There is a very rich literature on the proper workflow for statistical inference, including the most cited reference in this book (<span class="citation">Gelman et al. (<a href="#ref-gelman2013bayesian" role="doc-biblioref">2013</a>)</span>) and <a href="https://betanalpha.github.io/assets/case_studies/principled_bayesian_workflow.html">extensive online tutorials</a>. Gelman divides the process of Bayesian data analysis into three steps:</p>
+<ul>
+<li>Setting up a full probability model;</li>
+<li>Conditioning on observed data (learning);</li>
+<li>Evaluating the fit of the model and the implications of the resulting posterior (checking and validation).</li>
+</ul>
+<div class="figure"><span id="fig:workflow1"></span>
+<img src="figures/301_workflow1.png" alt="A workflow for the proper specification and training of one model. Most of the workflow is similar for frequentist and Bayesian inference." width="60%" />
+<p class="caption">
+Figure 3.2: A workflow for the proper specification and training of one model. Most of the workflow is similar for frequentist and Bayesian inference.
+</p>
+</div>
+<p>This process concerns the training of a single model. An analyst however rarely attempts to analyze data with a single model. A simple model will provide biased inferences and predictions if its structure is too simple to represent the real system. In a complex model with many degrees of freedom, the unicity of the solution to the inverse problem is not guaranteed, leading to non-robust inferences and overfitting. All statistical learning lectures therefore come with guidelines for model checking, assessment and selection: this will be explained in Sec. <a href="workflow.html#modelselection">3.3</a>.</p>
+</div>
+<div id="model-specification-and-prior-checking" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Model specification and prior checking</h3>
+<p>(to be completed)</p>
+</div>
+<div id="identifiability-analysis" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> Identifiability analysis</h3>
+<p>(to be completed)</p>
+</div>
+<div id="convergence-diagnostics" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> Convergence diagnostics</h3>
+<p>(to be completed)</p>
+</div>
+<div id="residuals-analysis" class="section level3">
+<h3><span class="header-section-number">3.2.5</span> Residuals analysis</h3>
+<p>(to be completed)</p>
+</div>
+<div id="posterior-predictive-checking" class="section level3">
+<h3><span class="header-section-number">3.2.6</span> Posterior predictive checking</h3>
+<p>(to be completed)</p>
+</div>
+<div id="inference-diagnostics-and-practical-identifiabiltiy" class="section level3">
+<h3><span class="header-section-number">3.2.7</span> Inference diagnostics and practical identifiabiltiy</h3>
+<p>(to be completed)</p>
+</div>
+</div>
+<div id="modelselection" class="section level2">
+<h2><span class="header-section-number">3.3</span> Model assessment and selection</h2>
+<p>The “single-model training and validation” workflow shown on Fig. <a href="workflow.html#fig:workflow1">3.2</a> is embedded in a larger process for the selection of the appropriate model complexity and structure. Two alternatives a shown on Fig. <a href="workflow.html#fig:workflow2">3.3</a> and <a href="workflow.html#fig:workflow3">3.4</a>. The first one is the most common and intuitive: fitting models of gradually increasing complexity, keeping the ones that pass our validation checks, and comparing them in terms of predictive performance criteria. Inferences from simpler models may serve as starting values for more complex ones. This forward stepwise selection is suited to find a simple a robust model for prediction. The second alternative, on Fig. <a href="workflow.html#fig:workflow3">3.4</a>, is backward selection: starting from a high number of predictors and fitting models of decreasing complexity.</p>
+<div class="figure"><span id="fig:workflow2"></span>
+<img src="figures/302_workflow2.png" alt="A workflow of gradually increasing model complexity" width="40%" />
+<p class="caption">
+Figure 3.3: A workflow of gradually increasing model complexity
+</p>
+</div>
+<div class="figure"><span id="fig:workflow3"></span>
+<img src="figures/303_workflow3.png" alt="A workflow of gradually decreasing model complexity" width="40%" />
+<p class="caption">
+Figure 3.4: A workflow of gradually decreasing model complexity
+</p>
+</div>
+<p>(to be completed)</p>
 
+</div>
 </div>
 
 
 
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-carstens2018bayesian">
+<p>Carstens, Herman, Xiaohua Xia, and Sarma Yadavalli. 2018. “Bayesian Energy Measurement and Verification Analysis.” <em>Energies</em> 11 (2): 380.</p>
+</div>
+<div id="ref-chong2018guidelines">
+<p>Chong, Adrian, and Kathrin Menberg. 2018. “Guidelines for the Bayesian Calibration of Building Energy Models.” <em>Energy and Buildings</em> 174: 527–47.</p>
+</div>
+<div id="ref-gelman2013bayesian">
+<p>Gelman, Andrew, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. 2013. <em>Bayesian Data Analysis</em>. CRC press.</p>
+</div>
+<div id="ref-kennedy2001bayesian">
+<p>Kennedy, Marc C, and Anthony O’Hagan. 2001. “Bayesian Calibration of Computer Models.” <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em> 63 (3): 425–64.</p>
+</div>
+<div id="ref-shonder2012bayesian">
+<p>Shonder, John A, and Piljae Im. 2012. “Bayesian Analysis of Savings from Retrofit Projects.” <em>ASHRAE Transactions</em> 118: 367.</p>
+</div>
+<div id="ref-vehtari2021rank">
+<p>Vehtari, Aki, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian Bürkner. 2021. “Rank-Normalization, Folding, and Localization: An Improved R for Assessing Convergence of Mcmc.” <em>Bayesian Analysis</em> 1 (1): 1–28.</p>
+</div>
+</div>
             </section>
 
           </div>
@@ -181,6 +452,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
