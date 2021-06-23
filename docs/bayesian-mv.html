@@ -243,7 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>the trained model is used to predict energy consumption during the reporting period (after energy conservation measures);</li>
 <li>predictions are compared with the measured consumption of the reporting period, in order to estimate adjusted energy savings</li>
 </ul>
-<p>This method therefore requires data to be recorded before and after implementation of the ECM, fora sufficiently long time. Fig. @ref{fig:mvworkflow} shows the main steps of this method, when following a Bayesian approach. We assume that the measurement boundaries have been defined and that data and have been recorded during the baseline and reporting period respectively.</p>
+<p>This method therefore requires data to be recorded before and after implementation of the ECM, fora sufficiently long time. Fig. <a href="bayesian-mv.html#fig:mvworkflow">5.1</a> shows the main steps of this method, when following a Bayesian approach. We assume that the measurement boundaries have been defined and that data and have been recorded during the baseline and reporting period respectively.</p>
 <div class="figure"><span id="fig:mvworkflow"></span>
 <img src="figures/501_workflow.png" alt="Estimation of savings with uncertainty in an avoided consumption workflow. The step of model validation is not displayed" width="100%" />
 <p class="caption">
@@ -308,8 +308,8 @@ Data points should be averaged over long enough (at least daily) sampling times,
 ## 5 2009-01-02  32.8            35.6 2009-01-02 04:00:00
 ## 6 2009-01-02  32.5            45.5 2009-01-02 05:00:00</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="bayesian-mv.html#cb4-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> df.base) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>DateTime, <span class="dt">y=</span><span class="st">`</span><span class="dt">Building 6 kW</span><span class="st">`</span>))</span></code></pre></div>
-<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-12-1.png" width="672" />
-A few interesting observations:</p>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>A few interesting observations:</p>
 <ul>
 <li>The data has a hourly time step size. Every hour, the outdoor air temperature (OAT in °F) and energy use (kW) are available.</li>
 <li>The energy use is higher in summer and in winter than in-between. This suggests that this consumption data includes both heating and cooling appliances.</li>
@@ -444,10 +444,6 @@ A few interesting observations:</p>
 <span id="cb8-8"><a href="bayesian-mv.html#cb8-8"></a>  <span class="dt">cores =</span> <span class="dv">2</span>,                <span class="co"># number of cores (could use one per chain)</span></span>
 <span id="cb8-9"><a href="bayesian-mv.html#cb8-9"></a>  <span class="dt">refresh =</span> <span class="dv">0</span>,              <span class="co"># progress not shown</span></span>
 <span id="cb8-10"><a href="bayesian-mv.html#cb8-10"></a>)</span></code></pre></div>
-<pre><code>## Warning: There were 1 divergent transitions after warmup. See
-## http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-## to find out why this is a problem and how to eliminate them.</code></pre>
-<pre><code>## Warning: Examine the pairs() plot to diagnose sampling problems</code></pre>
 <p>Fitting may result in a number of warnings, telling us that some problems may have occurred: divergent transitions, large R-hat values, low Effective Sample Size… Obtaining a fit without these warnings takes some practice but is essential for an unbiased interpretation of the inferred variables and predictions. A guide to Stan’s warnings and how to address them <a href="https://mc-stan.org/misc/warnings.html">is available here</a>.</p>
 <p>The first step into solving these warnings is to re-run the algorithm with different controls: <code>iter</code>, <code>max_treedepth</code>, etc. If problems persist, it is possible that the model is too complex for the information that the data is able to provide and should be simplified, or that stronger priors should be proposed. A lot of problems can be solved with some prior information. In our specific case, this is especially useful for the variables in the equation for the week-ends, since there are not a lot of data points.</p>
 </div>
@@ -463,32 +459,32 @@ A few interesting observations:</p>
 <li><code>traceplot</code> shows the traces of the selected parameters. If the fitting has converged, the traces approximate the posterior distributions</li>
 <li><code>pairs</code> shows the pairwise relationships between parameters. Strong interactions between some parameters are an indication that the model should be re-parameterised.</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="bayesian-mv.html#cb11-1"></a><span class="kw">print</span>(fit1, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;alpha&quot;</span>, <span class="st">&quot;beta_h&quot;</span>, <span class="st">&quot;tau_h&quot;</span>, <span class="st">&quot;beta_c&quot;</span>, <span class="st">&quot;tau_c&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;savings&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="bayesian-mv.html#cb9-1"></a><span class="kw">print</span>(fit1, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;alpha&quot;</span>, <span class="st">&quot;beta_h&quot;</span>, <span class="st">&quot;tau_h&quot;</span>, <span class="st">&quot;beta_c&quot;</span>, <span class="st">&quot;tau_c&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;savings&quot;</span>))</span></code></pre></div>
 <pre><code>## Inference for Stan model: 2f8fdf9f22a34576398be759917c5a83.
 ## 2 chains, each with iter=4000; warmup=1000; thin=1; 
 ## post-warmup draws per chain=3000, total post-warmup draws=6000.
 ## 
 ##               mean se_mean      sd     2.5%      25%      50%      75%    97.5% n_eff Rhat
-## alpha[1]    449.71    1.01   37.06   360.00   430.65   453.38   474.13   510.66  1339    1
-## alpha[2]    829.78    0.21   12.93   803.25   821.44   830.31   838.67   853.05  3749    1
-## beta_h[1]    35.90    0.06    3.50    29.40    33.46    35.76    38.22    43.04  3999    1
-## beta_h[2]    33.43    0.05    2.92    27.73    31.43    33.43    35.37    39.27  4010    1
-## tau_h[1]      9.82    0.04    1.45     7.36     8.72     9.78    10.70    13.00  1572    1
-## tau_h[2]      6.51    0.02    0.83     5.17     5.92     6.43     7.01     8.37  3038    1
-## beta_c[1]    14.78    0.36    9.13     6.02    10.24    12.75    15.63    45.41   649    1
-## beta_c[2]    29.19    0.05    3.34    22.98    26.79    29.09    31.45    35.95  3917    1
-## tau_c[1]     16.17    0.16    4.48     7.96    13.62    15.86    17.96    27.38   810    1
-## tau_c[2]     15.76    0.02    1.02    13.63    15.09    15.84    16.50    17.50  3062    1
-## sigma       103.02    0.05    3.85    95.88   100.45   102.81   105.47   110.98  5453    1
-## savings   69098.74   36.30 2873.17 63559.48 67138.54 69110.14 71058.68 74705.34  6264    1
+## alpha[1]    450.35    1.10   37.78   357.63   430.50   454.32   475.96   511.97  1188    1
+## alpha[2]    829.90    0.20   12.37   804.85   821.92   830.17   838.60   853.10  3813    1
+## beta_h[1]    35.86    0.05    3.46    29.52    33.47    35.74    38.11    43.07  4390    1
+## beta_h[2]    33.42    0.05    2.92    27.76    31.45    33.40    35.36    39.23  4086    1
+## tau_h[1]      9.81    0.04    1.47     7.32     8.71     9.75    10.69    13.09  1468    1
+## tau_h[2]      6.50    0.01    0.81     5.13     5.91     6.42     7.00     8.30  3114    1
+## beta_c[1]    15.41    0.46    9.73     6.19    10.29    12.95    16.18    47.89   448    1
+## beta_c[2]    29.40    0.05    3.33    23.19    27.10    29.31    31.57    36.24  4000    1
+## tau_c[1]     16.37    0.19    4.72     7.76    13.63    15.97    18.33    27.41   607    1
+## tau_c[2]     15.82    0.02    0.99    13.65    15.17    15.90    16.53    17.51  3350    1
+## sigma       103.10    0.05    3.99    95.57   100.35   103.00   105.76   111.16  5407    1
+## savings   69080.15   35.78 2803.66 63682.19 67143.67 69054.22 71003.24 74516.37  6139    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Wed Jun 23 13:53:24 2021.
+## Samples were drawn using NUTS(diag_e) at Wed Jun 23 14:51:46 2021.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="bayesian-mv.html#cb13-1"></a><span class="kw">traceplot</span>(fit1, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;alpha&quot;</span>, <span class="st">&quot;beta_h&quot;</span>, <span class="st">&quot;tau_h&quot;</span>, <span class="st">&quot;beta_c&quot;</span>, <span class="st">&quot;tau_c&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="bayesian-mv.html#cb11-1"></a><span class="kw">traceplot</span>(fit1, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;alpha&quot;</span>, <span class="st">&quot;beta_h&quot;</span>, <span class="st">&quot;tau_h&quot;</span>, <span class="st">&quot;beta_c&quot;</span>, <span class="st">&quot;tau_c&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
 <p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="bayesian-mv.html#cb14-1"></a><span class="kw">pairs</span>(fit1, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;alpha&quot;</span>, <span class="st">&quot;beta_h&quot;</span>, <span class="st">&quot;savings&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="bayesian-mv.html#cb12-1"></a><span class="kw">pairs</span>(fit1, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;alpha&quot;</span>, <span class="st">&quot;beta_h&quot;</span>, <span class="st">&quot;savings&quot;</span>))</span></code></pre></div>
 <p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 </div>
 <div id="predictions" class="section level4">
@@ -499,26 +495,26 @@ A few interesting observations:</p>
 p\left(y_\mathit{repo}|...\right) \approx \frac{1}{M} \sum_{m=1}^M p\left(y_\mathit{repo}|x_\mathit{repo},\theta^{(m)}\right)
 \end{equation}\]</span></p>
 <p>First, let us look at the posterior predictive distribution during the baseline period, in order to validate the model compared to its training data:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="bayesian-mv.html#cb15-1"></a><span class="co"># Extracting full predictive distributions from the stanfit object</span></span>
-<span id="cb15-2"><a href="bayesian-mv.html#cb15-2"></a>la &lt;-<span class="st"> </span>rstan<span class="op">::</span><span class="kw">extract</span>(fit1, <span class="dt">permuted =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb15-3"><a href="bayesian-mv.html#cb15-3"></a>y_base_pred &lt;-<span class="st"> </span>la<span class="op">$</span>y_base_pred</span>
-<span id="cb15-4"><a href="bayesian-mv.html#cb15-4"></a></span>
-<span id="cb15-5"><a href="bayesian-mv.html#cb15-5"></a><span class="co"># Quantiles</span></span>
-<span id="cb15-6"><a href="bayesian-mv.html#cb15-6"></a>y_base_quan &lt;-<span class="st"> </span><span class="kw">apply</span>(y_base_pred, <span class="dv">2</span>, quantile, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span>
-<span id="cb15-7"><a href="bayesian-mv.html#cb15-7"></a></span>
-<span id="cb15-8"><a href="bayesian-mv.html#cb15-8"></a><span class="co"># Data frame</span></span>
-<span id="cb15-9"><a href="bayesian-mv.html#cb15-9"></a>df.base.post &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> df.base.daily<span class="op">$</span>Date, <span class="dt">T =</span> df.base.daily<span class="op">$</span>T, <span class="dt">y =</span> df.base.daily<span class="op">$</span>E, <span class="dt">w =</span> df.base.daily<span class="op">$</span>week.end,</span>
-<span id="cb15-10"><a href="bayesian-mv.html#cb15-10"></a>                           <span class="dt">pred_low =</span> y_base_quan[<span class="dv">1</span>, ], <span class="dt">pred_med =</span> y_base_quan[<span class="dv">2</span>, ], <span class="dt">pred_up =</span> y_base_quan[<span class="dv">3</span>, ])</span>
-<span id="cb15-11"><a href="bayesian-mv.html#cb15-11"></a></span>
-<span id="cb15-12"><a href="bayesian-mv.html#cb15-12"></a><span class="co"># Plot</span></span>
-<span id="cb15-13"><a href="bayesian-mv.html#cb15-13"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> df.base.post) <span class="op">+</span></span>
-<span id="cb15-14"><a href="bayesian-mv.html#cb15-14"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>y, <span class="dt">color=</span>w)) <span class="op">+</span></span>
-<span id="cb15-15"><a href="bayesian-mv.html#cb15-15"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span>df.base.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
-<span id="cb15-16"><a href="bayesian-mv.html#cb15-16"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span>df.base.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low, <span class="dt">ymax=</span>pred_up), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span></span>
-<span id="cb15-17"><a href="bayesian-mv.html#cb15-17"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(df.base.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med), <span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span></span>
-<span id="cb15-18"><a href="bayesian-mv.html#cb15-18"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(df.base.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low, <span class="dt">ymax=</span>pred_up), <span class="dt">fill=</span><span class="st">&#39;blue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>)</span></code></pre></div>
-<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-18-1.png" width="672" />
-The colored bands show a 95% prediction interval for the working days and the week ends, respectively. The points are the measurements of the baseline period.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="bayesian-mv.html#cb13-1"></a><span class="co"># Extracting full predictive distributions from the stanfit object</span></span>
+<span id="cb13-2"><a href="bayesian-mv.html#cb13-2"></a>la &lt;-<span class="st"> </span>rstan<span class="op">::</span><span class="kw">extract</span>(fit1, <span class="dt">permuted =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb13-3"><a href="bayesian-mv.html#cb13-3"></a>y_base_pred &lt;-<span class="st"> </span>la<span class="op">$</span>y_base_pred</span>
+<span id="cb13-4"><a href="bayesian-mv.html#cb13-4"></a></span>
+<span id="cb13-5"><a href="bayesian-mv.html#cb13-5"></a><span class="co"># Quantiles</span></span>
+<span id="cb13-6"><a href="bayesian-mv.html#cb13-6"></a>y_base_quan &lt;-<span class="st"> </span><span class="kw">apply</span>(y_base_pred, <span class="dv">2</span>, quantile, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span>
+<span id="cb13-7"><a href="bayesian-mv.html#cb13-7"></a></span>
+<span id="cb13-8"><a href="bayesian-mv.html#cb13-8"></a><span class="co"># Data frame</span></span>
+<span id="cb13-9"><a href="bayesian-mv.html#cb13-9"></a>df.base.post &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> df.base.daily<span class="op">$</span>Date, <span class="dt">T =</span> df.base.daily<span class="op">$</span>T, <span class="dt">y =</span> df.base.daily<span class="op">$</span>E, <span class="dt">w =</span> df.base.daily<span class="op">$</span>week.end,</span>
+<span id="cb13-10"><a href="bayesian-mv.html#cb13-10"></a>                           <span class="dt">pred_low =</span> y_base_quan[<span class="dv">1</span>, ], <span class="dt">pred_med =</span> y_base_quan[<span class="dv">2</span>, ], <span class="dt">pred_up =</span> y_base_quan[<span class="dv">3</span>, ])</span>
+<span id="cb13-11"><a href="bayesian-mv.html#cb13-11"></a></span>
+<span id="cb13-12"><a href="bayesian-mv.html#cb13-12"></a><span class="co"># Plot</span></span>
+<span id="cb13-13"><a href="bayesian-mv.html#cb13-13"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> df.base.post) <span class="op">+</span></span>
+<span id="cb13-14"><a href="bayesian-mv.html#cb13-14"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>y, <span class="dt">color=</span>w)) <span class="op">+</span></span>
+<span id="cb13-15"><a href="bayesian-mv.html#cb13-15"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span>df.base.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb13-16"><a href="bayesian-mv.html#cb13-16"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span>df.base.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low, <span class="dt">ymax=</span>pred_up), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span></span>
+<span id="cb13-17"><a href="bayesian-mv.html#cb13-17"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(df.base.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med), <span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span></span>
+<span id="cb13-18"><a href="bayesian-mv.html#cb13-18"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(df.base.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low, <span class="dt">ymax=</span>pred_up), <span class="dt">fill=</span><span class="st">&#39;blue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>)</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>The colored bands show a 95% prediction interval for the working days and the week ends, respectively. The points are the measurements of the baseline period.</p>
 </div>
 </div>
 <div id="residuals" class="section level3">
@@ -529,43 +525,43 @@ The colored bands show a 95% prediction interval for the working days and the we
 <li>Residuals vs Date, in order to display eventual autocorrelation</li>
 <li>residuals vs Temperature</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="bayesian-mv.html#cb16-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> df.base.post) <span class="op">+</span></span>
-<span id="cb16-2"><a href="bayesian-mv.html#cb16-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>Date, <span class="dt">y=</span>pred_med<span class="op">-</span>y)) <span class="op">+</span></span>
-<span id="cb16-3"><a href="bayesian-mv.html#cb16-3"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>Date, <span class="dt">ymin=</span>pred_low<span class="op">-</span>y, <span class="dt">ymax=</span>pred_up<span class="op">-</span>y), <span class="dt">alpha=</span><span class="fl">0.2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="bayesian-mv.html#cb14-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> df.base.post) <span class="op">+</span></span>
+<span id="cb14-2"><a href="bayesian-mv.html#cb14-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>Date, <span class="dt">y=</span>pred_med<span class="op">-</span>y)) <span class="op">+</span></span>
+<span id="cb14-3"><a href="bayesian-mv.html#cb14-3"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>Date, <span class="dt">ymin=</span>pred_low<span class="op">-</span>y, <span class="dt">ymax=</span>pred_up<span class="op">-</span>y), <span class="dt">alpha=</span><span class="fl">0.2</span>)</span></code></pre></div>
 <p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="bayesian-mv.html#cb17-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> df.base.post) <span class="op">+</span></span>
-<span id="cb17-2"><a href="bayesian-mv.html#cb17-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med<span class="op">-</span>y)) <span class="op">+</span></span>
-<span id="cb17-3"><a href="bayesian-mv.html#cb17-3"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low<span class="op">-</span>y, <span class="dt">ymax=</span>pred_up<span class="op">-</span>y), <span class="dt">alpha=</span><span class="fl">0.2</span>)</span></code></pre></div>
-<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-20-1.png" width="672" />
-The second graph is fine, but it seems that these is a trend in the residuals in the first few months and last few months of the year, suggesting that the model doesn’t quite capture the winter energy consumption very well.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="bayesian-mv.html#cb15-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> df.base.post) <span class="op">+</span></span>
+<span id="cb15-2"><a href="bayesian-mv.html#cb15-2"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med<span class="op">-</span>y)) <span class="op">+</span></span>
+<span id="cb15-3"><a href="bayesian-mv.html#cb15-3"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low<span class="op">-</span>y, <span class="dt">ymax=</span>pred_up<span class="op">-</span>y), <span class="dt">alpha=</span><span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>The second graph is fine, but it seems that these is a trend in the residuals in the first few months and last few months of the year, suggesting that the model doesn’t quite capture the winter energy consumption very well.</p>
 </div>
 <div id="savings" class="section level3">
 <h3><span class="header-section-number">5.3.8</span> Savings</h3>
 <p>Our Stan model already calculates the expected output <span class="math inline">\(y\)</span> of the reporting period, for each sample <span class="math inline">\(\theta_i\)</span> of the posterior distribution. We can therefore display a probability distribution for each of the data points of the reporting period, and compare it with the measured data in the same period.</p>
 <p>The following graph compares the energy use measured during the <strong>reporting period</strong> (points) with the probability distributions of energy use predicted by the model during the same period.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="bayesian-mv.html#cb18-1"></a><span class="co"># Extracting full predictive distributions from the stanfit object</span></span>
-<span id="cb18-2"><a href="bayesian-mv.html#cb18-2"></a>y_repo_pred &lt;-<span class="st"> </span>la<span class="op">$</span>y_repo_pred</span>
-<span id="cb18-3"><a href="bayesian-mv.html#cb18-3"></a><span class="co"># Quantiles</span></span>
-<span id="cb18-4"><a href="bayesian-mv.html#cb18-4"></a>y_repo_quan &lt;-<span class="st"> </span><span class="kw">apply</span>(y_repo_pred, <span class="dv">2</span>, quantile, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span>
-<span id="cb18-5"><a href="bayesian-mv.html#cb18-5"></a><span class="co"># Data frame</span></span>
-<span id="cb18-6"><a href="bayesian-mv.html#cb18-6"></a>df.repo.post &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> df.repo.daily<span class="op">$</span>Date, <span class="dt">T =</span> df.repo.daily<span class="op">$</span>T, <span class="dt">y =</span> df.repo.daily<span class="op">$</span>E, <span class="dt">w =</span> df.repo.daily<span class="op">$</span>week.end,</span>
-<span id="cb18-7"><a href="bayesian-mv.html#cb18-7"></a>                           <span class="dt">pred_low =</span> y_repo_quan[<span class="dv">1</span>, ], <span class="dt">pred_med =</span> y_repo_quan[<span class="dv">2</span>, ], <span class="dt">pred_up =</span> y_repo_quan[<span class="dv">3</span>, ])</span>
-<span id="cb18-8"><a href="bayesian-mv.html#cb18-8"></a><span class="co"># Plot</span></span>
-<span id="cb18-9"><a href="bayesian-mv.html#cb18-9"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> df.repo.post) <span class="op">+</span></span>
-<span id="cb18-10"><a href="bayesian-mv.html#cb18-10"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>y, <span class="dt">color=</span>w)) <span class="op">+</span></span>
-<span id="cb18-11"><a href="bayesian-mv.html#cb18-11"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span>df.repo.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
-<span id="cb18-12"><a href="bayesian-mv.html#cb18-12"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span>df.repo.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low, <span class="dt">ymax=</span>pred_up), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span></span>
-<span id="cb18-13"><a href="bayesian-mv.html#cb18-13"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(df.repo.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med), <span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span></span>
-<span id="cb18-14"><a href="bayesian-mv.html#cb18-14"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(df.repo.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low, <span class="dt">ymax=</span>pred_up), <span class="dt">fill=</span><span class="st">&#39;blue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>)</span></code></pre></div>
-<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-21-1.png" width="672" />
-The savings, i.e. the difference between the measured energy use during the reporting period and their prediction by the model, have been included in the Stan model definition. Similarly to the prediction, <strong>the savings are therefore available as a probability distribution</strong>: we have a full description of any confidence interval we may wish for.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="bayesian-mv.html#cb16-1"></a><span class="co"># Extracting full predictive distributions from the stanfit object</span></span>
+<span id="cb16-2"><a href="bayesian-mv.html#cb16-2"></a>y_repo_pred &lt;-<span class="st"> </span>la<span class="op">$</span>y_repo_pred</span>
+<span id="cb16-3"><a href="bayesian-mv.html#cb16-3"></a><span class="co"># Quantiles</span></span>
+<span id="cb16-4"><a href="bayesian-mv.html#cb16-4"></a>y_repo_quan &lt;-<span class="st"> </span><span class="kw">apply</span>(y_repo_pred, <span class="dv">2</span>, quantile, <span class="dt">probs=</span><span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span>
+<span id="cb16-5"><a href="bayesian-mv.html#cb16-5"></a><span class="co"># Data frame</span></span>
+<span id="cb16-6"><a href="bayesian-mv.html#cb16-6"></a>df.repo.post &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> df.repo.daily<span class="op">$</span>Date, <span class="dt">T =</span> df.repo.daily<span class="op">$</span>T, <span class="dt">y =</span> df.repo.daily<span class="op">$</span>E, <span class="dt">w =</span> df.repo.daily<span class="op">$</span>week.end,</span>
+<span id="cb16-7"><a href="bayesian-mv.html#cb16-7"></a>                           <span class="dt">pred_low =</span> y_repo_quan[<span class="dv">1</span>, ], <span class="dt">pred_med =</span> y_repo_quan[<span class="dv">2</span>, ], <span class="dt">pred_up =</span> y_repo_quan[<span class="dv">3</span>, ])</span>
+<span id="cb16-8"><a href="bayesian-mv.html#cb16-8"></a><span class="co"># Plot</span></span>
+<span id="cb16-9"><a href="bayesian-mv.html#cb16-9"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> df.repo.post) <span class="op">+</span></span>
+<span id="cb16-10"><a href="bayesian-mv.html#cb16-10"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>y, <span class="dt">color=</span>w)) <span class="op">+</span></span>
+<span id="cb16-11"><a href="bayesian-mv.html#cb16-11"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span>df.repo.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb16-12"><a href="bayesian-mv.html#cb16-12"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="op">!</span>df.repo.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low, <span class="dt">ymax=</span>pred_up), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span></span>
+<span id="cb16-13"><a href="bayesian-mv.html#cb16-13"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(df.repo.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">y=</span>pred_med), <span class="dt">color=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span></span>
+<span id="cb16-14"><a href="bayesian-mv.html#cb16-14"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data =</span> . <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(df.repo.post<span class="op">$</span>w), <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x=</span>T, <span class="dt">ymin=</span>pred_low, <span class="dt">ymax=</span>pred_up), <span class="dt">fill=</span><span class="st">&#39;blue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.1</span>)</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>The savings, i.e. the difference between the measured energy use during the reporting period and their prediction by the model, have been included in the Stan model definition. Similarly to the prediction, <strong>the savings are therefore available as a probability distribution</strong>: we have a full description of any confidence interval we may wish for.</p>
 <p>The table of results shown after model fitting shows that</p>
 <ul>
 <li>The mean estimated savings are 69,069 kWh</li>
 <li>The 95% confidence interval spans between 63,550 and 74,880 kWh</li>
 </ul>
 <p>We can also choose to display any quantile of the posterior distribution of savings:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="bayesian-mv.html#cb19-1"></a><span class="kw">plot</span>(fit1, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;savings&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="bayesian-mv.html#cb17-1"></a><span class="kw">plot</span>(fit1, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="st">&quot;savings&quot;</span>))</span></code></pre></div>
 <pre><code>## ci_level: 0.8 (80% intervals)</code></pre>
 <pre><code>## outer_level: 0.95 (95% intervals)</code></pre>
 <p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
