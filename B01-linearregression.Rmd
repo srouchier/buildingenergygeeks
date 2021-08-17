@@ -1,9 +1,0 @@
-# (PART) Temporally independent data {-}
-
-# Ordinary linear regression
-
-Placeholder text
-
-## Frequentist OLR
-
-## Bayesian OLR

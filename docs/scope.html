@@ -5,26 +5,26 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Background on data analysis | Building energy statistical modelling</title>
-  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="description" content="This is the description of the book." />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Background on data analysis | Building energy statistical modelling" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta property="og:description" content="This is the description of the book." />
   <meta name="github-repo" content="srouchier/buildingenergygeeks" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 1 Background on data analysis | Building energy statistical modelling" />
   
-  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:description" content="This is the description of the book." />
   
 
 <meta name="author" content="Simon Rouchier" />
 
 
-<meta name="date" content="2021-06-23" />
+<meta name="date" content="2021-08-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,8 +32,8 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="models.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link rel="next" href="modelling.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -121,7 +121,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -137,52 +136,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./index.html">Building energy statistical modelling</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-is-about"><i class="fa fa-check"></i>What this book is about</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-does-not-cover"><i class="fa fa-check"></i>What this book does not cover</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-about-programming-languages"><i class="fa fa-check"></i>What about programming languages?</a></li>
+</ul></li>
 <li class="part"><span><b>I Theory and workflow</b></span></li>
 <li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a><ul>
-<li class="chapter" data-level="1.1" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.1</b> From data to energy savings</a><ul>
-<li class="chapter" data-level="1.1.1" data-path="scope.html"><a href="scope.html#formalisation-of-the-system"><i class="fa fa-check"></i><b>1.1.1</b> Formalisation of the system</a></li>
-<li class="chapter" data-level="1.1.2" data-path="scope.html"><a href="scope.html#some-uses-of-data"><i class="fa fa-check"></i><b>1.1.2</b> Some uses of data</a></li>
+<li class="chapter" data-level="1.1" data-path="scope.html"><a href="scope.html#the-energy-savings-potential-of-buildings"><i class="fa fa-check"></i><b>1.1</b> The energy savings potential of buildings</a></li>
+<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.2</b> From data to energy savings</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="scope.html"><a href="scope.html#formalisation-of-the-system"><i class="fa fa-check"></i><b>1.2.1</b> Formalisation of the system</a></li>
+<li class="chapter" data-level="1.2.2" data-path="scope.html"><a href="scope.html#some-uses-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Some uses of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="scope.html"><a href="scope.html#model-calibration-as-the-key-to-data-analysis"><i class="fa fa-check"></i><b>1.2.3</b> Model calibration as the key to data analysis</a></li>
+<li class="chapter" data-level="1.2.4" data-path="scope.html"><a href="scope.html#inverseproblems"><i class="fa fa-check"></i><b>1.2.4</b> The difficulty of inverse problems</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#inverseproblems"><i class="fa fa-check"></i><b>1.2</b> Inverse problems</a><ul>
-<li class="chapter" data-level="1.2.1" data-path="scope.html"><a href="scope.html#model-calibration-as-the-key-to-data-analysis"><i class="fa fa-check"></i><b>1.2.1</b> Model calibration as the key to data analysis</a></li>
-<li class="chapter" data-level="1.2.2" data-path="scope.html"><a href="scope.html#the-difficulty-of-inverse-problems"><i class="fa fa-check"></i><b>1.2.2</b> The difficulty of inverse problems</a></li>
-</ul></li>
-<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories-of-data-driven-modelling-approaches"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a><ul>
+<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a><ul>
 <li class="chapter" data-level="1.3.1" data-path="scope.html"><a href="scope.html#either-physical-interpretability-or-prediction-accuracy"><i class="fa fa-check"></i><b>1.3.1</b> Either physical interpretability or prediction accuracy</a></li>
 <li class="chapter" data-level="1.3.2" data-path="scope.html"><a href="scope.html#calibrated-simulation-white-box"><i class="fa fa-check"></i><b>1.3.2</b> Calibrated simulation (white-box)</a></li>
 <li class="chapter" data-level="1.3.3" data-path="scope.html"><a href="scope.html#machine-learning-black-box"><i class="fa fa-check"></i><b>1.3.3</b> Machine learning (black-box)</a></li>
 <li class="chapter" data-level="1.3.4" data-path="scope.html"><a href="scope.html#statistical-modelling-and-inference-grey-box"><i class="fa fa-check"></i><b>1.3.4</b> Statistical modelling and inference (grey-box)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a><ul>
-<li class="chapter" data-level="2.1" data-path="models.html"><a href="models.html#sec:modelling_1"><i class="fa fa-check"></i><b>2.1</b> Building physics in a nutshell</a></li>
-<li class="chapter" data-level="2.2" data-path="models.html"><a href="models.html#sec:modelling_2"><i class="fa fa-check"></i><b>2.2</b> Measurement and modelling boundaries</a></li>
-<li class="chapter" data-level="2.3" data-path="models.html"><a href="models.html#sec:modelling_3"><i class="fa fa-check"></i><b>2.3</b> Categories of statistical models</a></li>
+<li class="chapter" data-level="2" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a><ul>
+<li class="chapter" data-level="2.1" data-path="modelling.html"><a href="modelling.html#modelling1"><i class="fa fa-check"></i><b>2.1</b> Building physics in a nutshell</a></li>
+<li class="chapter" data-level="2.2" data-path="modelling.html"><a href="modelling.html#modelling2"><i class="fa fa-check"></i><b>2.2</b> Measurement and modelling boundaries</a></li>
+<li class="chapter" data-level="2.3" data-path="modelling.html"><a href="modelling.html#modelling3"><i class="fa fa-check"></i><b>2.3</b> Categories of statistical models</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a><ul>
 <li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a><ul>
 <li class="chapter" data-level="3.1.1" data-path="workflow.html"><a href="workflow.html#motivation-for-a-bayesian-approach"><i class="fa fa-check"></i><b>3.1.1</b> Motivation for a Bayesian approach</a></li>
-<li class="chapter" data-level="3.1.2" data-path="workflow.html"><a href="workflow.html#theory-of-bayesian-inference-and-prediction"><i class="fa fa-check"></i><b>3.1.2</b> Theory of Bayesian inference and prediction</a></li>
-<li class="chapter" data-level="3.1.3" data-path="workflow.html"><a href="workflow.html#bayesian-formulation-of-common-models"><i class="fa fa-check"></i><b>3.1.3</b> Bayesian formulation of common models</a></li>
-<li class="chapter" data-level="3.1.4" data-path="workflow.html"><a href="workflow.html#computation-markov-chain-monte-carlo"><i class="fa fa-check"></i><b>3.1.4</b> Computation: Markov Chain Monte Carlo</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="workflow.html"><a href="workflow.html#overview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
-<li class="chapter" data-level="3.2.2" data-path="workflow.html"><a href="workflow.html#model-specification-and-prior-checking"><i class="fa fa-check"></i><b>3.2.2</b> Model specification and prior checking</a></li>
-<li class="chapter" data-level="3.2.3" data-path="workflow.html"><a href="workflow.html#identifiability-analysis"><i class="fa fa-check"></i><b>3.2.3</b> Identifiability analysis</a></li>
-<li class="chapter" data-level="3.2.4" data-path="workflow.html"><a href="workflow.html#convergence-diagnostics"><i class="fa fa-check"></i><b>3.2.4</b> Convergence diagnostics</a></li>
-<li class="chapter" data-level="3.2.5" data-path="workflow.html"><a href="workflow.html#residuals-analysis"><i class="fa fa-check"></i><b>3.2.5</b> Residuals analysis</a></li>
-<li class="chapter" data-level="3.2.6" data-path="workflow.html"><a href="workflow.html#posterior-predictive-checking"><i class="fa fa-check"></i><b>3.2.6</b> Posterior predictive checking</a></li>
-<li class="chapter" data-level="3.2.7" data-path="workflow.html"><a href="workflow.html#inference-diagnostics-and-practical-identifiabiltiy"><i class="fa fa-check"></i><b>3.2.7</b> Inference diagnostics and practical identifiabiltiy</a></li>
+<li class="chapter" data-level="3.2.2" data-path="workflow.html"><a href="workflow.html#step-1-model-specification"><i class="fa fa-check"></i><b>3.2.2</b> Step 1: model specification</a></li>
+<li class="chapter" data-level="3.2.3" data-path="workflow.html"><a href="workflow.html#priorpredictivechecking"><i class="fa fa-check"></i><b>3.2.3</b> Prior predictive checking</a></li>
+<li class="chapter" data-level="3.2.4" data-path="workflow.html"><a href="workflow.html#computation"><i class="fa fa-check"></i><b>3.2.4</b> Step 2: computation with Markov Chain Monte Carlo</a></li>
+<li class="chapter" data-level="3.2.5" data-path="workflow.html"><a href="workflow.html#modelvalidation"><i class="fa fa-check"></i><b>3.2.5</b> Step 3: model checking and validation</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a></li>
+<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="workflow.html"><a href="workflow.html#model-selection-workflows"><i class="fa fa-check"></i><b>3.3.1</b> Model selection workflows</a></li>
+<li class="chapter" data-level="3.3.2" data-path="workflow.html"><a href="workflow.html#sensitivity-analysis"><i class="fa fa-check"></i><b>3.3.2</b> Sensitivity analysis</a></li>
+<li class="chapter" data-level="3.3.3" data-path="workflow.html"><a href="workflow.html#structural-identifiability"><i class="fa fa-check"></i><b>3.3.3</b> Structural identifiability</a></li>
+<li class="chapter" data-level="3.3.4" data-path="workflow.html"><a href="workflow.html#inferencediagnostics"><i class="fa fa-check"></i><b>3.3.4</b> Practical identifiability</a></li>
+<li class="chapter" data-level="3.3.5" data-path="workflow.html"><a href="workflow.html#modelcomparison"><i class="fa fa-check"></i><b>3.3.5</b> Model comparison criteria</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>II Temporally independent data</b></span></li>
 <li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a><ul>
 <li class="chapter" data-level="4.1" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#introduction-to-olr"><i class="fa fa-check"></i><b>4.1</b> Introduction to OLR</a></li>
-<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#simple-linear-regression-with-r"><i class="fa fa-check"></i><b>4.2</b> Simple linear regression with R</a></li>
-<li class="chapter" data-level="4.3" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-linear-regression-with-stan"><i class="fa fa-check"></i><b>4.3</b> Bayesian linear regression with STAN</a></li>
+<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#case-study"><i class="fa fa-check"></i><b>4.2</b> Case study</a></li>
+<li class="chapter" data-level="4.3" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#simple-linear-regression-with-r"><i class="fa fa-check"></i><b>4.3</b> Simple linear regression with R</a></li>
+<li class="chapter" data-level="4.4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-linear-regression-with-stan"><i class="fa fa-check"></i><b>4.4</b> Bayesian linear regression with STAN</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="bayesian-mv.html"><a href="bayesian-mv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a><ul>
 <li class="chapter" data-level="5.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#a-bayesian-workflow-for-mv"><i class="fa fa-check"></i><b>5.1</b> A Bayesian workflow for M&amp;V</a></li>
@@ -204,14 +208,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="part"><span><b>III Time-series modelling</b></span></li>
 <li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a></li>
-<li class="chapter" data-level="8" data-path="hidden-markov-models.html"><a href="hidden-markov-models.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a></li>
-<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a></li>
+<li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a><ul>
+<li class="chapter" data-level="8.1" data-path="hmm.html"><a href="hmm.html#principles"><i class="fa fa-check"></i><b>8.1</b> Principles</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="hmm.html"><a href="hmm.html#the-forward-algorithm"><i class="fa fa-check"></i><b>8.1.1</b> The forward algorithm</a></li>
+<li class="chapter" data-level="8.1.2" data-path="hmm.html"><a href="hmm.html#the-viterbi-algorithm"><i class="fa fa-check"></i><b>8.1.2</b> The Viterbi algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="hmm.html"><a href="hmm.html#example-1"><i class="fa fa-check"></i><b>8.2</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a><ul>
+<li class="chapter" data-level="9.1" data-path="markov-switching-models.html"><a href="markov-switching-models.html#principle-1"><i class="fa fa-check"></i><b>9.1</b> Principle</a></li>
+<li class="chapter" data-level="9.2" data-path="markov-switching-models.html"><a href="markov-switching-models.html#example-2"><i class="fa fa-check"></i><b>9.2</b> Example</a></li>
+</ul></li>
 <li class="part"><span><b>IV State-space models</b></span></li>
-<li class="chapter" data-level="10" data-path="the-most-simple-ssm.html"><a href="the-most-simple-ssm.html"><i class="fa fa-check"></i><b>10</b> The most simple SSM</a></li>
-<li class="chapter" data-level="11" data-path="the-kalman-filter.html"><a href="the-kalman-filter.html"><i class="fa fa-check"></i><b>11</b> The Kalman filter</a></li>
+<li class="chapter" data-level="10" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html"><i class="fa fa-check"></i><b>10</b> Principle of SSMs</a><ul>
+<li class="chapter" data-level="10.1" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#description"><i class="fa fa-check"></i><b>10.1</b> Description</a></li>
+<li class="chapter" data-level="10.2" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#linear-state-space-models"><i class="fa fa-check"></i><b>10.2</b> Linear state-space models</a></li>
+<li class="chapter" data-level="10.3" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#the-kalman-filter"><i class="fa fa-check"></i><b>10.3</b> The Kalman filter</a></li>
+<li class="chapter" data-level="10.4" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#non-linear-state-space-models"><i class="fa fa-check"></i><b>10.4</b> Non-linear state-space models</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#switching-state-space-models"><i class="fa fa-check"></i><b>10.4.1</b> Switching state-space models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html"><i class="fa fa-check"></i><b>11</b> A simple RC model</a></li>
 <li class="chapter" data-level="12" data-path="the-pysip-library.html"><a href="the-pysip-library.html"><i class="fa fa-check"></i><b>12</b> The pySIP library</a></li>
 <li class="part"><span><b>V Gaussian Process models</b></span></li>
-<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a></li>
+<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a><ul>
+<li class="chapter" data-level="13.1" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#principle-2"><i class="fa fa-check"></i><b>13.1</b> Principle</a></li>
+<li class="chapter" data-level="13.2" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-prediction-of-energy-use"><i class="fa fa-check"></i><b>13.2</b> Gaussian Processes for prediction of energy use</a></li>
+<li class="chapter" data-level="13.3" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-time-series-data"><i class="fa fa-check"></i><b>13.3</b> Gaussian Processes for time series data</a></li>
+<li class="chapter" data-level="13.4" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#latent-force-models"><i class="fa fa-check"></i><b>13.4</b> Latent Force Models</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -235,12 +260,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="scope" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Background on data analysis</h1>
+<div id="the-energy-savings-potential-of-buildings" class="section level2">
+<h2><span class="header-section-number">1.1</span> The energy savings potential of buildings</h2>
+<p>The energy consumption of buildings accounts for 40% of the global primary energy use and up to 33% of carbon emissions in some countries, mainly from the operation of heating, ventilation and air conditioning (HVAC) systems. The gap in energy performance between older, poorly insulated constructions, and newer net-zero energy or passive buildings with efficient energy control strategies, shows the magnitude of the improvement that could be brought to the energy efficiency of the building stock. It is commonly known that the share of new buildings in the overall construction sector is very low. Most buildings are several decades old and often have poor energy performance, especially compared to recent standards for new constructions. The largest potential for energy savings in the building sector therefore lies in the renovation of the existing building stock, or its proper energy management.</p>
+<p>Data science offers promising prospects for improving the energy efficiency of buildings. Thanks to the availability of smart meters and sensor networks, along with increasingly accessible algorithms for data processing and analysis, statistical models may be trained to predict the energy use of HVAC systems or the indoor conditions. These trained models and their predictions then lead to various inferences: assessing the real impact of energy conservation measures; identifying HVAC faults or physical properties of the envelope in order to provide incentive for retrofitting; minimizing energy consumption through model predictive control; detecting and diagnosing faults; etc.</p>
+<p>The availability of measurements and computational power have given data mining methods an increasing popularity. The field of data analysis applied to building energy performance assessment however faces two main challenges to this day. Ironically, the first challenge is the abundance of data. Smart meters and building management systems deliver large amounts of information which can hide the few readings which are the most relevant to energy conservation. Automated monitoring and fault detection algorithms only do what they are told, and will hardly replace human intervention when it comes to understanding readings. The second challenge is the difficulty of data science. Without a principled methodology, it is very easy to draw erroneous conclusions, by incorrectly assuming that a model is properly trained. By lack of a background in statistics, building energy practitioners often lack the tools to ensure their inferences are correct.</p>
+</div>
 <div id="from-data-to-energy-savings" class="section level2">
-<h2><span class="header-section-number">1.1</span> From data to energy savings</h2>
+<h2><span class="header-section-number">1.2</span> From data to energy savings</h2>
 <div id="formalisation-of-the-system" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> Formalisation of the system</h3>
+<h3><span class="header-section-number">1.2.1</span> Formalisation of the system</h3>
 <p>Before proposing a few examples on how data acquisition may support energy conservation measures, let us first formalise the framework, in which the following parts of this book will describe building energy performance.</p>
-<div class="figure"><span id="fig:formalisation"></span>
+<div class="figure"><span style="display:block;" id="fig:formalisation"></span>
 <img src="figures/101_formalisation.png" alt="Formalisation of the system into observable variables and non-measurable influences" width="80%" />
 <p class="caption">
 Figure 1.1: Formalisation of the system into observable variables and non-measurable influences
@@ -252,10 +283,10 @@ Figure 1.1: Formalisation of the system into observable variables and non-measur
 <p>The third level of the formalisation includes all extensive and intensive <strong>variables that can be measured</strong> by any kind of meter or sensor, inside or near the building. These variables are the consequences of the two conditions (weather and occupancy) coupled with the building’s intrinsic performance. They include readings from energy meters, variables which describe the indoor air (temperature, relative humidity, CO<span class="math inline">\(_2\)</span> concentration…) and various signals that describe the state of operation of HVAC systems or envelope components. The indoor air temperature, for instance, is influenced by the weather (outdoor air temperature, solar irradiance), the occupants (who chose the set point) and the intrinsic building energy performance (heat transfer coefficient and inertia of the envelope, efficiency of the temperature control loop). These variables, along with weather variables, constitute the <strong>data</strong> from which we will perform inferences and predictions.</p>
 </div>
 <div id="some-uses-of-data" class="section level3">
-<h3><span class="header-section-number">1.1.2</span> Some uses of data</h3>
-<p>We now use this formalisation to demonstrate a few examples of how recorded data may be used to motivate energy conservation measures or verify their efficiency.</p>
-<div class="figure"><span id="fig:unnamed-chunk-1"></span>
-<img src="figures/102_applications.png" alt="How data can be used for various inferences and predictions" width="80%" />
+<h3><span class="header-section-number">1.2.2</span> Some uses of data</h3>
+<p>We now use this formalisation to demonstrate a few examples of how recorded data may be used to motivate energy conservation measures or verify their efficiency. Fig. <a href="scope.html#fig:applications">1.2</a> uses the same color code as Fig. <a href="scope.html#fig:formalisation">1.1</a>: blue denotes observable variables, orange denotes non-measurable information.</p>
+<div class="figure"><span style="display:block;" id="fig:applications"></span>
+<img src="figures/102_applications.png" alt="How data can be used for various inferences and predictions" width="90%" />
 <p class="caption">
 Figure 1.2: How data can be used for various inferences and predictions
 </p>
@@ -264,16 +295,16 @@ Figure 1.2: How data can be used for various inferences and predictions
 <li><strong>Forecasting energy use</strong></li>
 </ul>
 <p>The ability to predict the energy use of buildings is a useful tool for energy management, from the scale of a single dwelling to the scale of energy distribution in a smart grid. On a side note, we can mention a difference between the terms of <em>prediction</em> and <em>forecasting</em>. In modelling studies, prediction is a general term that means computing the outcome of any simulation model, while forecasting specifically denotes estimating the future values of a time series, on a time horizon where observations are not available.</p>
-<p>Two factors may facilitate the ability to forecast a time series. The first of these advantageous characteristics is a repetitive trend in an energy consumption profile. Large office buildings, collective housing and retail facilities tend to display a predictable daily profile for energy uses that have a low dependency on environmental factors, such as lighting and electrical appliances. Some energy uses mostly depend on user behaviour, whose stochastic behaviour tend to be smoothed out at larger scales of observation.</p>
-<div class="figure"><span id="fig:unnamed-chunk-2"></span>
-<img src="figures/103_prediction1.png" alt="Repetitive consumption profiles are easy to forecast by extrapolating daily and seasonal fluctuations" width="30%" />
+<p>Two factors may facilitate the ability to forecast a time series. The first of these advantageous characteristics is a repetitive trend in an energy consumption profile (see Fig. <a href="scope.html#fig:prediction1">1.3</a>). Large office buildings, collective housing and retail facilities tend to display a predictable daily profile for energy uses that have a low dependency on environmental factors, such as lighting and electrical appliances. Some energy uses mostly depend on user behaviour, whose stochastic behaviour tend to be smoothed out at larger scales of observation.</p>
+<div class="figure"><span style="display:block;" id="fig:prediction1"></span>
+<img src="figures/103_prediction1.png" alt="Repetitive consumption profiles are easy to forecast by extrapolating daily and seasonal fluctuations" width="40%" />
 <p class="caption">
 Figure 1.3: Repetitive consumption profiles are easy to forecast by extrapolating daily and seasonal fluctuations
 </p>
 </div>
-<p>Another factor that facilitates the prediction of energy use is a high dependency on an environmental factor that is itself easy to get forecasts of. In a building with a controlled set-point indoor temperature, a strong correlation may be observed between the outdoor temperature and the heating power in winter. The outdoor temperature is then considered a significant <strong>explanatory variable</strong>: its forecasts will allow forecasting the heating power with a satisfactory confidence.</p>
-<div class="figure"><span id="fig:unnamed-chunk-3"></span>
-<img src="figures/104_prediction2.png" alt="A correlation between outdoor temperature and heating power can be used to predict future demand" width="30%" />
+<p>Another factor that facilitates the prediction of energy use is a high dependency on an environmental factor that is itself easy to get forecasts of. In a building with a controlled set-point indoor temperature, a strong correlation may be observed between the outdoor temperature and the heating power in winter (see Fig. <a href="scope.html#fig:prediction2">1.4</a>). The outdoor temperature is then considered a significant <strong>explanatory variable</strong>: its forecasts will allow forecasting the heating power with a satisfactory confidence.</p>
+<div class="figure"><span style="display:block;" id="fig:prediction2"></span>
+<img src="figures/104_prediction2.png" alt="A correlation between outdoor temperature and heating power can be used to predict future demand" width="40%" />
 <p class="caption">
 Figure 1.4: A correlation between outdoor temperature and heating power can be used to predict future demand
 </p>
@@ -283,8 +314,8 @@ Figure 1.4: A correlation between outdoor temperature and heating power can be u
 <li><strong>Measurement and verification (M&amp;V)</strong></li>
 </ul>
 <p>The ability to predict energy demand can also be valued in the context of Measurement and Verification (M&amp;V). M&amp;V is the process of assessing savings caused by an Energy Conservation Measure (ECM). Savings are determined by comparing measured consumption or demand before and after implementation of a program, making suitable adjustments for changes in conditions. The International Performance Measurement and Verification Protocol (IPMVP) formalizes this process, and presents several options to conduct it.</p>
-<div class="figure"><span id="fig:unnamed-chunk-4"></span>
-<img src="figures/105_mv.png" alt="The IPMVP provides guidelines on how to perform M&amp;V" width="30%" />
+<div class="figure"><span style="display:block;" id="fig:ipmvp"></span>
+<img src="figures/105_mv.png" alt="The IPMVP provides guidelines on how to perform M&amp;V" width="40%" />
 <p class="caption">
 Figure 1.5: The IPMVP provides guidelines on how to perform M&amp;V
 </p>
@@ -296,8 +327,8 @@ Figure 1.5: The IPMVP provides guidelines on how to perform M&amp;V
 <li><strong>Intrinsic performance assessment</strong></li>
 </ul>
 <p>The third hereby presented application of data analysis is the estimation of quantitative indicators of the intrinsic energy performance of a building. This is different from the M&amp;V process as it does not necessarily imply the comparison between before/after situations. One typical example is the Heat Loss Coefficient (HLC), or the Heat Transfer Coefficient, which characterize heat transmission through the envelope, eventually including air infiltration. The co-heating test is one of the well-known methods for HLC assessment: it measures the heating power required to maintain a steady indoor temperature, and obtains HLC by averaging these measurements over a sufficiently long period.</p>
-<div class="figure"><span id="fig:unnamed-chunk-5"></span>
-<img src="figures/106_hlc.png" alt="The co-heating test records the heating power, indoor and outdoor temperature, in order to estimate the heat loss coefficient of the envelope" width="30%" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
+<img src="figures/106_hlc.png" alt="The co-heating test records the heating power, indoor and outdoor temperature, in order to estimate the heat loss coefficient of the envelope" width="40%" />
 <p class="caption">
 Figure 1.6: The co-heating test records the heating power, indoor and outdoor temperature, in order to estimate the heat loss coefficient of the envelope
 </p>
@@ -306,21 +337,19 @@ Figure 1.6: The co-heating test records the heating power, indoor and outdoor te
 <ul>
 <li><strong>Fault detection and diagnostics</strong></li>
 </ul>
-<p>(to be completed)</p>
-<div class="figure"><span id="fig:unnamed-chunk-6"></span>
-<img src="figures/107_fault.png" alt="Fault detection is a double challenge: (1) automatically detecting a difference between measurements and normal behaviour; (2) identifying its possible cause." width="30%" />
+<p>One of the characteristics of “smart buildings” is the ability to monitor energy usage with the aim of identifying abnormal consumption behaviour and notifying the building manager to implement appropriate procedures (<span class="citation">Araya et al. (<a href="#ref-araya2017ensemble" role="doc-biblioref">2017</a>)</span>). Fault detection and diagnostics (FDD) is the process of using building operational data to detect the occurence of faults and identify their root causes (<span class="citation">Granderson et al. (<a href="#ref-granderson2020building" role="doc-biblioref">2020</a>)</span>). This process can be done manually, or by an algorithm delevoped to perform it automatically.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="figures/107_fault.png" alt="Fault detection is a double challenge: (1) automatically detecting a difference between measurements and normal behaviour; (2) identifying its possible cause." width="40%" />
 <p class="caption">
 Figure 1.7: Fault detection is a double challenge: (1) automatically detecting a difference between measurements and normal behaviour; (2) identifying its possible cause.
 </p>
 </div>
+<p>Many supervised statistical learning methods for building energy load forecasting and anomaly detection have been developed in the last years. FDD is a challenging topic because it needs to reconcile two targets: efficient pattern detection among possibly large amounts of data, and physical interpretability of detected anomalies based on a detailed description of the building and its components.</p>
 </div>
-</div>
-<div id="inverseproblems" class="section level2">
-<h2><span class="header-section-number">1.2</span> Inverse problems</h2>
 <div id="model-calibration-as-the-key-to-data-analysis" class="section level3">
-<h3><span class="header-section-number">1.2.1</span> Model calibration as the key to data analysis</h3>
+<h3><span class="header-section-number">1.2.3</span> Model calibration as the key to data analysis</h3>
 <p>All the applications described above can be summarized by the same description: data are recorded and interpreted to draw conclusions about quantities that are either not directly observable (such as estimating a heat loss coefficient), or not yet observed (such as forecasting energy use). In all cases, the missing link between the data and the conclusion is a numerical model.</p>
-<div class="figure"><span id="fig:unnamed-chunk-7"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
 <img src="figures/108_process.png" alt="The overall process of collecting and analyzing data" width="100%" />
 <p class="caption">
 Figure 1.8: The overall process of collecting and analyzing data
@@ -336,12 +365,12 @@ Figure 1.8: The overall process of collecting and analyzing data
 </ul>
 <p>Model calibration is therefore the key to all applications of data analysis that we mentioned earlier. It is however a more complicated problem than it seems and requires careful choices at every step of the entire procedure.</p>
 </div>
-<div id="the-difficulty-of-inverse-problems" class="section level3">
-<h3><span class="header-section-number">1.2.2</span> The difficulty of inverse problems</h3>
+<div id="inverseproblems" class="section level3">
+<h3><span class="header-section-number">1.2.4</span> The difficulty of inverse problems</h3>
 <p>Inverse techniques are a suite of methods which promise to provide better experiments and improved understanding of physical processes. Inverse problem theory can be summed up as the science of training models using measurements. The target of such a training is either to learn physical properties of a system by indirect measurements, or setting up a predictive model that can reproduce past observations. In the last couple of decades, building physics researchers have benefited from elements of statistical learning and time series analysis to improve their ability to construct knowledge from data. What is referred to here as inverse problems are actually a very broad field that encompasses any study where data is gathered and mined for information. Inverse heat transfer theory (<span class="citation">Beck, Blackwell, and Clair Jr (<a href="#ref-beck1985inverse" role="doc-biblioref">1985</a>)</span>) was developed as a way to quantify heat exchange and thermal properties, and has translated well into building physics.</p>
 <p>Many engineers and researchers however lack the tools for a critical analysis of their results. This caution is particularly important as the dimensionality of the problem (i.e. the number of unknown parameters) increases. When data are available and a model is written to get a better understanding of it, it is very tempting to simply run an optimisation algorithm and assume that the calibrated model has become a sensible representation of reality. If the parameter estimation problem has a relatively low complexity (i.e. few parameters and sufficient measurements), it can be solved without difficulty. In these cases, authors often do not carry a thorough analysis of results, their reliability and ranges of uncertainty. However, it is highly interesting to attempt extracting the most possible information from given data, or to lower the experimental cost required by a given estimation target. System identification then becomes a more demanding task, which cannot be done without proof of reliability of its results. One should not overlook the mathematical challenges of inverse problems which, when added to measurement uncertainty and modelling approximations, can easily result in erroneous inferences.</p>
-<div class="figure"><span id="fig:unnamed-chunk-8"></span>
-<img src="figures/109_inverse.png" alt="Inverse problems in a nutshell" width="80%" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
+<img src="figures/109_inverse.png" alt="Inverse problems in a nutshell" width="90%" />
 <p class="caption">
 Figure 1.9: Inverse problems in a nutshell
 </p>
@@ -357,10 +386,10 @@ where <span class="math inline">\(\varepsilon\)</span> denotes measurement error
 <p>In practice, <span class="math inline">\(\theta^*\)</span> will never be reached exactly, but rather approached by an estimator <span class="math inline">\(\hat \theta\)</span>, because the entire process of estimating it from measurements is disturbed by an array of approximations (<span class="citation">Maillet (<a href="#ref-maillet2010problemes" role="doc-biblioref">2010</a>)</span>)</p>
 <ul>
 <li>Experimental errors. The numerical data <span class="math inline">\((u,y)\)</span> available for model calibration differs from the hypothetical outcome of the ideal, undisturbed physical system <span class="math inline">\((u^*,y^*)\)</span>. Sensors may be intrusive, produce noisy measurements, may be poorly calibrated, have a finite precision and resolution…</li>
-<li>Numerical errors. The hypothesis of an unbiased model (Eq. ) states that there exists a parameter value <span class="math inline">\(\theta^*\)</span> for which the model output is separated from the observations <span class="math inline">\(y\)</span> only by a zero mean, Gaussian distributed measurement noise. It means that the model perfectly reproduces the physical reality, and the only perceptible error is due to the imperfection of sensors. This is exceedingly optimistic, especially in building energy simulation.</li>
+<li>Numerical errors. The hypothesis of an unbiased model (Eq. @ref{eq:bias}) states that there exists a parameter value <span class="math inline">\(\theta^*\)</span> for which the model output is separated from the observations <span class="math inline">\(y\)</span> only by a zero mean, Gaussian distributed measurement noise. It means that the model perfectly reproduces the physical reality, and the only perceptible error is due to the imperfection of sensors. This is exceedingly optimistic, especially in building energy simulation.</li>
 </ul>
 <p>Measurement and modelling approximations are problematic because inverse problems are typically ill-posed (<span class="citation">Beck, Blackwell, and Clair Jr (<a href="#ref-beck1985inverse" role="doc-biblioref">1985</a>)</span>): their solution is highly sensitive to noise in the measured data and approximation errors. A global optimum of the inverse problem may then be found with unrealistic physical values for <span class="math inline">\(\theta\)</span> as a consequence of seemingly moderate errors made when setting up the problem.</p>
-<div class="figure"><span id="fig:unnamed-chunk-9"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
 <img src="figures/110_errors.png" alt="Errors and uncertainties on parameter estimation, caused by measurement and modelling errors" width="80%" />
 <p class="caption">
 Figure 1.10: Errors and uncertainties on parameter estimation, caused by measurement and modelling errors
@@ -372,17 +401,17 @@ Figure 1.10: Errors and uncertainties on parameter estimation, caused by measure
 <li>On the other hand, accuracy is a measure of <strong>bias</strong>. It is the difference between the “true” value of the target variable and the mean of our estimation.</li>
 </ul>
 <p>Biased estimates and predictions are the outcome of errors that have not been explicitely taken into account in the inverse problem. We tend to prefer low bias and high uncertainty, than high bias and low uncertainty: indeed, a high uncertainty suggests that the data were not sufficient to provide confident inferences, which incites caution when communicating the results. On the contrary, the bias cannot be simply estimated and is not visible. The worst case scenario is obtaining a bias higher than the uncertainty, which means that the true reference value is not even contained in our confidence interval. By including possible systematic errors in the model formulation, we wish to “turn bias into uncertainty”.</p>
-<p>In order to ensure, as much as possible, that the parameters and predictions returned by the model calibration procedure are unbiased and physically interpretable, a complete workflow will be described in this book. This workflow sums up the important steps that should be followed before and after applying the training algorithm itself, and the various tests to be performed to prevent biased conclusions. Statistical modelling will give us the tools to perform such a careful analysis of data.</p>
+<p>In order to ensure, as much as possible, that the parameters and predictions returned by the model calibration procedure are unbiased and physically interpretable, a complete workflow will be described in the next chapter of this book. This workflow sums up the important steps that should be followed before and after applying the training algorithm itself, and the various tests to be performed to prevent biased conclusions. Statistical modelling will give us the tools to perform such a careful analysis of data.</p>
 </div>
 </div>
-<div id="categories-of-data-driven-modelling-approaches" class="section level2">
+<div id="categories" class="section level2">
 <h2><span class="header-section-number">1.3</span> Categories of data-driven modelling approaches</h2>
 <div id="either-physical-interpretability-or-prediction-accuracy" class="section level3">
 <h3><span class="header-section-number">1.3.1</span> Either physical interpretability or prediction accuracy</h3>
-<p>The main subject of this book is to propose a workflow for the analysis of building energy data, that attempts to make the most out of the available data while avoiding the inherent pitfalls of inverse problems. This workflow is described and applied in the parts of the book that follow. Before presenting this workflow, it is however perhaps necessary to clarify some aspects of vocabulary.</p>
+<p>The main subject of this book is to propose a workflow for the analysis of building energy data, that attempts to make the most out of the available data while avoiding the inherent pitfalls of inverse problems. This workflow is described and applied in the parts of the book that follow. Before presenting it, it is however perhaps necessary to clarify some aspects of vocabulary.</p>
 <p>The previous sections have used expressions that seemed interchangeable, or at least overlapping in their definitions: model calibration; data-driven modelling; statistical learning and inference; inverse problems… These terms can describe the same process, or a part of it: collecting data and interpreting them with a numerical or a statistical model, in order to draw conclusions that will support energy conservation measures. There is so much literature on data-driven approaches for forecasting building energy consumption and demand, that several reviews are made every year, and a review of these reviews could be done. One noticeable trend is to classify models into white-box, grey-box and black-box (<span class="citation">Deb and Schlueter (<a href="#ref-deb2021review" role="doc-biblioref">2021</a>)</span>), according to their physical interpretability.</p>
 <p>A classification of data analysis methods and terms is proposed here: models categories from white-box to black-box are shown on a scale of two criteria: physical interpretability and forecasting accuracy. They are then roughly separated into three types of approaches: model calibration (mostly for white-box models), machine learning (black-box) and statistical learning with (grey-box) probabilistic models).</p>
-<div class="figure"><span id="fig:unnamed-chunk-10"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
 <img src="figures/111_methods.png" alt="Data analysis methods can be split into three categories." width="70%" />
 <p class="caption">
 Figure 1.11: Data analysis methods can be split into three categories.
@@ -399,11 +428,7 @@ Figure 1.11: Data analysis methods can be split into three categories.
 <div id="calibrated-simulation-white-box" class="section level3">
 <h3><span class="header-section-number">1.3.2</span> Calibrated simulation (white-box)</h3>
 <p>Model calibration usually denotes fitting numerical models which are based on a more or less detailed physical description of the building, complete with a description of HVAC systems and controls, usually without a statistical representation of variables. The advantage of these models is their interpretability: each parameter has a direct meaning, which can be related to thermophysical properties of the envelope or systems. The IPMVP Option D evaluates energy savings by directly adding or removing energy conservation measures in a calibrated numerical model, and therefore requires such a detailed description of the building.</p>
-<p>Detailed building energy models can be trained to replicate data by manual adjustement of parameters, or by more automated methods (<span class="citation">Reddy (<a href="#ref-reddy2006literature" role="doc-biblioref">2006</a>)</span>). The ASHRAE Guideline 14 specifies what is an acceptable level of accuracy or uncertainty for a calibrated simulation with very permissive criteria: “typically, models are declared to be calibrated if they produce Mean Bias Errors (MBE) within 10% and CV(RMSE) within 30% when using hourly data, or 5% MBE and 15% CV(RMSE) with monthly data.” CV(RMSE) is defined by:
-<span class="math display">\[\begin{equation}
-  \mathrm{CV(RMSE)} = 100 \frac{\sqrt{\sum\left(y_i-\hat{y}_i\right)^2}}{\bar{y}\sqrt{n-p}}
-\end{equation}\]</span>
-where <span class="math inline">\(y_i\)</span> are measurement points, <span class="math inline">\(\hat{y}_i\)</span> are model predictions, <span class="math inline">\(n\)</span> the number of data points and <span class="math inline">\(p\)</span> the degrees of freedom of the model.</p>
+<p>Detailed building energy models can be trained to replicate data by manual adjustement of parameters, or by more automated methods (<span class="citation">Reddy (<a href="#ref-reddy2006literature" role="doc-biblioref">2006</a>)</span>). The ASHRAE Guideline 14 specifies what is an acceptable level of accuracy or uncertainty for a calibrated simulation with very permissive criteria: “typically, models are declared to be calibrated if they produce Mean Bias Errors (MBE) within 10% and CV(RMSE) within 30% when using hourly data, or 5% MBE and 15% CV(RMSE) with monthly data.”</p>
 <p>Calibrating detailed models however comes with conditions and limitations. A sufficiently detailed model, with enough degrees of freedom, will have no difficulty satisfying the above criteria, but may do so without necessarily assigning their true physical value to each parameter. This inverse problem may have identifiability issues, i.e. the existence of infinitely many combinations of different parameters which result in the same model output. A preliminary sensitivity analysis may be conducted in order to only select the most significant parameters as free for calibration, while fixing the rest. Still, deterministic models greatly underestimate the bias and uncertainty of their own predictions, and calibrated simulation can easily satisfy ASHRAE’s validation criterion without representing the true state of a building.</p>
 </div>
 <div id="machine-learning-black-box" class="section level3">
@@ -428,6 +453,9 @@ where <span class="math inline">\(y_i\)</span> are measurement points, <span cla
 <div id="ref-amasyali2018review">
 <p>Amasyali, Kadir, and Nora M El-Gohary. 2018. “A Review of Data-Driven Building Energy Consumption Prediction Studies.” <em>Renewable and Sustainable Energy Reviews</em> 81: 1192–1205.</p>
 </div>
+<div id="ref-araya2017ensemble">
+<p>Araya, Daniel B, Katarina Grolinger, Hany F ElYamany, Miriam AM Capretz, and Girma Bitsuamlak. 2017. “An Ensemble Learning Framework for Anomaly Detection in Building Energy Consumption.” <em>Energy and Buildings</em> 144: 191–206.</p>
+</div>
 <div id="ref-beck1985inverse">
 <p>Beck, James V, Ben Blackwell, and Charles R St Clair Jr. 1985. <em>Inverse Heat Conduction: Ill-Posed Problems</em>. James Beck.</p>
 </div>
@@ -436,6 +464,9 @@ where <span class="math inline">\(y_i\)</span> are measurement points, <span cla
 </div>
 <div id="ref-gelman2013bayesian">
 <p>Gelman, Andrew, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. 2013. <em>Bayesian Data Analysis</em>. CRC press.</p>
+</div>
+<div id="ref-granderson2020building">
+<p>Granderson, Jessica, Guanjing Lin, Ari Harding, Piljae Im, and Yan Chen. 2020. “Building Fault Detection Data to Aid Diagnostic Algorithm Creation and Performance Testing.” <em>Scientific Data</em> 7 (1): 1–14.</p>
 </div>
 <div id="ref-hastie2009elements">
 <p>Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2009. <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em>. Springer Science &amp; Business Media.</p>
@@ -459,7 +490,7 @@ where <span class="math inline">\(y_i\)</span> are measurement points, <span cla
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="modelling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -476,8 +507,8 @@ gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
-"facebook": true,
-"twitter": true,
+"facebook": false,
+"twitter": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
@@ -503,9 +534,18 @@ gitbook.start({
 "text": null
 },
 "download": ["buildingenergygeeks.pdf", "buildingenergygeeks.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
 "toc": {
-"collapse": "subsection"
-}
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"info": true
 });
 });
 </script>

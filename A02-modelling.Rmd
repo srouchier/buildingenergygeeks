@@ -1,3 +1,0 @@
-# Building energy statistical modelling {#models}
-
-Placeholder text

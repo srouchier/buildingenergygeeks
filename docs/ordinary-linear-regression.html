@@ -5,26 +5,26 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 4 Ordinary linear regression | Building energy statistical modelling</title>
-  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="description" content="This is the description of the book." />
+  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 4 Ordinary linear regression | Building energy statistical modelling" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta property="og:description" content="This is the description of the book." />
   <meta name="github-repo" content="srouchier/buildingenergygeeks" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 4 Ordinary linear regression | Building energy statistical modelling" />
   
-  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:description" content="This is the description of the book." />
   
 
 <meta name="author" content="Simon Rouchier" />
 
 
-<meta name="date" content="2021-06-23" />
+<meta name="date" content="2021-08-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 <link rel="prev" href="workflow.html"/>
 <link rel="next" href="bayesian-mv.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -121,7 +121,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
 <body>
@@ -137,52 +136,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./index.html">Building energy statistical modelling</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-is-about"><i class="fa fa-check"></i>What this book is about</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-does-not-cover"><i class="fa fa-check"></i>What this book does not cover</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-about-programming-languages"><i class="fa fa-check"></i>What about programming languages?</a></li>
+</ul></li>
 <li class="part"><span><b>I Theory and workflow</b></span></li>
 <li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a><ul>
-<li class="chapter" data-level="1.1" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.1</b> From data to energy savings</a><ul>
-<li class="chapter" data-level="1.1.1" data-path="scope.html"><a href="scope.html#formalisation-of-the-system"><i class="fa fa-check"></i><b>1.1.1</b> Formalisation of the system</a></li>
-<li class="chapter" data-level="1.1.2" data-path="scope.html"><a href="scope.html#some-uses-of-data"><i class="fa fa-check"></i><b>1.1.2</b> Some uses of data</a></li>
+<li class="chapter" data-level="1.1" data-path="scope.html"><a href="scope.html#the-energy-savings-potential-of-buildings"><i class="fa fa-check"></i><b>1.1</b> The energy savings potential of buildings</a></li>
+<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.2</b> From data to energy savings</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="scope.html"><a href="scope.html#formalisation-of-the-system"><i class="fa fa-check"></i><b>1.2.1</b> Formalisation of the system</a></li>
+<li class="chapter" data-level="1.2.2" data-path="scope.html"><a href="scope.html#some-uses-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Some uses of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="scope.html"><a href="scope.html#model-calibration-as-the-key-to-data-analysis"><i class="fa fa-check"></i><b>1.2.3</b> Model calibration as the key to data analysis</a></li>
+<li class="chapter" data-level="1.2.4" data-path="scope.html"><a href="scope.html#inverseproblems"><i class="fa fa-check"></i><b>1.2.4</b> The difficulty of inverse problems</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#inverseproblems"><i class="fa fa-check"></i><b>1.2</b> Inverse problems</a><ul>
-<li class="chapter" data-level="1.2.1" data-path="scope.html"><a href="scope.html#model-calibration-as-the-key-to-data-analysis"><i class="fa fa-check"></i><b>1.2.1</b> Model calibration as the key to data analysis</a></li>
-<li class="chapter" data-level="1.2.2" data-path="scope.html"><a href="scope.html#the-difficulty-of-inverse-problems"><i class="fa fa-check"></i><b>1.2.2</b> The difficulty of inverse problems</a></li>
-</ul></li>
-<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories-of-data-driven-modelling-approaches"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a><ul>
+<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a><ul>
 <li class="chapter" data-level="1.3.1" data-path="scope.html"><a href="scope.html#either-physical-interpretability-or-prediction-accuracy"><i class="fa fa-check"></i><b>1.3.1</b> Either physical interpretability or prediction accuracy</a></li>
 <li class="chapter" data-level="1.3.2" data-path="scope.html"><a href="scope.html#calibrated-simulation-white-box"><i class="fa fa-check"></i><b>1.3.2</b> Calibrated simulation (white-box)</a></li>
 <li class="chapter" data-level="1.3.3" data-path="scope.html"><a href="scope.html#machine-learning-black-box"><i class="fa fa-check"></i><b>1.3.3</b> Machine learning (black-box)</a></li>
 <li class="chapter" data-level="1.3.4" data-path="scope.html"><a href="scope.html#statistical-modelling-and-inference-grey-box"><i class="fa fa-check"></i><b>1.3.4</b> Statistical modelling and inference (grey-box)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a><ul>
-<li class="chapter" data-level="2.1" data-path="models.html"><a href="models.html#sec:modelling_1"><i class="fa fa-check"></i><b>2.1</b> Building physics in a nutshell</a></li>
-<li class="chapter" data-level="2.2" data-path="models.html"><a href="models.html#sec:modelling_2"><i class="fa fa-check"></i><b>2.2</b> Measurement and modelling boundaries</a></li>
-<li class="chapter" data-level="2.3" data-path="models.html"><a href="models.html#sec:modelling_3"><i class="fa fa-check"></i><b>2.3</b> Categories of statistical models</a></li>
+<li class="chapter" data-level="2" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a><ul>
+<li class="chapter" data-level="2.1" data-path="modelling.html"><a href="modelling.html#modelling1"><i class="fa fa-check"></i><b>2.1</b> Building physics in a nutshell</a></li>
+<li class="chapter" data-level="2.2" data-path="modelling.html"><a href="modelling.html#modelling2"><i class="fa fa-check"></i><b>2.2</b> Measurement and modelling boundaries</a></li>
+<li class="chapter" data-level="2.3" data-path="modelling.html"><a href="modelling.html#modelling3"><i class="fa fa-check"></i><b>2.3</b> Categories of statistical models</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a><ul>
 <li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a><ul>
 <li class="chapter" data-level="3.1.1" data-path="workflow.html"><a href="workflow.html#motivation-for-a-bayesian-approach"><i class="fa fa-check"></i><b>3.1.1</b> Motivation for a Bayesian approach</a></li>
-<li class="chapter" data-level="3.1.2" data-path="workflow.html"><a href="workflow.html#theory-of-bayesian-inference-and-prediction"><i class="fa fa-check"></i><b>3.1.2</b> Theory of Bayesian inference and prediction</a></li>
-<li class="chapter" data-level="3.1.3" data-path="workflow.html"><a href="workflow.html#bayesian-formulation-of-common-models"><i class="fa fa-check"></i><b>3.1.3</b> Bayesian formulation of common models</a></li>
-<li class="chapter" data-level="3.1.4" data-path="workflow.html"><a href="workflow.html#computation-markov-chain-monte-carlo"><i class="fa fa-check"></i><b>3.1.4</b> Computation: Markov Chain Monte Carlo</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="workflow.html"><a href="workflow.html#overview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
-<li class="chapter" data-level="3.2.2" data-path="workflow.html"><a href="workflow.html#model-specification-and-prior-checking"><i class="fa fa-check"></i><b>3.2.2</b> Model specification and prior checking</a></li>
-<li class="chapter" data-level="3.2.3" data-path="workflow.html"><a href="workflow.html#identifiability-analysis"><i class="fa fa-check"></i><b>3.2.3</b> Identifiability analysis</a></li>
-<li class="chapter" data-level="3.2.4" data-path="workflow.html"><a href="workflow.html#convergence-diagnostics"><i class="fa fa-check"></i><b>3.2.4</b> Convergence diagnostics</a></li>
-<li class="chapter" data-level="3.2.5" data-path="workflow.html"><a href="workflow.html#residuals-analysis"><i class="fa fa-check"></i><b>3.2.5</b> Residuals analysis</a></li>
-<li class="chapter" data-level="3.2.6" data-path="workflow.html"><a href="workflow.html#posterior-predictive-checking"><i class="fa fa-check"></i><b>3.2.6</b> Posterior predictive checking</a></li>
-<li class="chapter" data-level="3.2.7" data-path="workflow.html"><a href="workflow.html#inference-diagnostics-and-practical-identifiabiltiy"><i class="fa fa-check"></i><b>3.2.7</b> Inference diagnostics and practical identifiabiltiy</a></li>
+<li class="chapter" data-level="3.2.2" data-path="workflow.html"><a href="workflow.html#step-1-model-specification"><i class="fa fa-check"></i><b>3.2.2</b> Step 1: model specification</a></li>
+<li class="chapter" data-level="3.2.3" data-path="workflow.html"><a href="workflow.html#priorpredictivechecking"><i class="fa fa-check"></i><b>3.2.3</b> Prior predictive checking</a></li>
+<li class="chapter" data-level="3.2.4" data-path="workflow.html"><a href="workflow.html#computation"><i class="fa fa-check"></i><b>3.2.4</b> Step 2: computation with Markov Chain Monte Carlo</a></li>
+<li class="chapter" data-level="3.2.5" data-path="workflow.html"><a href="workflow.html#modelvalidation"><i class="fa fa-check"></i><b>3.2.5</b> Step 3: model checking and validation</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a></li>
+<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="workflow.html"><a href="workflow.html#model-selection-workflows"><i class="fa fa-check"></i><b>3.3.1</b> Model selection workflows</a></li>
+<li class="chapter" data-level="3.3.2" data-path="workflow.html"><a href="workflow.html#sensitivity-analysis"><i class="fa fa-check"></i><b>3.3.2</b> Sensitivity analysis</a></li>
+<li class="chapter" data-level="3.3.3" data-path="workflow.html"><a href="workflow.html#structural-identifiability"><i class="fa fa-check"></i><b>3.3.3</b> Structural identifiability</a></li>
+<li class="chapter" data-level="3.3.4" data-path="workflow.html"><a href="workflow.html#inferencediagnostics"><i class="fa fa-check"></i><b>3.3.4</b> Practical identifiability</a></li>
+<li class="chapter" data-level="3.3.5" data-path="workflow.html"><a href="workflow.html#modelcomparison"><i class="fa fa-check"></i><b>3.3.5</b> Model comparison criteria</a></li>
+</ul></li>
 </ul></li>
 <li class="part"><span><b>II Temporally independent data</b></span></li>
 <li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a><ul>
 <li class="chapter" data-level="4.1" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#introduction-to-olr"><i class="fa fa-check"></i><b>4.1</b> Introduction to OLR</a></li>
-<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#simple-linear-regression-with-r"><i class="fa fa-check"></i><b>4.2</b> Simple linear regression with R</a></li>
-<li class="chapter" data-level="4.3" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-linear-regression-with-stan"><i class="fa fa-check"></i><b>4.3</b> Bayesian linear regression with STAN</a></li>
+<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#case-study"><i class="fa fa-check"></i><b>4.2</b> Case study</a></li>
+<li class="chapter" data-level="4.3" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#simple-linear-regression-with-r"><i class="fa fa-check"></i><b>4.3</b> Simple linear regression with R</a></li>
+<li class="chapter" data-level="4.4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-linear-regression-with-stan"><i class="fa fa-check"></i><b>4.4</b> Bayesian linear regression with STAN</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="bayesian-mv.html"><a href="bayesian-mv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a><ul>
 <li class="chapter" data-level="5.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#a-bayesian-workflow-for-mv"><i class="fa fa-check"></i><b>5.1</b> A Bayesian workflow for M&amp;V</a></li>
@@ -204,14 +208,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="part"><span><b>III Time-series modelling</b></span></li>
 <li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a></li>
-<li class="chapter" data-level="8" data-path="hidden-markov-models.html"><a href="hidden-markov-models.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a></li>
-<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a></li>
+<li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a><ul>
+<li class="chapter" data-level="8.1" data-path="hmm.html"><a href="hmm.html#principles"><i class="fa fa-check"></i><b>8.1</b> Principles</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="hmm.html"><a href="hmm.html#the-forward-algorithm"><i class="fa fa-check"></i><b>8.1.1</b> The forward algorithm</a></li>
+<li class="chapter" data-level="8.1.2" data-path="hmm.html"><a href="hmm.html#the-viterbi-algorithm"><i class="fa fa-check"></i><b>8.1.2</b> The Viterbi algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="hmm.html"><a href="hmm.html#example-1"><i class="fa fa-check"></i><b>8.2</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a><ul>
+<li class="chapter" data-level="9.1" data-path="markov-switching-models.html"><a href="markov-switching-models.html#principle-1"><i class="fa fa-check"></i><b>9.1</b> Principle</a></li>
+<li class="chapter" data-level="9.2" data-path="markov-switching-models.html"><a href="markov-switching-models.html#example-2"><i class="fa fa-check"></i><b>9.2</b> Example</a></li>
+</ul></li>
 <li class="part"><span><b>IV State-space models</b></span></li>
-<li class="chapter" data-level="10" data-path="the-most-simple-ssm.html"><a href="the-most-simple-ssm.html"><i class="fa fa-check"></i><b>10</b> The most simple SSM</a></li>
-<li class="chapter" data-level="11" data-path="the-kalman-filter.html"><a href="the-kalman-filter.html"><i class="fa fa-check"></i><b>11</b> The Kalman filter</a></li>
+<li class="chapter" data-level="10" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html"><i class="fa fa-check"></i><b>10</b> Principle of SSMs</a><ul>
+<li class="chapter" data-level="10.1" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#description"><i class="fa fa-check"></i><b>10.1</b> Description</a></li>
+<li class="chapter" data-level="10.2" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#linear-state-space-models"><i class="fa fa-check"></i><b>10.2</b> Linear state-space models</a></li>
+<li class="chapter" data-level="10.3" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#the-kalman-filter"><i class="fa fa-check"></i><b>10.3</b> The Kalman filter</a></li>
+<li class="chapter" data-level="10.4" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#non-linear-state-space-models"><i class="fa fa-check"></i><b>10.4</b> Non-linear state-space models</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#switching-state-space-models"><i class="fa fa-check"></i><b>10.4.1</b> Switching state-space models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html"><i class="fa fa-check"></i><b>11</b> A simple RC model</a></li>
 <li class="chapter" data-level="12" data-path="the-pysip-library.html"><a href="the-pysip-library.html"><i class="fa fa-check"></i><b>12</b> The pySIP library</a></li>
 <li class="part"><span><b>V Gaussian Process models</b></span></li>
-<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a></li>
+<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a><ul>
+<li class="chapter" data-level="13.1" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#principle-2"><i class="fa fa-check"></i><b>13.1</b> Principle</a></li>
+<li class="chapter" data-level="13.2" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-prediction-of-energy-use"><i class="fa fa-check"></i><b>13.2</b> Gaussian Processes for prediction of energy use</a></li>
+<li class="chapter" data-level="13.3" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-time-series-data"><i class="fa fa-check"></i><b>13.3</b> Gaussian Processes for time series data</a></li>
+<li class="chapter" data-level="13.4" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#latent-force-models"><i class="fa fa-check"></i><b>13.4</b> Latent Force Models</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -240,7 +265,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Linear regression models are usually the first example shown in most statistical learning lectures. They are a popular introduction to statistical modelling because of their simplicity, while their structure is flexible and applicable to quite a large range of physical systems.</p>
 <p>We consider an output variable <span class="math inline">\(y\)</span>, and a set of explanatory variables <span class="math inline">\(x=(x_1,...,x_k)\)</span>, and assume that a series of <span class="math inline">\(n\)</span> values of <span class="math inline">\(y_i\)</span> and <span class="math inline">\(x_{i1},...x_{ik}\)</span> have been recorded. The <em>ordinary</em> linear regression model states that the distribution of <span class="math inline">\(y\)</span> given the <span class="math inline">\(n\times k\)</span> matrix of predictors <span class="math inline">\(X\)</span> is normal with a mean that is a linear function of <span class="math inline">\(X\)</span>:
 <span class="math display" id="eq:linreg1">\[\begin{equation}
-    E(y_i|\theta, X) = \beta_1 x_{i1} + ... + \beta_k x_{ik}
+    E(y_i|\theta, X) = \theta_0 + \theta_1 x_{i1} + ... + \theta_k x_{ik}
     \tag{4.1}
 \end{equation}\]</span>
 The parameter <span class="math inline">\(\theta\)</span> is a vector of <span class="math inline">\(k\)</span> coefficients which distribution is to be determined. Ordinary linear regression assumes a normal linear model in which observation errors are independent and have equal variance <span class="math inline">\(\sigma^2\)</span>. Under these assumptions, along with a uniform prior distribution on <span class="math inline">\(\theta\)</span>, the posterior distribution for <span class="math inline">\(\theta\)</span> conditional on <span class="math inline">\(\sigma\)</span> can be explicitely formulated:
@@ -266,13 +291,238 @@ along with the marginal distribution of <span class="math inline">\(\sigma^2\)</
 </ul>
 <p>These transformations invalidate the analytical solutions shown by Eq. <a href="ordinary-linear-regression.html#eq:linreg3">(4.3)</a> to <a href="ordinary-linear-regression.html#eq:linreg6">(4.6)</a>, but we will see that Bayesian inference can treat them seamlessly.</p>
 </div>
+<div id="case-study" class="section level2">
+<h2><span class="header-section-number">4.2</span> Case study</h2>
+<p>The data used in this example was published by the Oak Ridge National Laboratory, Building Technologies Research and Integration Center (USA). It contains end use breakdowns of energy use and various indoor environmental conditions collected at the Campbell Creek Research House #3, at a 15 minute time stamp. The data availability ranges from 10/1/2013 to 9/30/2014 and was made available on <a href="https://openei.org/wiki/Main_Page">OpenEI</a>. For this notebook, the original data set was reduced by removing many columns and averaging measurements over daily time steps.</p>
+<p>This tutorial uses R, and more specifically functions from the <a href="https://www.tidyverse.org/">tidyverse</a>, a great data science environment. The reader is referred to the book <a href="https://r4ds.had.co.nz/">R for data science</a> to learn about each of them.</p>
+<p>In the following block:</p>
+<ul>
+<li><code>read_csv</code>, from readr, reads csv files</li>
+<li>The <code>%&gt;%</code> operator is the pipe from magrittr</li>
+<li><code>transform()</code>, from dplyr, modifies a variable in a table</li>
+<li><code>ymd</code>, from lubridate, reads a string into a date with a specific format. lubridate is not included in the tidyverse and has to be imported separately.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="ordinary-linear-regression.html#cb1-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="ordinary-linear-regression.html#cb1-2"></a><span class="kw">library</span>(lubridate)</span>
+<span id="cb1-3"><a href="ordinary-linear-regression.html#cb1-3"></a></span>
+<span id="cb1-4"><a href="ordinary-linear-regression.html#cb1-4"></a>df &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/linearregression.csv&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">transform</span>(<span class="dt">TIMESTAMP =</span> <span class="kw">ymd</span>(TIMESTAMP))</span>
+<span id="cb1-5"><a href="ordinary-linear-regression.html#cb1-5"></a><span class="kw">head</span>(df)</span></code></pre></div>
+<pre><code>##    TIMESTAMP     e_hp    e_dhw     e_fan  e_other       ti       tg        ts
+## 1 2013-11-01 22.76562 36.42188  9.866156 227.1703 24.08979 19.50503 12.687269
+## 2 2013-11-02 22.94271 32.01042  9.985406 232.4833 22.71608 18.40336  8.639988
+## 3 2013-11-03 23.07250 28.19500  9.977400 226.7301 21.18138 17.36883 10.676611
+## 4 2013-11-04 49.60208 58.77083 10.032833 228.3963 20.66780 16.77118 11.524884
+## 5 2013-11-05 23.09896 57.51042 10.008042 301.6326 20.97978 16.91042 11.532292
+## 6 2013-11-06 23.00521 55.95312 10.292667 280.0146 21.40096 17.36753 13.797685
+##          te     i_sol wind_speed
+## 1 17.138426 125.65963  0.9309792
+## 2 10.260706  90.86609  0.6845729
+## 3  7.348556 113.59297  0.9137600
+## 4  8.462442 116.15323  0.3336250
+## 5 10.836343 108.98073  0.3369687
+## 6 14.630382  87.00867  0.3273958</code></pre>
+<p>Starting from out “main” equations of simplified building energy modelling (see Chap. <a href="modelling.html#modelling">2</a>) we assume steady-state conditions: <span class="math inline">\(\partial T / \partial t = 0\)</span>. This should be a reasonable assumption, because the time step resolution of the data is daily. In winter, the house is heated by a heat pump. Considering the available data, here is the full model by which we describe the heat balance of the house:</p>
+<p><span class="math display">\[\begin{equation}
+\Phi_{hp} + \Phi_s + \Phi_v + \Phi_{inf} = H \, (T_i-T_e) + H_g \, (T_i-T_g)
+\end{equation}\]</span></p>
+<p>On the left side are the heat sources <span class="math inline">\(\Phi\)</span> (W), some of which may be negative:</p>
+<ul>
+<li><span class="math inline">\(\Phi_{hp} \propto e_{hp}\)</span> is the heating power provided by the heat pump to the indoor space. It is proportional to the energy reading <span class="math inline">\(e_{hp}\)</span> (Wh), which we will use as output variable, and to the time step size and the COP of the heat pump, supposed constant.</li>
+<li><span class="math inline">\(\Phi_s \propto I_{sol}\)</span> are the solar gains, supposed proportional to the measured outdoor solar irradiance <span class="math inline">\(I_{sol}\)</span> (W/m<span class="math inline">\(^2\)</span>) and an unknown constant solar aperture coefficient <span class="math inline">\(A_s\)</span> (m<span class="math inline">\(^2\)</span>).</li>
+<li><span class="math inline">\(\Phi_v = \dot{m} \, c_p \, (T_s-T_i)\)</span> is the ventilation heat input, with a ventilation supply rate <span class="math inline">\(\dot{m}\)</span> and supply temperature <span class="math inline">\(T_s\)</span>, which is measured (the house has a mechanical ventilation system with heat recovery)</li>
+<li><span class="math inline">\(\Phi_{inf} \propto V_{ws} (T_e-T_i)\)</span> is the heat input from air infiltration. We suppose it is proportional to the wind speed <span class="math inline">\(V_{ws}\)</span> and the outdoor-indoor temperature difference.</li>
+</ul>
+<p>On the right side are two terms of heat loss through the envelope:</p>
+<ul>
+<li><span class="math inline">\(H \, (T_i-T_e)\)</span> is the direct heat loss from the heated space at temperature <span class="math inline">\(T_i\)</span> to the outdoor at <span class="math inline">\(T_e\)</span></li>
+<li><span class="math inline">\(H_g \, (T_i-T_g)\)</span> is the heat loss through the partition wall between the heated space and an unheated garage at <span class="math inline">\(T_g\)</span>.</li>
+</ul>
+<p>Linear regression should allow us to identify the coefficients of each term, supposing that they have enough variability and influence on the output <span class="math inline">\(\Phi_{hp}\)</span>. The outcome of the regression method will let us judge if this hypothesis is appropriate.</p>
+</div>
 <div id="simple-linear-regression-with-r" class="section level2">
-<h2><span class="header-section-number">4.2</span> Simple linear regression with R</h2>
-<p>Example of ordinary linear regression with the standard R libraries</p>
+<h2><span class="header-section-number">4.3</span> Simple linear regression with R</h2>
+<p>Before fitting the full model shown above, let us try one with a single explanatory variable, which we assume has the most influence on the energy use of the heat pump: the heat transmission through the envelope.</p>
+<p><span class="math display">\[ e_{hp} = \theta_1 (T_i-T_e)\]</span></p>
+<p>where the <span class="math inline">\(\theta_1\)</span> parameter includes the heat loss coefficient <span class="math inline">\(H\)</span>, the COP of the heat pump and the time step size. Since the COP is unknown, we won’t be able to estimate <span class="math inline">\(H\)</span>. This is fine, as the point of the exercise is mostly to identify influential features. <span class="math inline">\(\theta_0\)</span> is a constant intercept.</p>
+<p>First, we need to add <span class="math inline">\(T_i-T_e\)</span> as a new column of the dataframe. Then we use this column as the only explanatory variable in R’s linear regression function. An intercept is included by default: the <code>+ 0</code> part of the expression is used here to remove it.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="ordinary-linear-regression.html#cb3-1"></a>df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">tite =</span> ti <span class="op">-</span><span class="st"> </span>te)</span>
+<span id="cb3-2"><a href="ordinary-linear-regression.html#cb3-2"></a>lm1.fit =<span class="st"> </span><span class="kw">lm</span>(e_hp <span class="op">~</span><span class="st"> </span>tite <span class="op">+</span><span class="st"> </span><span class="dv">0</span>, <span class="dt">data=</span>df)</span>
+<span id="cb3-3"><a href="ordinary-linear-regression.html#cb3-3"></a><span class="kw">summary</span>(lm1.fit)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = e_hp ~ tite + 0, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -166.91  -86.02  -49.12   -8.52  439.43 
+## 
+## Coefficients:
+##      Estimate Std. Error t value Pr(&gt;|t|)    
+## tite  13.2377     0.5113   25.89   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 109.7 on 150 degrees of freedom
+## Multiple R-squared:  0.8171, Adjusted R-squared:  0.8159 
+## F-statistic: 670.2 on 1 and 150 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The table displays the results of the linear regression fitting by ordinary least squares. Some indicators are useful to judge if the model sufficiently explains the output data, or if some input features are redundant.</p>
+<ul>
+<li>The t-statistic and p-value indicate whether an input has a significant influence on the input: <code>P&gt;|t|</code> should be close to zero, meaning that the null hypothesis should be rejected. In this case, the only input is relevant.</li>
+<li>R-squared measures the goodness of fit of the regression. 0.817 is a rather low value, which hints that the output should be explained by additional features in the model.</li>
+<li>Other values like AIC, BIC or the Durbin-Watson statistic can be calculated. DW indicates whether there is autocorrelation of the residuals.</li>
+</ul>
+<p>The output variable is not well explained solely by a linear function of <span class="math inline">\((T_i-T_e)\)</span>, and the model should be improved. We can confirm this with a graph of the confidence interval and prediction interval of the fitted linear model:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="ordinary-linear-regression.html#cb5-1"></a>conf.int =<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">predict</span>(lm1.fit, <span class="dt">interval=</span><span class="st">&quot;confidence&quot;</span>) )</span>
+<span id="cb5-2"><a href="ordinary-linear-regression.html#cb5-2"></a>pred.int =<span class="st"> </span><span class="kw">as.data.frame</span>( <span class="kw">predict</span>(lm1.fit, <span class="dt">interval=</span><span class="st">&quot;prediction&quot;</span>) )</span>
+<span id="cb5-3"><a href="ordinary-linear-regression.html#cb5-3"></a></span>
+<span id="cb5-4"><a href="ordinary-linear-regression.html#cb5-4"></a><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb5-5"><a href="ordinary-linear-regression.html#cb5-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> df, <span class="kw">aes</span>(tite, e_hp)) <span class="op">+</span></span>
+<span id="cb5-6"><a href="ordinary-linear-regression.html#cb5-6"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span>df<span class="op">$</span>tite, <span class="dt">y=</span>pred.int<span class="op">$</span>fit)) <span class="op">+</span></span>
+<span id="cb5-7"><a href="ordinary-linear-regression.html#cb5-7"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">x=</span>df<span class="op">$</span>tite, <span class="dt">ymin=</span>pred.int<span class="op">$</span>lwr, <span class="dt">ymax=</span>pred.int<span class="op">$</span>upr), <span class="dt">alpha=</span><span class="fl">0.2</span>, <span class="dt">fill=</span><span class="st">&#39;blue&#39;</span>) <span class="op">+</span></span>
+<span id="cb5-8"><a href="ordinary-linear-regression.html#cb5-8"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">x=</span>df<span class="op">$</span>tite, <span class="dt">ymin=</span>conf.int<span class="op">$</span>lwr, <span class="dt">ymax=</span>conf.int<span class="op">$</span>upr), <span class="dt">alpha=</span><span class="fl">0.2</span>, <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>I argued in Sec. <a href="workflow.html#modelvalidation">3.2.5</a> that residual analysis was the most appropriate way to correctly validate a model, but it won’t be necessary here since the fit is simply not good.</p>
+<p>Now we can try a more complete linear regression model, which matches the full model described earlier</p>
+<p><span class="math display">\[\begin{equation}
+e_{hp} = \theta_1 (T_i-T_e) + \theta_2 (T_i-T_g) + \theta_3 I_{sol} + \theta_4 (T_i-T_s) + \theta_5 V_{ws}(T_i-T_e)
+\end{equation}\]</span></p>
+<p>This model has five input variables. There are some more variables that need to be added to the dataframe to account for:</p>
+<ul>
+<li>The heat loss towards the unheated garage at temperature <span class="math inline">\(T_g\)</span></li>
+<li>The ventilation heat supply <span class="math inline">\(\Phi_v \propto (T_s-T_i)\)</span></li>
+<li>The air infiltration heat loss <span class="math inline">\(\Phi_{inf} \propto V_{ws} (T_e-T_i)\)</span></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="ordinary-linear-regression.html#cb6-1"></a>df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">titg =</span> ti <span class="op">-</span><span class="st"> </span>tg,</span>
+<span id="cb6-2"><a href="ordinary-linear-regression.html#cb6-2"></a>                    <span class="dt">tits =</span> ti <span class="op">-</span><span class="st"> </span>ts,</span>
+<span id="cb6-3"><a href="ordinary-linear-regression.html#cb6-3"></a>                    <span class="dt">vtite =</span> wind_speed <span class="op">*</span><span class="st"> </span>(ti<span class="op">-</span>te))</span>
+<span id="cb6-4"><a href="ordinary-linear-regression.html#cb6-4"></a>lm2.fit =<span class="st"> </span><span class="kw">lm</span>(e_hp <span class="op">~</span><span class="st"> </span>tite <span class="op">+</span><span class="st"> </span>titg <span class="op">+</span><span class="st"> </span>i_sol <span class="op">+</span><span class="st"> </span>tits <span class="op">+</span><span class="st"> </span>vtite <span class="op">+</span><span class="st"> </span><span class="dv">0</span>, <span class="dt">data=</span>df)</span>
+<span id="cb6-5"><a href="ordinary-linear-regression.html#cb6-5"></a><span class="kw">summary</span>(lm2.fit)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = e_hp ~ tite + titg + i_sol + tits + vtite + 0, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -211.35  -80.19  -28.12   22.40  323.54 
+## 
+## Coefficients:
+##        Estimate Std. Error t value Pr(&gt;|t|)    
+## tite  22.134160   2.190009  10.107   &lt;2e-16 ***
+## titg   1.673180   5.849859   0.286   0.7753    
+## i_sol -0.373744   0.198848  -1.880   0.0622 .  
+## tits  -8.479184   3.621594  -2.341   0.0206 *  
+## vtite  0.002483   0.735571   0.003   0.9973    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 95.34 on 146 degrees of freedom
+## Multiple R-squared:  0.8656, Adjusted R-squared:  0.861 
+## F-statistic:   188 on 5 and 146 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The R-squared has improved: this model seems to be a better choice than the first one.</p>
+<p>Two input variables however have a very high <span class="math inline">\(p\)</span>-value: <span class="math inline">\((T_i-T_g)\)</span> and <span class="math inline">\(V_{ws}(T_i-T_e)\)</span>. This suggests that the heat transfer between the heated space and the garage, and the wind, have little impact on the energy consumption of the heat pump. We can simplify the model by removing these two features:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="ordinary-linear-regression.html#cb8-1"></a>lm3.fit =<span class="st"> </span><span class="kw">lm</span>(e_hp <span class="op">~</span><span class="st"> </span>tite <span class="op">+</span><span class="st"> </span>i_sol <span class="op">+</span><span class="st"> </span>tits <span class="op">+</span><span class="st"> </span><span class="dv">0</span>, <span class="dt">data=</span>df)</span>
+<span id="cb8-2"><a href="ordinary-linear-regression.html#cb8-2"></a><span class="kw">summary</span>(lm3.fit)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = e_hp ~ tite + i_sol + tits + 0, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -209.27  -81.17  -28.52   26.60  323.60 
+## 
+## Coefficients:
+##       Estimate Std. Error t value Pr(&gt;|t|)    
+## tite   22.4237     1.7835  12.573  &lt; 2e-16 ***
+## i_sol  -0.3878     0.1891  -2.050  0.04209 *  
+## tits   -7.7897     2.6010  -2.995  0.00322 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 94.72 on 148 degrees of freedom
+## Multiple R-squared:  0.8655, Adjusted R-squared:  0.8628 
+## F-statistic: 317.5 on 3 and 148 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The R-squared was not really impacted by the removal of two features, suggesting that they were indeed not influential. We can display a quick residual analysis, to see if the model sufficiently explains the variability of the data:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="ordinary-linear-regression.html#cb10-1"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb10-2"><a href="ordinary-linear-regression.html#cb10-2"></a><span class="kw">plot</span>(lm3.fit)</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>This linear regression model is not perfect but it looks like a decent compromise of simplicity and fitness. In particular, the “residuals vs fitted” graph shows highly non-normal residuals at high values of the dependent variable.</p>
 </div>
 <div id="bayesian-linear-regression-with-stan" class="section level2">
-<h2><span class="header-section-number">4.3</span> Bayesian linear regression with STAN</h2>
-<p>Example of ordinary linear regression with STAN</p>
+<h2><span class="header-section-number">4.4</span> Bayesian linear regression with STAN</h2>
+<p>We will now conduct linear regression in a Bayesian framework, as explained in Sec. <a href="workflow.html#bayesian">3.1</a>. We use the <a href="https://mc-stan.org/">STAN probabilistic programming language</a>, which allows full Bayesian statistical inference. A STAN model is a block of text which can either be written in a separate file, or in the same script as the current code. A model defined in its own file can then be called within either language: R, Python, Julia…</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="ordinary-linear-regression.html#cb11-1"></a><span class="kw">library</span>(rstan)</span></code></pre></div>
+<p>We previously selected a linear model with three predictors <code>(T_i-T_e)</code>, <code>I_{sol}</code> and <code>(T_i-T_s)</code>. The model can be written in probability form: each of the data points <code>e_{hp,n}</code> is normally distributed with a constant noise standard deviation <span class="math inline">\(\sigma\)</span>:</p>
+<p><span class="math display">\[\begin{equation}
+e_{hp,n} \sim N( \theta_1 (T_i-T_e)_n + \theta_2 I_{sol,n} + \theta_3 (T_i-T_s)_n, \sigma)
+\end{equation}\]</span></p>
+<p>Of course, the STAN documentation has <a href="https://mc-stan.org/docs/2_27/stan-users-guide/linear-regression.html">an example of linear regression model</a>. The following block defines a model with any number of predictors <code>K</code>, and no intercept.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="ordinary-linear-regression.html#cb12-1"></a>lr_model=<span class="st"> &quot;</span></span>
+<span id="cb12-2"><a href="ordinary-linear-regression.html#cb12-2"></a><span class="st">data {</span></span>
+<span id="cb12-3"><a href="ordinary-linear-regression.html#cb12-3"></a><span class="st">  int&lt;lower=0&gt; N;   // number of data items</span></span>
+<span id="cb12-4"><a href="ordinary-linear-regression.html#cb12-4"></a><span class="st">  int&lt;lower=0&gt; K;   // number of predictors</span></span>
+<span id="cb12-5"><a href="ordinary-linear-regression.html#cb12-5"></a><span class="st">  matrix[N, K] x;   // predictor matrix</span></span>
+<span id="cb12-6"><a href="ordinary-linear-regression.html#cb12-6"></a><span class="st">  vector[N] y;      // outcome vector</span></span>
+<span id="cb12-7"><a href="ordinary-linear-regression.html#cb12-7"></a><span class="st">}</span></span>
+<span id="cb12-8"><a href="ordinary-linear-regression.html#cb12-8"></a><span class="st">parameters {</span></span>
+<span id="cb12-9"><a href="ordinary-linear-regression.html#cb12-9"></a><span class="st">  vector[K] theta;       // coefficients for predictors</span></span>
+<span id="cb12-10"><a href="ordinary-linear-regression.html#cb12-10"></a><span class="st">  real&lt;lower=0&gt; sigma;  // error scale</span></span>
+<span id="cb12-11"><a href="ordinary-linear-regression.html#cb12-11"></a><span class="st">}</span></span>
+<span id="cb12-12"><a href="ordinary-linear-regression.html#cb12-12"></a><span class="st">model {</span></span>
+<span id="cb12-13"><a href="ordinary-linear-regression.html#cb12-13"></a><span class="st">  y ~ normal(x * theta, sigma);  // likelihood</span></span>
+<span id="cb12-14"><a href="ordinary-linear-regression.html#cb12-14"></a><span class="st">}</span></span>
+<span id="cb12-15"><a href="ordinary-linear-regression.html#cb12-15"></a><span class="st">&quot;</span></span></code></pre></div>
+<p>Then, a list called <code>model_data</code> is created, which maps each part of the data to its appropriate variable into the STAN model. This list must contain all variables defined in the <code>data</code> block of the model.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="ordinary-linear-regression.html#cb13-1"></a>model_data &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb13-2"><a href="ordinary-linear-regression.html#cb13-2"></a>  <span class="dt">N =</span> <span class="kw">nrow</span>(df),</span>
+<span id="cb13-3"><a href="ordinary-linear-regression.html#cb13-3"></a>  <span class="dt">K =</span> <span class="dv">3</span>,</span>
+<span id="cb13-4"><a href="ordinary-linear-regression.html#cb13-4"></a>  <span class="dt">x =</span> df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(tite, i_sol, tits),</span>
+<span id="cb13-5"><a href="ordinary-linear-regression.html#cb13-5"></a>  <span class="dt">y =</span> df<span class="op">$</span>e_hp</span>
+<span id="cb13-6"><a href="ordinary-linear-regression.html#cb13-6"></a>)</span></code></pre></div>
+<p>Now that the model has been specified and the data has been mapped to its variables, the syntax for model fitting is below.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="ordinary-linear-regression.html#cb14-1"></a>fit1 &lt;-<span class="st"> </span><span class="kw">stan</span>(</span>
+<span id="cb14-2"><a href="ordinary-linear-regression.html#cb14-2"></a>  <span class="dt">model_code =</span> lr_model,    <span class="co"># Stan program</span></span>
+<span id="cb14-3"><a href="ordinary-linear-regression.html#cb14-3"></a>  <span class="dt">data =</span> model_data,        <span class="co"># named list of data</span></span>
+<span id="cb14-4"><a href="ordinary-linear-regression.html#cb14-4"></a>  <span class="dt">chains =</span> <span class="dv">4</span>,               <span class="co"># number of Markov chains</span></span>
+<span id="cb14-5"><a href="ordinary-linear-regression.html#cb14-5"></a>  <span class="dt">warmup =</span> <span class="dv">1000</span>,            <span class="co"># number of warmup iterations per chain</span></span>
+<span id="cb14-6"><a href="ordinary-linear-regression.html#cb14-6"></a>  <span class="dt">iter =</span> <span class="dv">4000</span>,              <span class="co"># total number of iterations per chain</span></span>
+<span id="cb14-7"><a href="ordinary-linear-regression.html#cb14-7"></a>  <span class="dt">cores =</span> <span class="dv">2</span>,                <span class="co"># number of cores (could use one per chain)</span></span>
+<span id="cb14-8"><a href="ordinary-linear-regression.html#cb14-8"></a>)</span></code></pre></div>
+<p>Fitting may result in a number of warnings, telling us that some problems may have occurred: divergent transitions, large R-hat values, low Effective Sample Size… Obtaining a fit without these warnings takes some practice but is essential for an unbiased interpretation of the inferred variables and predictions. A guide to Stan’s warnings and how to address them <a href="https://mc-stan.org/misc/warnings.html">is available here</a>.</p>
+<p>Stan returns an object (called <code>fit1</code> above) <a href="https://cran.r-project.org/web/packages/rstan/vignettes/stanfit-objects.html">from which the distributions of outputs and parameters of the fitted model can be accessed</a></p>
+<p>As a first validation step, it is useful to take a look at the values of the parameters that have been estimated by the algorithm. Below, we use three diagnostics tools:</p>
+<ul>
+<li>The <code>print</code> method shows the table of parameters, much like we could display after an ordinary linear regression</li>
+<li><code>traceplot</code> shows the traces of the selected parameters. If the fitting has converged, the traces approximate the posterior distributions</li>
+<li><code>pairs</code> shows the pairwise relationships between parameters. Strong interactions between some parameters are an indication that the model should be re-parameterised.</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="ordinary-linear-regression.html#cb15-1"></a><span class="kw">print</span>(fit1)</span></code></pre></div>
+<pre><code>## Inference for Stan model: 9c07b6206041cd9ba4921b8c6c39becc.
+## 4 chains, each with iter=4000; warmup=1000; thin=1; 
+## post-warmup draws per chain=3000, total post-warmup draws=12000.
+## 
+##             mean se_mean   sd    2.5%     25%     50%     75%   97.5% n_eff
+## theta[1]   22.48    0.03 1.81   18.89   21.26   22.46   23.66   26.13  4631
+## theta[2]   -0.39    0.00 0.19   -0.76   -0.51   -0.39   -0.26    0.00  4435
+## theta[3]   -7.85    0.04 2.63  -13.15   -9.57   -7.82   -6.10   -2.68  3866
+## sigma      95.52    0.07 5.60   85.23   91.62   95.29   99.20  107.24  6863
+## lp__     -758.67    0.02 1.45 -762.39 -759.36 -758.33 -757.59 -756.88  4595
+##          Rhat
+## theta[1]    1
+## theta[2]    1
+## theta[3]    1
+## sigma       1
+## lp__        1
+## 
+## Samples were drawn using NUTS(diag_e) at Tue Aug 17 15:19:00 2021.
+## For each parameter, n_eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor on split chains (at 
+## convergence, Rhat=1).</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="ordinary-linear-regression.html#cb17-1"></a><span class="kw">traceplot</span>(fit1)</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="ordinary-linear-regression.html#cb18-1"></a><span class="kw">pairs</span>(fit1)</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<p>The <code>n_eff</code> and <code>Rhat</code> indices show that convergence is fine (see Sec. <a href="workflow.html#computation">3.2.4</a>). We are therefore allowed to carry on and interpret the results.</p>
+<p>There is strong interaction between some parameters. The numerical results are almost identical to the non-Bayesian model. This is not surprising as we used exactly the same model with no prior distribution on any parameter.</p>
 
 </div>
 </div>
@@ -305,8 +555,8 @@ gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
-"facebook": true,
-"twitter": true,
+"facebook": false,
+"twitter": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
@@ -332,9 +582,18 @@ gitbook.start({
 "text": null
 },
 "download": ["buildingenergygeeks.pdf", "buildingenergygeeks.epub"],
+"search": {
+"engine": "lunr",
+"options": null
+},
 "toc": {
-"collapse": "subsection"
-}
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"info": true
 });
 });
 </script>

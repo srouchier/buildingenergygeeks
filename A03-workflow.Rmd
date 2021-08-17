@@ -1,3 +1,0 @@
-# A data analysis workflow {#workflow}
-
-Placeholder text
