@@ -5,26 +5,26 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Finite mixture models | Building energy statistical modelling</title>
-  <meta name="description" content="This is the description of the book." />
+  <meta name="description" content="Handbook of statistical learning for building energy performance." />
   <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Finite mixture models | Building energy statistical modelling" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is the description of the book." />
+  <meta property="og:description" content="Handbook of statistical learning for building energy performance." />
   <meta name="github-repo" content="srouchier/buildingenergygeeks" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 6 Finite mixture models | Building energy statistical modelling" />
   
-  <meta name="twitter:description" content="This is the description of the book." />
+  <meta name="twitter:description" content="Handbook of statistical learning for building energy performance." />
   
 
 <meta name="author" content="Simon Rouchier" />
 
 
-<meta name="date" content="2021-08-17" />
+<meta name="date" content="2021-08-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -238,6 +238,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="13.4" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#latent-force-models"><i class="fa fa-check"></i><b>13.4</b> Latent Force Models</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="14" data-path="modèles-de-mixture-forme-générale.html"><a href="modèles-de-mixture-forme-générale.html"><i class="fa fa-check"></i><b>14</b> Modèles de mixture : forme générale</a><ul>
+<li class="chapter" data-level="14.1" data-path="modèles-de-mixture-forme-générale.html"><a href="modèles-de-mixture-forme-générale.html#modèle-1-conso-totale-ratio_house-ratio_apartment"><i class="fa fa-check"></i><b>14.1</b> Modèle 1 : conso totale ~ ratio_house + ratio_apartment</a><ul>
+<li class="chapter" data-level="14.1.1" data-path="modèles-de-mixture-forme-générale.html"><a href="modèles-de-mixture-forme-générale.html#résultats-paramètres"><i class="fa fa-check"></i><b>14.1.1</b> Résultats (paramètres)</a></li>
+<li class="chapter" data-level="14.1.2" data-path="modèles-de-mixture-forme-générale.html"><a href="modèles-de-mixture-forme-générale.html#validation-sur-les-données-test"><i class="fa fa-check"></i><b>14.1.2</b> Validation sur les données test</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -273,7 +279,133 @@ where <span class="math inline">\(\lambda_k\)</span> is the (positive) mixing pr
 </div>
 <div id="example" class="section level2">
 <h2><span class="header-section-number">6.2</span> Example</h2>
-<p>To be continued.</p>
+<p>This example uses a data file provided <a href="https://github.com/srouchier/buildingenergygeeks/tree/master/data">in the book’s repository</a>. The tutorial below is written in <strong>R</strong> and uses <a href="https://mc-stan.org/">Stan</a>. Unsurprisingly, the Stan user’s guide also has <a href="https://mc-stan.org/docs/2_27/stan-users-guide/mixture-modeling-chapter.html">a chapter on finite mixtures</a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="finite-mixture-models.html#cb1-1"></a><span class="kw">library</span>(rstan)</span>
+<span id="cb1-2"><a href="finite-mixture-models.html#cb1-2"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="finite-mixture-models.html#cb1-3"></a></span>
+<span id="cb1-4"><a href="finite-mixture-models.html#cb1-4"></a>df &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/mixture.csv&quot;</span>)</span>
+<span id="cb1-5"><a href="finite-mixture-models.html#cb1-5"></a><span class="kw">summary</span>(df)</span></code></pre></div>
+<pre><code>##  mean_consumption  ratio_house     ratio_apartment 
+##  Min.   : 0.770   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.: 3.753   1st Qu.:0.2006   1st Qu.:0.1181  
+##  Median : 5.146   Median :0.6346   Median :0.3654  
+##  Mean   : 5.499   Mean   :0.5523   Mean   :0.4477  
+##  3rd Qu.: 6.939   3rd Qu.:0.8819   3rd Qu.:0.7994  
+##  Max.   :41.805   Max.   :1.0000   Max.   :1.0000</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="finite-mixture-models.html#cb3-1"></a><span class="kw">nrow</span>(df)</span></code></pre></div>
+<pre><code>## [1] 20744</code></pre>
+<p>This data file is an excerpt of an energy consumption census in France. Each row represents an “area” of about 2,000 residents. The available data are the mean residential energy consumption in each area, and the ratios of houses and apartments.</p>
+<p>On average, we expect a house to have a higher energy consumption than an apartment: it is larger, has more residents, and more envelope surface with heat loss. Therefore, we can expect areas with more houses to have a higher mean consumption than areas with more apartments.</p>
+<p>Let us look at a pairplot of the three features.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="finite-mixture-models.html#cb5-1"></a><span class="kw">library</span>(GGally)</span></code></pre></div>
+<pre><code>## Registered S3 method overwritten by &#39;GGally&#39;:
+##   method from   
+##   +.gg   ggplot2</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="finite-mixture-models.html#cb7-1"></a><span class="kw">ggpairs</span>(df, <span class="dt">columns=</span><span class="kw">c</span>(<span class="st">&quot;mean_consumption&quot;</span>, <span class="st">&quot;ratio_house&quot;</span>, <span class="st">&quot;ratio_apartment&quot;</span>))</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+There is indeed <em>some</em> correlation between the ratio of houses in each area and the mean consumption. The density of <code>ratio_house</code> is strongly bimodal, and the density of <code>mean_consumption</code> looks like it could be split into two distributions as well.</p>
+<p>We can now try to translate our assumptions into a simple mixture of two distributions. Equation <a href="#eq:hmm">(<strong>??</strong>)</a> can be formulated as such:
+<span class="math display">\[\begin{equation}
+p(y_t | \lambda, \mu, \sigma) = \lambda_t f\left(y_t | \mu_1, \sigma_1 \right) + (1-\lambda_t) f\left(y_t | \mu_2, \sigma_2 \right)
+\end{equation}\]</span>
+where, for each data point <span class="math inline">\(t\)</span>,</p>
+<ul>
+<li><span class="math inline">\(y_t\)</span> is the dependent variable <code>mean_consumption</code>.</li>
+<li><span class="math inline">\(\lambda_t\)</span> is the explanatory variable <code>ratio_house</code>.</li>
+<li><span class="math inline">\(f\)</span> is a type of continuous probability distribution. It can be Normal, Gamma, LogNormal, etc.</li>
+<li><span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are the parameters of the distribution <span class="math inline">\(f\)</span> that we will choose. The indices <span class="math inline">\(1\)</span> and <span class="math inline">\(2\)</span> denote each of the two mixture components.</li>
+</ul>
+<p>This is a Stan mixture model with any number <code>K</code> of components:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="finite-mixture-models.html#cb8-1"></a>mixture &lt;-<span class="st"> &quot;</span></span>
+<span id="cb8-2"><a href="finite-mixture-models.html#cb8-2"></a><span class="st">data {</span></span>
+<span id="cb8-3"><a href="finite-mixture-models.html#cb8-3"></a><span class="st">  // This block declares all data which will be passed to the Stan model.</span></span>
+<span id="cb8-4"><a href="finite-mixture-models.html#cb8-4"></a><span class="st">  int&lt;lower=0&gt; N;       // number of data items in the training dataset</span></span>
+<span id="cb8-5"><a href="finite-mixture-models.html#cb8-5"></a><span class="st">  int&lt;lower=0&gt; K;       // number of components</span></span>
+<span id="cb8-6"><a href="finite-mixture-models.html#cb8-6"></a><span class="st">  real y[N];            // outcome energy vector</span></span>
+<span id="cb8-7"><a href="finite-mixture-models.html#cb8-7"></a><span class="st">  real l[N, K];         // ratios in the training dataset</span></span>
+<span id="cb8-8"><a href="finite-mixture-models.html#cb8-8"></a><span class="st">}</span></span>
+<span id="cb8-9"><a href="finite-mixture-models.html#cb8-9"></a><span class="st">parameters {</span></span>
+<span id="cb8-10"><a href="finite-mixture-models.html#cb8-10"></a><span class="st">  // This block declares the parameters of the model.</span></span>
+<span id="cb8-11"><a href="finite-mixture-models.html#cb8-11"></a><span class="st">  vector[K] mu;</span></span>
+<span id="cb8-12"><a href="finite-mixture-models.html#cb8-12"></a><span class="st">  vector[K] sigma;</span></span>
+<span id="cb8-13"><a href="finite-mixture-models.html#cb8-13"></a><span class="st">}</span></span>
+<span id="cb8-14"><a href="finite-mixture-models.html#cb8-14"></a><span class="st">model {</span></span>
+<span id="cb8-15"><a href="finite-mixture-models.html#cb8-15"></a><span class="st">  for (n in 1:N) {</span></span>
+<span id="cb8-16"><a href="finite-mixture-models.html#cb8-16"></a><span class="st">    vector[K] lps;</span></span>
+<span id="cb8-17"><a href="finite-mixture-models.html#cb8-17"></a><span class="st">    for (k in 1:K) {</span></span>
+<span id="cb8-18"><a href="finite-mixture-models.html#cb8-18"></a><span class="st">      lps[k] = log(l[n, k]) + lognormal_lpdf(y[n] | mu[k], sigma[k]);</span></span>
+<span id="cb8-19"><a href="finite-mixture-models.html#cb8-19"></a><span class="st">    }</span></span>
+<span id="cb8-20"><a href="finite-mixture-models.html#cb8-20"></a><span class="st">    target += log_sum_exp(lps);</span></span>
+<span id="cb8-21"><a href="finite-mixture-models.html#cb8-21"></a><span class="st">  }</span></span>
+<span id="cb8-22"><a href="finite-mixture-models.html#cb8-22"></a><span class="st">}</span></span>
+<span id="cb8-23"><a href="finite-mixture-models.html#cb8-23"></a><span class="st">&quot;</span></span></code></pre></div>
+<p>We can separate the data into a training set and a test set like so. The following block allocates 75% of the data to the training set:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="finite-mixture-models.html#cb9-1"></a><span class="co"># set.seed(12345)  # this is optional but ensures that results are reproducible</span></span>
+<span id="cb9-2"><a href="finite-mixture-models.html#cb9-2"></a>train_ind &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">seq_len</span>(<span class="kw">nrow</span>(df)), <span class="dt">size =</span> <span class="kw">floor</span>(<span class="fl">0.75</span> <span class="op">*</span><span class="st"> </span><span class="kw">nrow</span>(df)))</span>
+<span id="cb9-3"><a href="finite-mixture-models.html#cb9-3"></a></span>
+<span id="cb9-4"><a href="finite-mixture-models.html#cb9-4"></a>train &lt;-<span class="st"> </span>df[train_ind, ]</span>
+<span id="cb9-5"><a href="finite-mixture-models.html#cb9-5"></a>test &lt;-<span class="st"> </span>df[<span class="op">-</span>train_ind, ]</span></code></pre></div>
+<p>The next step maps the data to the Stan model and runs the MCMC algorithm.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="finite-mixture-models.html#cb10-1"></a>model_data &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb10-2"><a href="finite-mixture-models.html#cb10-2"></a>  <span class="dt">N =</span> <span class="kw">nrow</span>(train),</span>
+<span id="cb10-3"><a href="finite-mixture-models.html#cb10-3"></a>  <span class="dt">N_test =</span> <span class="kw">nrow</span>(test),</span>
+<span id="cb10-4"><a href="finite-mixture-models.html#cb10-4"></a>  <span class="dt">K =</span> <span class="dv">2</span>,</span>
+<span id="cb10-5"><a href="finite-mixture-models.html#cb10-5"></a>  <span class="dt">y =</span> train<span class="op">$</span>mean_consumption,</span>
+<span id="cb10-6"><a href="finite-mixture-models.html#cb10-6"></a>  <span class="dt">l =</span> train <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(ratio_house, ratio_apartment),</span>
+<span id="cb10-7"><a href="finite-mixture-models.html#cb10-7"></a>  <span class="dt">l_test =</span> test <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(ratio_house, ratio_apartment)</span>
+<span id="cb10-8"><a href="finite-mixture-models.html#cb10-8"></a>)</span>
+<span id="cb10-9"><a href="finite-mixture-models.html#cb10-9"></a></span>
+<span id="cb10-10"><a href="finite-mixture-models.html#cb10-10"></a><span class="co"># Fittage</span></span>
+<span id="cb10-11"><a href="finite-mixture-models.html#cb10-11"></a>fit1 &lt;-<span class="st"> </span><span class="kw">stan</span>(</span>
+<span id="cb10-12"><a href="finite-mixture-models.html#cb10-12"></a>  <span class="dt">model_code =</span> mixture,  <span class="co"># Stan program</span></span>
+<span id="cb10-13"><a href="finite-mixture-models.html#cb10-13"></a>  <span class="dt">data =</span> model_data,        <span class="co"># named list of data</span></span>
+<span id="cb10-14"><a href="finite-mixture-models.html#cb10-14"></a>  <span class="dt">chains =</span> <span class="dv">2</span>,               <span class="co"># number of Markov chains. 4 is better, 2 is faster</span></span>
+<span id="cb10-15"><a href="finite-mixture-models.html#cb10-15"></a>  <span class="dt">warmup =</span> <span class="dv">1000</span>,            <span class="co"># number of warmup iterations per chain</span></span>
+<span id="cb10-16"><a href="finite-mixture-models.html#cb10-16"></a>  <span class="dt">iter =</span> <span class="dv">4000</span>,              <span class="co"># total number of iterations per chain</span></span>
+<span id="cb10-17"><a href="finite-mixture-models.html#cb10-17"></a>  <span class="dt">cores =</span> <span class="dv">2</span>,                <span class="co"># number of cores (could use one per chain)</span></span>
+<span id="cb10-18"><a href="finite-mixture-models.html#cb10-18"></a>)</span></code></pre></div>
+<p>Let us now display the results of the fitting:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="finite-mixture-models.html#cb11-1"></a><span class="kw">print</span>(fit1, <span class="dt">pars=</span><span class="kw">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
+<pre><code>## Inference for Stan model: 757646c62f67476a981e4bf7d3bec830.
+## 2 chains, each with iter=4000; warmup=1000; thin=1; 
+## post-warmup draws per chain=3000, total post-warmup draws=6000.
+## 
+##               mean se_mean   sd      2.5%       25%       50%       75%
+## mu[1]         1.91    0.00 0.00      1.90      1.90      1.91      1.91
+## mu[2]         1.26    0.00 0.00      1.26      1.26      1.26      1.27
+## sigma[1]      0.27    0.00 0.00      0.26      0.26      0.27      0.27
+## sigma[2]      0.29    0.00 0.00      0.28      0.29      0.29      0.29
+## lp__     -29254.50    0.03 1.42 -29258.04 -29255.19 -29254.16 -29253.46
+##              97.5% n_eff Rhat
+## mu[1]         1.91  5405    1
+## mu[2]         1.27  5219    1
+## sigma[1]      0.27  6326    1
+## sigma[2]      0.29  6503    1
+## lp__     -29252.75  3036    1
+## 
+## Samples were drawn using NUTS(diag_e) at Wed Aug 18 18:01:36 2021.
+## For each parameter, n_eff is a crude measure of effective sample size,
+## and Rhat is the potential scale reduction factor on split chains (at 
+## convergence, Rhat=1).</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="finite-mixture-models.html#cb13-1"></a><span class="kw">traceplot</span>(fit1, <span class="dt">pars=</span><span class="kw">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="finite-mixture-models.html#cb14-1"></a><span class="kw">pairs</span>(fit1, <span class="dt">pars=</span><span class="kw">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-6-2.png" width="672" />
+It looks like we can be satisfied with the MCMC convergence: <code>n_eff</code> is high enough and <code>Rhat</code> close to 1 for all parameters, and all chains seem stationary. The last step is to predict values of the mean consumption of each area in the test data set. We calculate this prediction from the ratios of houses and apartments, and from the mean estimated values of the distributions in the mixture model.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="finite-mixture-models.html#cb15-1"></a><span class="co"># Extracting distribution parameters from the fit object</span></span>
+<span id="cb15-2"><a href="finite-mixture-models.html#cb15-2"></a>la &lt;-<span class="st"> </span>rstan<span class="op">::</span><span class="kw">extract</span>(fit1, <span class="dt">permuted =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb15-3"><a href="finite-mixture-models.html#cb15-3"></a>mu &lt;-<span class="st"> </span><span class="kw">colMeans</span>(la<span class="op">$</span>mu)</span>
+<span id="cb15-4"><a href="finite-mixture-models.html#cb15-4"></a>sigma &lt;-<span class="st"> </span><span class="kw">colMeans</span>(la<span class="op">$</span>sigma)</span>
+<span id="cb15-5"><a href="finite-mixture-models.html#cb15-5"></a></span>
+<span id="cb15-6"><a href="finite-mixture-models.html#cb15-6"></a><span class="co"># Predict the consumption of the test data from the ratios</span></span>
+<span id="cb15-7"><a href="finite-mixture-models.html#cb15-7"></a>test<span class="op">$</span>y &lt;-<span class="st"> </span>test<span class="op">$</span>ratio_house <span class="op">*</span><span class="st"> </span><span class="kw">rlnorm</span>(<span class="kw">nrow</span>(test), mu[<span class="dv">1</span>], sigma[<span class="dv">1</span>]) <span class="op">+</span></span>
+<span id="cb15-8"><a href="finite-mixture-models.html#cb15-8"></a><span class="st">  </span>test<span class="op">$</span>ratio_apartment <span class="op">*</span><span class="st"> </span><span class="kw">rlnorm</span>(<span class="kw">nrow</span>(test), mu[<span class="dv">2</span>], sigma[<span class="dv">2</span>])</span>
+<span id="cb15-9"><a href="finite-mixture-models.html#cb15-9"></a></span>
+<span id="cb15-10"><a href="finite-mixture-models.html#cb15-10"></a><span class="co"># Plot to compare measured and predicted consumption on the test data</span></span>
+<span id="cb15-11"><a href="finite-mixture-models.html#cb15-11"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>test) <span class="op">+</span></span>
+<span id="cb15-12"><a href="finite-mixture-models.html#cb15-12"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">mapping=</span><span class="kw">aes</span>(<span class="dt">x=</span>mean_consumption), <span class="dt">bins=</span><span class="dv">50</span>, <span class="dt">color=</span><span class="st">&#39;blue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb15-13"><a href="finite-mixture-models.html#cb15-13"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">mapping=</span><span class="kw">aes</span>(<span class="dt">x=</span>y), <span class="dt">bins=</span><span class="dv">50</span>, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.3</span>)</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 
 </div>
 </div>
