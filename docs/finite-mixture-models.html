@@ -24,7 +24,7 @@
 <meta name="author" content="Simon Rouchier" />
 
 
-<meta name="date" content="2021-08-18" />
+<meta name="date" content="2021-08-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,6 +33,7 @@
   
 <link rel="prev" href="bayesian-mv.html"/>
 <link rel="next" href="autoregressive-models.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,24 +51,23 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -87,7 +87,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -120,6 +120,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 </head>
 
@@ -136,44 +158,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./index.html">Building energy statistical modelling</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a>
+<ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-is-about"><i class="fa fa-check"></i>What this book is about</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-does-not-cover"><i class="fa fa-check"></i>What this book does not cover</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-about-programming-languages"><i class="fa fa-check"></i>What about programming languages?</a></li>
 </ul></li>
 <li class="part"><span><b>I Theory and workflow</b></span></li>
-<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a><ul>
+<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="scope.html"><a href="scope.html#the-energy-savings-potential-of-buildings"><i class="fa fa-check"></i><b>1.1</b> The energy savings potential of buildings</a></li>
-<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.2</b> From data to energy savings</a><ul>
+<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.2</b> From data to energy savings</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="scope.html"><a href="scope.html#formalisation-of-the-system"><i class="fa fa-check"></i><b>1.2.1</b> Formalisation of the system</a></li>
 <li class="chapter" data-level="1.2.2" data-path="scope.html"><a href="scope.html#some-uses-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Some uses of data</a></li>
 <li class="chapter" data-level="1.2.3" data-path="scope.html"><a href="scope.html#model-calibration-as-the-key-to-data-analysis"><i class="fa fa-check"></i><b>1.2.3</b> Model calibration as the key to data analysis</a></li>
 <li class="chapter" data-level="1.2.4" data-path="scope.html"><a href="scope.html#inverseproblems"><i class="fa fa-check"></i><b>1.2.4</b> The difficulty of inverse problems</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a><ul>
+<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="scope.html"><a href="scope.html#either-physical-interpretability-or-prediction-accuracy"><i class="fa fa-check"></i><b>1.3.1</b> Either physical interpretability or prediction accuracy</a></li>
 <li class="chapter" data-level="1.3.2" data-path="scope.html"><a href="scope.html#calibrated-simulation-white-box"><i class="fa fa-check"></i><b>1.3.2</b> Calibrated simulation (white-box)</a></li>
 <li class="chapter" data-level="1.3.3" data-path="scope.html"><a href="scope.html#machine-learning-black-box"><i class="fa fa-check"></i><b>1.3.3</b> Machine learning (black-box)</a></li>
 <li class="chapter" data-level="1.3.4" data-path="scope.html"><a href="scope.html#statistical-modelling-and-inference-grey-box"><i class="fa fa-check"></i><b>1.3.4</b> Statistical modelling and inference (grey-box)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a><ul>
+<li class="chapter" data-level="2" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="modelling.html"><a href="modelling.html#modelling1"><i class="fa fa-check"></i><b>2.1</b> Building physics in a nutshell</a></li>
 <li class="chapter" data-level="2.2" data-path="modelling.html"><a href="modelling.html#modelling2"><i class="fa fa-check"></i><b>2.2</b> Measurement and modelling boundaries</a></li>
 <li class="chapter" data-level="2.3" data-path="modelling.html"><a href="modelling.html#modelling3"><i class="fa fa-check"></i><b>2.3</b> Categories of statistical models</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a><ul>
-<li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a><ul>
+<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a>
+<ul>
 <li class="chapter" data-level="3.1.1" data-path="workflow.html"><a href="workflow.html#motivation-for-a-bayesian-approach"><i class="fa fa-check"></i><b>3.1.1</b> Motivation for a Bayesian approach</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a><ul>
+<li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="workflow.html"><a href="workflow.html#overview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
 <li class="chapter" data-level="3.2.2" data-path="workflow.html"><a href="workflow.html#step-1-model-specification"><i class="fa fa-check"></i><b>3.2.2</b> Step 1: model specification</a></li>
 <li class="chapter" data-level="3.2.3" data-path="workflow.html"><a href="workflow.html#priorpredictivechecking"><i class="fa fa-check"></i><b>3.2.3</b> Prior predictive checking</a></li>
 <li class="chapter" data-level="3.2.4" data-path="workflow.html"><a href="workflow.html#computation"><i class="fa fa-check"></i><b>3.2.4</b> Step 2: computation with Markov Chain Monte Carlo</a></li>
 <li class="chapter" data-level="3.2.5" data-path="workflow.html"><a href="workflow.html#modelvalidation"><i class="fa fa-check"></i><b>3.2.5</b> Step 3: model checking and validation</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a><ul>
+<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="workflow.html"><a href="workflow.html#model-selection-workflows"><i class="fa fa-check"></i><b>3.3.1</b> Model selection workflows</a></li>
 <li class="chapter" data-level="3.3.2" data-path="workflow.html"><a href="workflow.html#sensitivity-analysis"><i class="fa fa-check"></i><b>3.3.2</b> Sensitivity analysis</a></li>
 <li class="chapter" data-level="3.3.3" data-path="workflow.html"><a href="workflow.html#structural-identifiability"><i class="fa fa-check"></i><b>3.3.3</b> Structural identifiability</a></li>
@@ -182,16 +213,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="part"><span><b>II Temporally independent data</b></span></li>
-<li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a><ul>
+<li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#introduction-to-olr"><i class="fa fa-check"></i><b>4.1</b> Introduction to OLR</a></li>
 <li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#case-study"><i class="fa fa-check"></i><b>4.2</b> Case study</a></li>
 <li class="chapter" data-level="4.3" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#simple-linear-regression-with-r"><i class="fa fa-check"></i><b>4.3</b> Simple linear regression with R</a></li>
 <li class="chapter" data-level="4.4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-linear-regression-with-stan"><i class="fa fa-check"></i><b>4.4</b> Bayesian linear regression with STAN</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="bayesian-mv.html"><a href="bayesian-mv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a><ul>
+<li class="chapter" data-level="5" data-path="bayesian-mv.html"><a href="bayesian-mv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#a-bayesian-workflow-for-mv"><i class="fa fa-check"></i><b>5.1</b> A Bayesian workflow for M&amp;V</a></li>
 <li class="chapter" data-level="5.2" data-path="bayesian-mv.html"><a href="bayesian-mv.html#change-point-models"><i class="fa fa-check"></i><b>5.2</b> Change-point models</a></li>
-<li class="chapter" data-level="5.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#ipmvp-option-c-example"><i class="fa fa-check"></i><b>5.3</b> IPMVP option C example</a><ul>
+<li class="chapter" data-level="5.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#ipmvp-option-c-example"><i class="fa fa-check"></i><b>5.3</b> IPMVP option C example</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#loading-and-displaying-the-data"><i class="fa fa-check"></i><b>5.3.1</b> Loading and displaying the data</a></li>
 <li class="chapter" data-level="5.3.2" data-path="bayesian-mv.html"><a href="bayesian-mv.html#daily-averaged-data"><i class="fa fa-check"></i><b>5.3.2</b> Daily averaged data</a></li>
 <li class="chapter" data-level="5.3.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-definition"><i class="fa fa-check"></i><b>5.3.3</b> Model definition</a></li>
@@ -202,48 +236,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.3.8" data-path="bayesian-mv.html"><a href="bayesian-mv.html#savings"><i class="fa fa-check"></i><b>5.3.8</b> Savings</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a><ul>
+<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#principle"><i class="fa fa-check"></i><b>6.1</b> Principle</a></li>
 <li class="chapter" data-level="6.2" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#example"><i class="fa fa-check"></i><b>6.2</b> Example</a></li>
 </ul></li>
 <li class="part"><span><b>III Time-series modelling</b></span></li>
-<li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a></li>
-<li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a><ul>
-<li class="chapter" data-level="8.1" data-path="hmm.html"><a href="hmm.html#principles"><i class="fa fa-check"></i><b>8.1</b> Principles</a><ul>
+<li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="autoregressive-models.html"><a href="autoregressive-models.html#example-1"><i class="fa fa-check"></i><b>7.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="hmm.html"><a href="hmm.html#principles"><i class="fa fa-check"></i><b>8.1</b> Principles</a>
+<ul>
 <li class="chapter" data-level="8.1.1" data-path="hmm.html"><a href="hmm.html#the-forward-algorithm"><i class="fa fa-check"></i><b>8.1.1</b> The forward algorithm</a></li>
 <li class="chapter" data-level="8.1.2" data-path="hmm.html"><a href="hmm.html#the-viterbi-algorithm"><i class="fa fa-check"></i><b>8.1.2</b> The Viterbi algorithm</a></li>
 </ul></li>
-<li class="chapter" data-level="8.2" data-path="hmm.html"><a href="hmm.html#example-1"><i class="fa fa-check"></i><b>8.2</b> Example</a></li>
+<li class="chapter" data-level="8.2" data-path="hmm.html"><a href="hmm.html#example-2"><i class="fa fa-check"></i><b>8.2</b> Example</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a><ul>
+<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="markov-switching-models.html"><a href="markov-switching-models.html#principle-1"><i class="fa fa-check"></i><b>9.1</b> Principle</a></li>
-<li class="chapter" data-level="9.2" data-path="markov-switching-models.html"><a href="markov-switching-models.html#example-2"><i class="fa fa-check"></i><b>9.2</b> Example</a></li>
+<li class="chapter" data-level="9.2" data-path="markov-switching-models.html"><a href="markov-switching-models.html#example-3"><i class="fa fa-check"></i><b>9.2</b> Example</a></li>
 </ul></li>
 <li class="part"><span><b>IV State-space models</b></span></li>
-<li class="chapter" data-level="10" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html"><i class="fa fa-check"></i><b>10</b> Principle of SSMs</a><ul>
-<li class="chapter" data-level="10.1" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#description"><i class="fa fa-check"></i><b>10.1</b> Description</a></li>
-<li class="chapter" data-level="10.2" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#linear-state-space-models"><i class="fa fa-check"></i><b>10.2</b> Linear state-space models</a></li>
-<li class="chapter" data-level="10.3" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#the-kalman-filter"><i class="fa fa-check"></i><b>10.3</b> The Kalman filter</a></li>
-<li class="chapter" data-level="10.4" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#non-linear-state-space-models"><i class="fa fa-check"></i><b>10.4</b> Non-linear state-space models</a><ul>
-<li class="chapter" data-level="10.4.1" data-path="principle-of-ssms.html"><a href="principle-of-ssms.html#switching-state-space-models"><i class="fa fa-check"></i><b>10.4.1</b> Switching state-space models</a></li>
+<li class="chapter" data-level="10" data-path="ssmprinciple.html"><a href="ssmprinciple.html"><i class="fa fa-check"></i><b>10</b> Principle of SSMs</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="ssmprinciple.html"><a href="ssmprinciple.html#description"><i class="fa fa-check"></i><b>10.1</b> Description</a></li>
+<li class="chapter" data-level="10.2" data-path="ssmprinciple.html"><a href="ssmprinciple.html#linearssm"><i class="fa fa-check"></i><b>10.2</b> Linear state-space models</a></li>
+<li class="chapter" data-level="10.3" data-path="ssmprinciple.html"><a href="ssmprinciple.html#kalmanfilter"><i class="fa fa-check"></i><b>10.3</b> The Kalman filter</a></li>
+<li class="chapter" data-level="10.4" data-path="ssmprinciple.html"><a href="ssmprinciple.html#non-linear-state-space-models"><i class="fa fa-check"></i><b>10.4</b> Non-linear state-space models</a></li>
+<li class="chapter" data-level="10.5" data-path="ssmprinciple.html"><a href="ssmprinciple.html#switching-state-space-models"><i class="fa fa-check"></i><b>10.5</b> Switching state-space models</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html"><i class="fa fa-check"></i><b>11</b> A simple RC model</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#case-study-1"><i class="fa fa-check"></i><b>11.1</b> Case study</a></li>
+<li class="chapter" data-level="11.2" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#modelling-1"><i class="fa fa-check"></i><b>11.2</b> Modelling</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#rc-model"><i class="fa fa-check"></i><b>11.2.1</b> RC model</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#deterministic-formulation"><i class="fa fa-check"></i><b>11.3</b> Deterministic formulation</a></li>
+<li class="chapter" data-level="11.4" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#stochastic-formulation"><i class="fa fa-check"></i><b>11.4</b> Stochastic formulation</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#specification"><i class="fa fa-check"></i><b>11.4.1</b> Specification</a></li>
+<li class="chapter" data-level="11.4.2" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#training"><i class="fa fa-check"></i><b>11.4.2</b> Training</a></li>
+<li class="chapter" data-level="11.4.3" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#diagnostics-and-residuals-analysis"><i class="fa fa-check"></i><b>11.4.3</b> Diagnostics and residuals analysis</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html"><i class="fa fa-check"></i><b>11</b> A simple RC model</a></li>
-<li class="chapter" data-level="12" data-path="the-pysip-library.html"><a href="the-pysip-library.html"><i class="fa fa-check"></i><b>12</b> The pySIP library</a></li>
 <li class="part"><span><b>V Gaussian Process models</b></span></li>
-<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a><ul>
-<li class="chapter" data-level="13.1" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#principle-2"><i class="fa fa-check"></i><b>13.1</b> Principle</a></li>
-<li class="chapter" data-level="13.2" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-prediction-of-energy-use"><i class="fa fa-check"></i><b>13.2</b> Gaussian Processes for prediction of energy use</a></li>
-<li class="chapter" data-level="13.3" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-time-series-data"><i class="fa fa-check"></i><b>13.3</b> Gaussian Processes for time series data</a></li>
-<li class="chapter" data-level="13.4" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#latent-force-models"><i class="fa fa-check"></i><b>13.4</b> Latent Force Models</a></li>
+<li class="chapter" data-level="12" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>12</b> Gaussian Process models</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#principle-2"><i class="fa fa-check"></i><b>12.1</b> Principle</a></li>
+<li class="chapter" data-level="12.2" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-prediction-of-energy-use"><i class="fa fa-check"></i><b>12.2</b> Gaussian Processes for prediction of energy use</a></li>
+<li class="chapter" data-level="12.3" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-time-series-data"><i class="fa fa-check"></i><b>12.3</b> Gaussian Processes for time series data</a></li>
+<li class="chapter" data-level="12.4" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#latent-force-models"><i class="fa fa-check"></i><b>12.4</b> Latent Force Models</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="chapter" data-level="14" data-path="modèles-de-mixture-forme-générale.html"><a href="modèles-de-mixture-forme-générale.html"><i class="fa fa-check"></i><b>14</b> Modèles de mixture : forme générale</a><ul>
-<li class="chapter" data-level="14.1" data-path="modèles-de-mixture-forme-générale.html"><a href="modèles-de-mixture-forme-générale.html#modèle-1-conso-totale-ratio_house-ratio_apartment"><i class="fa fa-check"></i><b>14.1</b> Modèle 1 : conso totale ~ ratio_house + ratio_apartment</a><ul>
-<li class="chapter" data-level="14.1.1" data-path="modèles-de-mixture-forme-générale.html"><a href="modèles-de-mixture-forme-générale.html#résultats-paramètres"><i class="fa fa-check"></i><b>14.1.1</b> Résultats (paramètres)</a></li>
-<li class="chapter" data-level="14.1.2" data-path="modèles-de-mixture-forme-générale.html"><a href="modèles-de-mixture-forme-générale.html#validation-sur-les-données-test"><i class="fa fa-check"></i><b>14.1.2</b> Validation sur les données test</a></li>
-</ul></li>
-</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -264,9 +313,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="finite-mixture-models" class="section level1">
+<div id="finite-mixture-models" class="section level1" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Finite mixture models</h1>
-<div id="principle" class="section level2">
+<div id="principle" class="section level2" number="6.1">
 <h2><span class="header-section-number">6.1</span> Principle</h2>
 <p>The energy signature models only offer a coarse disaggregation of energy use into three components: heating, cooling, and baseline consumption. Furthermore, they rely on very long sampling times and cannot predict sub-daily consumption profiles. Finite Mixture Models (FMM) are one way to take the disaggregation of the baseline energy consumption further. Their most common specific case are the Gaussian Mixture Models (GMM).</p>
 <p>Finite mixture models assume that the outcome <span class="math inline">\(y\)</span> is drawn from one of several distributions, the identity of which is controlled by a categorical mixing distribution. For instance, the mixture of <span class="math inline">\(K\)</span> normal distributions <span class="math inline">\(f\)</span> with locations <span class="math inline">\(\mu_k\)</span> and scales <span class="math inline">\(\sigma_k\)</span> reads:
@@ -277,14 +326,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 where <span class="math inline">\(\lambda_k\)</span> is the (positive) mixing proportion of the <span class="math inline">\(k\)</span>th component and <span class="math inline">\(\sum_{k=1}^K \lambda_k = 1\)</span>. The FMM distributes the observed values into a finite number of distributions with probability <span class="math inline">\(\lambda_k\)</span>. The optimal number of components is not always a trivial choice: studies involving GMM often rely on some model selection index, such as the Bayesian Information Criterion (BIC), to guide the choice of the appropriate value for <span class="math inline">\(K\)</span>.</p>
 <p>The dependency of observations <span class="math inline">\(y\)</span> on explanatory variables <span class="math inline">\(x\)</span> can be included in the FMM, by formulating its parameters <span class="math inline">\(\left\{ \lambda_k(x), \mu_k(x), \sigma_k(x) \right\}\)</span> as dependent on the given value <span class="math inline">\(x\)</span> of these regressors. Furthermore, in order to include the effects of different power consumption demand behaviours, the mixture probabilities <span class="math inline">\(\lambda_k\)</span> can be modelled as dependent on a categorical variable <span class="math inline">\(z\)</span>. Finite Mixture Models thus offer a very high flexibility for attempting to disaggregate and predict energy uses, while including the possible effects of continuous or discrete explanatory variables.</p>
 </div>
-<div id="example" class="section level2">
+<div id="example" class="section level2" number="6.2">
 <h2><span class="header-section-number">6.2</span> Example</h2>
 <p>This example uses a data file provided <a href="https://github.com/srouchier/buildingenergygeeks/tree/master/data">in the book’s repository</a>. The tutorial below is written in <strong>R</strong> and uses <a href="https://mc-stan.org/">Stan</a>. Unsurprisingly, the Stan user’s guide also has <a href="https://mc-stan.org/docs/2_27/stan-users-guide/mixture-modeling-chapter.html">a chapter on finite mixtures</a></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="finite-mixture-models.html#cb1-1"></a><span class="kw">library</span>(rstan)</span>
-<span id="cb1-2"><a href="finite-mixture-models.html#cb1-2"></a><span class="kw">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="finite-mixture-models.html#cb1-3"></a></span>
-<span id="cb1-4"><a href="finite-mixture-models.html#cb1-4"></a>df &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/mixture.csv&quot;</span>)</span>
-<span id="cb1-5"><a href="finite-mixture-models.html#cb1-5"></a><span class="kw">summary</span>(df)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="finite-mixture-models.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstan)</span>
+<span id="cb38-2"><a href="finite-mixture-models.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb38-3"><a href="finite-mixture-models.html#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="finite-mixture-models.html#cb38-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/mixture.csv&quot;</span>)</span>
+<span id="cb38-5"><a href="finite-mixture-models.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(df)</span></code></pre></div>
 <pre><code>##  mean_consumption  ratio_house     ratio_apartment 
 ##  Min.   : 0.770   Min.   :0.0000   Min.   :0.0000  
 ##  1st Qu.: 3.753   1st Qu.:0.2006   1st Qu.:0.1181  
@@ -292,17 +341,17 @@ where <span class="math inline">\(\lambda_k\)</span> is the (positive) mixing pr
 ##  Mean   : 5.499   Mean   :0.5523   Mean   :0.4477  
 ##  3rd Qu.: 6.939   3rd Qu.:0.8819   3rd Qu.:0.7994  
 ##  Max.   :41.805   Max.   :1.0000   Max.   :1.0000</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="finite-mixture-models.html#cb3-1"></a><span class="kw">nrow</span>(df)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="finite-mixture-models.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df)</span></code></pre></div>
 <pre><code>## [1] 20744</code></pre>
 <p>This data file is an excerpt of an energy consumption census in France. Each row represents an “area” of about 2,000 residents. The available data are the mean residential energy consumption in each area, and the ratios of houses and apartments.</p>
 <p>On average, we expect a house to have a higher energy consumption than an apartment: it is larger, has more residents, and more envelope surface with heat loss. Therefore, we can expect areas with more houses to have a higher mean consumption than areas with more apartments.</p>
 <p>Let us look at a pairplot of the three features.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="finite-mixture-models.html#cb5-1"></a><span class="kw">library</span>(GGally)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="finite-mixture-models.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span></code></pre></div>
 <pre><code>## Registered S3 method overwritten by &#39;GGally&#39;:
 ##   method from   
 ##   +.gg   ggplot2</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="finite-mixture-models.html#cb7-1"></a><span class="kw">ggpairs</span>(df, <span class="dt">columns=</span><span class="kw">c</span>(<span class="st">&quot;mean_consumption&quot;</span>, <span class="st">&quot;ratio_house&quot;</span>, <span class="st">&quot;ratio_apartment&quot;</span>))</span></code></pre></div>
-<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="finite-mixture-models.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(df, <span class="at">columns=</span><span class="fu">c</span>(<span class="st">&quot;mean_consumption&quot;</span>, <span class="st">&quot;ratio_house&quot;</span>, <span class="st">&quot;ratio_apartment&quot;</span>))</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-31-1.png" width="672" />
 There is indeed <em>some</em> correlation between the ratio of houses in each area and the mean consumption. The density of <code>ratio_house</code> is strongly bimodal, and the density of <code>mean_consumption</code> looks like it could be split into two distributions as well.</p>
 <p>We can now try to translate our assumptions into a simple mixture of two distributions. Equation <a href="#eq:hmm">(<strong>??</strong>)</a> can be formulated as such:
 <span class="math display">\[\begin{equation}
@@ -316,56 +365,55 @@ where, for each data point <span class="math inline">\(t\)</span>,</p>
 <li><span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are the parameters of the distribution <span class="math inline">\(f\)</span> that we will choose. The indices <span class="math inline">\(1\)</span> and <span class="math inline">\(2\)</span> denote each of the two mixture components.</li>
 </ul>
 <p>This is a Stan mixture model with any number <code>K</code> of components:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="finite-mixture-models.html#cb8-1"></a>mixture &lt;-<span class="st"> &quot;</span></span>
-<span id="cb8-2"><a href="finite-mixture-models.html#cb8-2"></a><span class="st">data {</span></span>
-<span id="cb8-3"><a href="finite-mixture-models.html#cb8-3"></a><span class="st">  // This block declares all data which will be passed to the Stan model.</span></span>
-<span id="cb8-4"><a href="finite-mixture-models.html#cb8-4"></a><span class="st">  int&lt;lower=0&gt; N;       // number of data items in the training dataset</span></span>
-<span id="cb8-5"><a href="finite-mixture-models.html#cb8-5"></a><span class="st">  int&lt;lower=0&gt; K;       // number of components</span></span>
-<span id="cb8-6"><a href="finite-mixture-models.html#cb8-6"></a><span class="st">  real y[N];            // outcome energy vector</span></span>
-<span id="cb8-7"><a href="finite-mixture-models.html#cb8-7"></a><span class="st">  real l[N, K];         // ratios in the training dataset</span></span>
-<span id="cb8-8"><a href="finite-mixture-models.html#cb8-8"></a><span class="st">}</span></span>
-<span id="cb8-9"><a href="finite-mixture-models.html#cb8-9"></a><span class="st">parameters {</span></span>
-<span id="cb8-10"><a href="finite-mixture-models.html#cb8-10"></a><span class="st">  // This block declares the parameters of the model.</span></span>
-<span id="cb8-11"><a href="finite-mixture-models.html#cb8-11"></a><span class="st">  vector[K] mu;</span></span>
-<span id="cb8-12"><a href="finite-mixture-models.html#cb8-12"></a><span class="st">  vector[K] sigma;</span></span>
-<span id="cb8-13"><a href="finite-mixture-models.html#cb8-13"></a><span class="st">}</span></span>
-<span id="cb8-14"><a href="finite-mixture-models.html#cb8-14"></a><span class="st">model {</span></span>
-<span id="cb8-15"><a href="finite-mixture-models.html#cb8-15"></a><span class="st">  for (n in 1:N) {</span></span>
-<span id="cb8-16"><a href="finite-mixture-models.html#cb8-16"></a><span class="st">    vector[K] lps;</span></span>
-<span id="cb8-17"><a href="finite-mixture-models.html#cb8-17"></a><span class="st">    for (k in 1:K) {</span></span>
-<span id="cb8-18"><a href="finite-mixture-models.html#cb8-18"></a><span class="st">      lps[k] = log(l[n, k]) + lognormal_lpdf(y[n] | mu[k], sigma[k]);</span></span>
-<span id="cb8-19"><a href="finite-mixture-models.html#cb8-19"></a><span class="st">    }</span></span>
-<span id="cb8-20"><a href="finite-mixture-models.html#cb8-20"></a><span class="st">    target += log_sum_exp(lps);</span></span>
-<span id="cb8-21"><a href="finite-mixture-models.html#cb8-21"></a><span class="st">  }</span></span>
-<span id="cb8-22"><a href="finite-mixture-models.html#cb8-22"></a><span class="st">}</span></span>
-<span id="cb8-23"><a href="finite-mixture-models.html#cb8-23"></a><span class="st">&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="finite-mixture-models.html#cb45-1" aria-hidden="true" tabindex="-1"></a>mixture <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb45-2"><a href="finite-mixture-models.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="st">data {</span></span>
+<span id="cb45-3"><a href="finite-mixture-models.html#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="st">  // This block declares all data which will be passed to the Stan model.</span></span>
+<span id="cb45-4"><a href="finite-mixture-models.html#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="st">  int&lt;lower=0&gt; N;       // number of data items in the training dataset</span></span>
+<span id="cb45-5"><a href="finite-mixture-models.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="st">  int&lt;lower=0&gt; K;       // number of components</span></span>
+<span id="cb45-6"><a href="finite-mixture-models.html#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="st">  real y[N];            // outcome energy vector</span></span>
+<span id="cb45-7"><a href="finite-mixture-models.html#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="st">  real l[N, K];         // ratios in the training dataset</span></span>
+<span id="cb45-8"><a href="finite-mixture-models.html#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb45-9"><a href="finite-mixture-models.html#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="st">parameters {</span></span>
+<span id="cb45-10"><a href="finite-mixture-models.html#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="st">  // This block declares the parameters of the model.</span></span>
+<span id="cb45-11"><a href="finite-mixture-models.html#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[K] mu;</span></span>
+<span id="cb45-12"><a href="finite-mixture-models.html#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="st">  vector[K] sigma;</span></span>
+<span id="cb45-13"><a href="finite-mixture-models.html#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb45-14"><a href="finite-mixture-models.html#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="st">model {</span></span>
+<span id="cb45-15"><a href="finite-mixture-models.html#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="st">  for (n in 1:N) {</span></span>
+<span id="cb45-16"><a href="finite-mixture-models.html#cb45-16" aria-hidden="true" tabindex="-1"></a><span class="st">    vector[K] lps;</span></span>
+<span id="cb45-17"><a href="finite-mixture-models.html#cb45-17" aria-hidden="true" tabindex="-1"></a><span class="st">    for (k in 1:K) {</span></span>
+<span id="cb45-18"><a href="finite-mixture-models.html#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="st">      lps[k] = log(l[n, k]) + lognormal_lpdf(y[n] | mu[k], sigma[k]);</span></span>
+<span id="cb45-19"><a href="finite-mixture-models.html#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb45-20"><a href="finite-mixture-models.html#cb45-20" aria-hidden="true" tabindex="-1"></a><span class="st">    target += log_sum_exp(lps);</span></span>
+<span id="cb45-21"><a href="finite-mixture-models.html#cb45-21" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb45-22"><a href="finite-mixture-models.html#cb45-22" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb45-23"><a href="finite-mixture-models.html#cb45-23" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span></code></pre></div>
 <p>We can separate the data into a training set and a test set like so. The following block allocates 75% of the data to the training set:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="finite-mixture-models.html#cb9-1"></a><span class="co"># set.seed(12345)  # this is optional but ensures that results are reproducible</span></span>
-<span id="cb9-2"><a href="finite-mixture-models.html#cb9-2"></a>train_ind &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">seq_len</span>(<span class="kw">nrow</span>(df)), <span class="dt">size =</span> <span class="kw">floor</span>(<span class="fl">0.75</span> <span class="op">*</span><span class="st"> </span><span class="kw">nrow</span>(df)))</span>
-<span id="cb9-3"><a href="finite-mixture-models.html#cb9-3"></a></span>
-<span id="cb9-4"><a href="finite-mixture-models.html#cb9-4"></a>train &lt;-<span class="st"> </span>df[train_ind, ]</span>
-<span id="cb9-5"><a href="finite-mixture-models.html#cb9-5"></a>test &lt;-<span class="st"> </span>df[<span class="op">-</span>train_ind, ]</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="finite-mixture-models.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set.seed(12345)  # this is optional but ensures that results are reproducible</span></span>
+<span id="cb46-2"><a href="finite-mixture-models.html#cb46-2" aria-hidden="true" tabindex="-1"></a>train_ind <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(df)), <span class="at">size =</span> <span class="fu">floor</span>(<span class="fl">0.75</span> <span class="sc">*</span> <span class="fu">nrow</span>(df)))</span>
+<span id="cb46-3"><a href="finite-mixture-models.html#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="finite-mixture-models.html#cb46-4" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> df[train_ind, ]</span>
+<span id="cb46-5"><a href="finite-mixture-models.html#cb46-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> df[<span class="sc">-</span>train_ind, ]</span></code></pre></div>
 <p>The next step maps the data to the Stan model and runs the MCMC algorithm.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="finite-mixture-models.html#cb10-1"></a>model_data &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
-<span id="cb10-2"><a href="finite-mixture-models.html#cb10-2"></a>  <span class="dt">N =</span> <span class="kw">nrow</span>(train),</span>
-<span id="cb10-3"><a href="finite-mixture-models.html#cb10-3"></a>  <span class="dt">N_test =</span> <span class="kw">nrow</span>(test),</span>
-<span id="cb10-4"><a href="finite-mixture-models.html#cb10-4"></a>  <span class="dt">K =</span> <span class="dv">2</span>,</span>
-<span id="cb10-5"><a href="finite-mixture-models.html#cb10-5"></a>  <span class="dt">y =</span> train<span class="op">$</span>mean_consumption,</span>
-<span id="cb10-6"><a href="finite-mixture-models.html#cb10-6"></a>  <span class="dt">l =</span> train <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(ratio_house, ratio_apartment),</span>
-<span id="cb10-7"><a href="finite-mixture-models.html#cb10-7"></a>  <span class="dt">l_test =</span> test <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(ratio_house, ratio_apartment)</span>
-<span id="cb10-8"><a href="finite-mixture-models.html#cb10-8"></a>)</span>
-<span id="cb10-9"><a href="finite-mixture-models.html#cb10-9"></a></span>
-<span id="cb10-10"><a href="finite-mixture-models.html#cb10-10"></a><span class="co"># Fittage</span></span>
-<span id="cb10-11"><a href="finite-mixture-models.html#cb10-11"></a>fit1 &lt;-<span class="st"> </span><span class="kw">stan</span>(</span>
-<span id="cb10-12"><a href="finite-mixture-models.html#cb10-12"></a>  <span class="dt">model_code =</span> mixture,  <span class="co"># Stan program</span></span>
-<span id="cb10-13"><a href="finite-mixture-models.html#cb10-13"></a>  <span class="dt">data =</span> model_data,        <span class="co"># named list of data</span></span>
-<span id="cb10-14"><a href="finite-mixture-models.html#cb10-14"></a>  <span class="dt">chains =</span> <span class="dv">2</span>,               <span class="co"># number of Markov chains. 4 is better, 2 is faster</span></span>
-<span id="cb10-15"><a href="finite-mixture-models.html#cb10-15"></a>  <span class="dt">warmup =</span> <span class="dv">1000</span>,            <span class="co"># number of warmup iterations per chain</span></span>
-<span id="cb10-16"><a href="finite-mixture-models.html#cb10-16"></a>  <span class="dt">iter =</span> <span class="dv">4000</span>,              <span class="co"># total number of iterations per chain</span></span>
-<span id="cb10-17"><a href="finite-mixture-models.html#cb10-17"></a>  <span class="dt">cores =</span> <span class="dv">2</span>,                <span class="co"># number of cores (could use one per chain)</span></span>
-<span id="cb10-18"><a href="finite-mixture-models.html#cb10-18"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="finite-mixture-models.html#cb47-1" aria-hidden="true" tabindex="-1"></a>model_data <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb47-2"><a href="finite-mixture-models.html#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">N =</span> <span class="fu">nrow</span>(train),</span>
+<span id="cb47-3"><a href="finite-mixture-models.html#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">N_test =</span> <span class="fu">nrow</span>(test),</span>
+<span id="cb47-4"><a href="finite-mixture-models.html#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">K =</span> <span class="dv">2</span>,</span>
+<span id="cb47-5"><a href="finite-mixture-models.html#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> train<span class="sc">$</span>mean_consumption,</span>
+<span id="cb47-6"><a href="finite-mixture-models.html#cb47-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">l =</span> train <span class="sc">%&gt;%</span> <span class="fu">select</span>(ratio_house, ratio_apartment)</span>
+<span id="cb47-7"><a href="finite-mixture-models.html#cb47-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb47-8"><a href="finite-mixture-models.html#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="finite-mixture-models.html#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Fittage</span></span>
+<span id="cb47-10"><a href="finite-mixture-models.html#cb47-10" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">stan</span>(</span>
+<span id="cb47-11"><a href="finite-mixture-models.html#cb47-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">model_code =</span> mixture,  <span class="co"># Stan program</span></span>
+<span id="cb47-12"><a href="finite-mixture-models.html#cb47-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> model_data,        <span class="co"># named list of data</span></span>
+<span id="cb47-13"><a href="finite-mixture-models.html#cb47-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">2</span>,               <span class="co"># number of Markov chains. 4 is better, 2 is faster</span></span>
+<span id="cb47-14"><a href="finite-mixture-models.html#cb47-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">warmup =</span> <span class="dv">1000</span>,            <span class="co"># number of warmup iterations per chain</span></span>
+<span id="cb47-15"><a href="finite-mixture-models.html#cb47-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">4000</span>,              <span class="co"># total number of iterations per chain</span></span>
+<span id="cb47-16"><a href="finite-mixture-models.html#cb47-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">cores =</span> <span class="dv">2</span>,                <span class="co"># number of cores (could use one per chain)</span></span>
+<span id="cb47-17"><a href="finite-mixture-models.html#cb47-17" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>Let us now display the results of the fitting:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="finite-mixture-models.html#cb11-1"></a><span class="kw">print</span>(fit1, <span class="dt">pars=</span><span class="kw">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="finite-mixture-models.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fit1, <span class="at">pars=</span><span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
 <pre><code>## Inference for Stan model: 757646c62f67476a981e4bf7d3bec830.
 ## 2 chains, each with iter=4000; warmup=1000; thin=1; 
 ## post-warmup draws per chain=3000, total post-warmup draws=6000.
@@ -373,39 +421,39 @@ where, for each data point <span class="math inline">\(t\)</span>,</p>
 ##               mean se_mean   sd      2.5%       25%       50%       75%
 ## mu[1]         1.91    0.00 0.00      1.90      1.90      1.91      1.91
 ## mu[2]         1.26    0.00 0.00      1.26      1.26      1.26      1.27
-## sigma[1]      0.27    0.00 0.00      0.26      0.26      0.27      0.27
-## sigma[2]      0.29    0.00 0.00      0.28      0.29      0.29      0.29
-## lp__     -29254.50    0.03 1.42 -29258.04 -29255.19 -29254.16 -29253.46
+## sigma[1]      0.27    0.00 0.00      0.26      0.27      0.27      0.27
+## sigma[2]      0.29    0.00 0.00      0.28      0.28      0.29      0.29
+## lp__     -29290.36    0.02 1.39 -29293.73 -29291.05 -29290.04 -29289.34
 ##              97.5% n_eff Rhat
-## mu[1]         1.91  5405    1
-## mu[2]         1.27  5219    1
-## sigma[1]      0.27  6326    1
-## sigma[2]      0.29  6503    1
-## lp__     -29252.75  3036    1
+## mu[1]         1.91  5007    1
+## mu[2]         1.27  5528    1
+## sigma[1]      0.27  6813    1
+## sigma[2]      0.29  6486    1
+## lp__     -29288.62  3183    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Wed Aug 18 18:01:36 2021.
+## Samples were drawn using NUTS(diag_e) at Fri Aug 20 11:09:35 2021.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="finite-mixture-models.html#cb13-1"></a><span class="kw">traceplot</span>(fit1, <span class="dt">pars=</span><span class="kw">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
-<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="finite-mixture-models.html#cb14-1"></a><span class="kw">pairs</span>(fit1, <span class="dt">pars=</span><span class="kw">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
-<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-6-2.png" width="672" />
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="finite-mixture-models.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">traceplot</span>(fit1, <span class="at">pars=</span><span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="finite-mixture-models.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(fit1, <span class="at">pars=</span><span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>, <span class="st">&quot;lp__&quot;</span>))</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-35-2.png" width="672" />
 It looks like we can be satisfied with the MCMC convergence: <code>n_eff</code> is high enough and <code>Rhat</code> close to 1 for all parameters, and all chains seem stationary. The last step is to predict values of the mean consumption of each area in the test data set. We calculate this prediction from the ratios of houses and apartments, and from the mean estimated values of the distributions in the mixture model.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="finite-mixture-models.html#cb15-1"></a><span class="co"># Extracting distribution parameters from the fit object</span></span>
-<span id="cb15-2"><a href="finite-mixture-models.html#cb15-2"></a>la &lt;-<span class="st"> </span>rstan<span class="op">::</span><span class="kw">extract</span>(fit1, <span class="dt">permuted =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb15-3"><a href="finite-mixture-models.html#cb15-3"></a>mu &lt;-<span class="st"> </span><span class="kw">colMeans</span>(la<span class="op">$</span>mu)</span>
-<span id="cb15-4"><a href="finite-mixture-models.html#cb15-4"></a>sigma &lt;-<span class="st"> </span><span class="kw">colMeans</span>(la<span class="op">$</span>sigma)</span>
-<span id="cb15-5"><a href="finite-mixture-models.html#cb15-5"></a></span>
-<span id="cb15-6"><a href="finite-mixture-models.html#cb15-6"></a><span class="co"># Predict the consumption of the test data from the ratios</span></span>
-<span id="cb15-7"><a href="finite-mixture-models.html#cb15-7"></a>test<span class="op">$</span>y &lt;-<span class="st"> </span>test<span class="op">$</span>ratio_house <span class="op">*</span><span class="st"> </span><span class="kw">rlnorm</span>(<span class="kw">nrow</span>(test), mu[<span class="dv">1</span>], sigma[<span class="dv">1</span>]) <span class="op">+</span></span>
-<span id="cb15-8"><a href="finite-mixture-models.html#cb15-8"></a><span class="st">  </span>test<span class="op">$</span>ratio_apartment <span class="op">*</span><span class="st"> </span><span class="kw">rlnorm</span>(<span class="kw">nrow</span>(test), mu[<span class="dv">2</span>], sigma[<span class="dv">2</span>])</span>
-<span id="cb15-9"><a href="finite-mixture-models.html#cb15-9"></a></span>
-<span id="cb15-10"><a href="finite-mixture-models.html#cb15-10"></a><span class="co"># Plot to compare measured and predicted consumption on the test data</span></span>
-<span id="cb15-11"><a href="finite-mixture-models.html#cb15-11"></a><span class="kw">ggplot</span>(<span class="dt">data=</span>test) <span class="op">+</span></span>
-<span id="cb15-12"><a href="finite-mixture-models.html#cb15-12"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">mapping=</span><span class="kw">aes</span>(<span class="dt">x=</span>mean_consumption), <span class="dt">bins=</span><span class="dv">50</span>, <span class="dt">color=</span><span class="st">&#39;blue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.3</span>) <span class="op">+</span></span>
-<span id="cb15-13"><a href="finite-mixture-models.html#cb15-13"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">mapping=</span><span class="kw">aes</span>(<span class="dt">x=</span>y), <span class="dt">bins=</span><span class="dv">50</span>, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.3</span>)</span></code></pre></div>
-<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="finite-mixture-models.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extracting distribution parameters from the fit object</span></span>
+<span id="cb52-2"><a href="finite-mixture-models.html#cb52-2" aria-hidden="true" tabindex="-1"></a>la <span class="ot">&lt;-</span> rstan<span class="sc">::</span><span class="fu">extract</span>(fit1, <span class="at">permuted =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb52-3"><a href="finite-mixture-models.html#cb52-3" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(la<span class="sc">$</span>mu)</span>
+<span id="cb52-4"><a href="finite-mixture-models.html#cb52-4" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(la<span class="sc">$</span>sigma)</span>
+<span id="cb52-5"><a href="finite-mixture-models.html#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-6"><a href="finite-mixture-models.html#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict the consumption of the test data from the ratios</span></span>
+<span id="cb52-7"><a href="finite-mixture-models.html#cb52-7" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>y <span class="ot">&lt;-</span> test<span class="sc">$</span>ratio_house <span class="sc">*</span> <span class="fu">rlnorm</span>(<span class="fu">nrow</span>(test), mu[<span class="dv">1</span>], sigma[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb52-8"><a href="finite-mixture-models.html#cb52-8" aria-hidden="true" tabindex="-1"></a>  test<span class="sc">$</span>ratio_apartment <span class="sc">*</span> <span class="fu">rlnorm</span>(<span class="fu">nrow</span>(test), mu[<span class="dv">2</span>], sigma[<span class="dv">2</span>])</span>
+<span id="cb52-9"><a href="finite-mixture-models.html#cb52-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-10"><a href="finite-mixture-models.html#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot to compare measured and predicted consumption on the test data</span></span>
+<span id="cb52-11"><a href="finite-mixture-models.html#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>test) <span class="sc">+</span></span>
+<span id="cb52-12"><a href="finite-mixture-models.html#cb52-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>mean_consumption), <span class="at">bins=</span><span class="dv">50</span>, <span class="at">color=</span><span class="st">&#39;blue&#39;</span>, <span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb52-13"><a href="finite-mixture-models.html#cb52-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>y), <span class="at">bins=</span><span class="dv">50</span>, <span class="at">color=</span><span class="st">&#39;red&#39;</span>, <span class="at">alpha=</span><span class="fl">0.3</span>)</span></code></pre></div>
+<p><img src="buildingenergygeeks_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 
 </div>
 </div>
