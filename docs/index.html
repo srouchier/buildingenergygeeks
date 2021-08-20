@@ -160,9 +160,11 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a>
 <ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-is-about"><i class="fa fa-check"></i>What this book is about</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#motivation"><i class="fa fa-check"></i>Motivation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#content-of-the-book"><i class="fa fa-check"></i>Content of the book</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-does-not-cover"><i class="fa fa-check"></i>What this book does not cover</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-about-programming-languages"><i class="fa fa-check"></i>What about programming languages?</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-me"><i class="fa fa-check"></i>About me</a></li>
 </ul></li>
 <li class="part"><span><b>I Theory and workflow</b></span></li>
 <li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a>
@@ -244,7 +246,8 @@ div.csl-indent {
 <li class="part"><span><b>III Time-series modelling</b></span></li>
 <li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="autoregressive-models.html"><a href="autoregressive-models.html#example-1"><i class="fa fa-check"></i><b>7.1</b> Example</a></li>
+<li class="chapter" data-level="7.1" data-path="autoregressive-models.html"><a href="autoregressive-models.html#principle-of-armax-models"><i class="fa fa-check"></i><b>7.1</b> Principle of ARMAX models</a></li>
+<li class="chapter" data-level="7.2" data-path="autoregressive-models.html"><a href="autoregressive-models.html#example-1"><i class="fa fa-check"></i><b>7.2</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a>
 <ul>
@@ -321,10 +324,13 @@ div.csl-indent {
 </div>
 <div id="foreword" class="section level1 unnumbered">
 <h1>Foreword</h1>
+<div id="motivation" class="section level2 unnumbered">
+<h2>Motivation</h2>
 <p>Data science offers promising prospects for improving the energy efficiency of buildings. Thanks to the availability of smart meters and sensor networks, along with increasingly accessible algorithms for data processing and analysis, statistical models may be trained to predict the energy use of HVAC systems or the indoor conditions. These trained models and their predictions then lead to various inferences: assessing the real impact of energy conservation measures; identifying HVAC faults or physical properties of the envelope in order to provide incentive for retrofitting; minimizing energy consumption through model predictive control; detecting and diagnosing faults; etc.</p>
 <p>The availability of measurements and computational power have given data mining methods an increasing popularity. The field of data analysis applied to building energy performance assessment however faces two main challenges to this day. Ironically, the first challenge is the abundance of data. Smart meters and building management systems deliver large amounts of information which can hide the few readings which are the most relevant to energy conservation. Automated monitoring and fault detection algorithms only do what they are told, and will hardly replace human intervention when it comes to understanding readings. The second challenge is the difficulty of data science. Without a principled methodology, it is very easy to draw erroneous conclusions, by incorrectly assuming that a model is properly trained. By lack of a background in statistics, building energy practitioners often lack the tools to ensure their inferences are correct.</p>
-<div id="what-this-book-is-about" class="section level2 unnumbered">
-<h2>What this book is about</h2>
+</div>
+<div id="content-of-the-book" class="section level2 unnumbered">
+<h2>Content of the book</h2>
 <p>The topic of this book is statistical modelling and inference applied to building energy performance assessment. It has two target audiences: building energy researchers and practitioners who need a gentle introduction to statistical modelling; statisticians who may be interested in applications to energy performance.</p>
 <p>The first part of the book covers the motivation and theoretical background.</p>
 <ul>
@@ -357,6 +363,11 @@ div.csl-indent {
 <p>The first language used in this book is <strong>R</strong>. Not because of its performance, but because it offers a comfortable environment for data analysis: the elegance of the tidyverse is unmatched, and Rstudio is simply my favourite scientific IDE by a long shot.</p>
 <p>Still, some tutorials are written in <strong>Python</strong> because I have more experience with it, and because it is the default language for most researchers in building energy performance. Python is always a safe choice for performance and versatility, and is currently very strong in machine learning (scikit-learn, TensorFlow, Keras, Pytorch, Pyro…)</p>
 <p>Finally, I hope I’ll have time to switch the entire book to <strong>Julia</strong> soon, because people are saying that it’s the future.</p>
+</div>
+<div id="about-me" class="section level2 unnumbered">
+<h2>About me</h2>
+<p>I am <a href="https://srouchier.github.io/">Simon Rouchier</a>, lecturer at the <a href="https://www.univ-smb.fr/">Université Savoie Mont Blanc</a>, Chambéry, France.</p>
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Ce(tte) œuvre est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.</p>
 
 </div>
 </div>

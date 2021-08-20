@@ -160,9 +160,11 @@ div.csl-indent {
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a>
 <ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-is-about"><i class="fa fa-check"></i>What this book is about</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#motivation"><i class="fa fa-check"></i>Motivation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#content-of-the-book"><i class="fa fa-check"></i>Content of the book</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-does-not-cover"><i class="fa fa-check"></i>What this book does not cover</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-about-programming-languages"><i class="fa fa-check"></i>What about programming languages?</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-me"><i class="fa fa-check"></i>About me</a></li>
 </ul></li>
 <li class="part"><span><b>I Theory and workflow</b></span></li>
 <li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a>
@@ -244,7 +246,8 @@ div.csl-indent {
 <li class="part"><span><b>III Time-series modelling</b></span></li>
 <li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="autoregressive-models.html"><a href="autoregressive-models.html#example-1"><i class="fa fa-check"></i><b>7.1</b> Example</a></li>
+<li class="chapter" data-level="7.1" data-path="autoregressive-models.html"><a href="autoregressive-models.html#principle-of-armax-models"><i class="fa fa-check"></i><b>7.1</b> Principle of ARMAX models</a></li>
+<li class="chapter" data-level="7.2" data-path="autoregressive-models.html"><a href="autoregressive-models.html#example-1"><i class="fa fa-check"></i><b>7.2</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a>
 <ul>
@@ -316,6 +319,8 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="autoregressive-models" class="section level1" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Autoregressive models</h1>
+<div id="principle-of-armax-models" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Principle of ARMAX models</h2>
 <p>Most of the data recorded by monitoring buildings are time series: sequences taken at successive points and indexed in time. The previous chapter dealt with data that were aggregated with low enough frequency that successive values of the outcome variable could be considered independent from each other, and only dependent on explanatory variables. This aggregation however comes with a significant loss of information, since all dynamic effects are smoothed out. Dynamic models, including time-series models, allow the dependent variable to also be influenced by its own past values.</p>
 <p>Autoregressive models are based on the idea that the current value of the series, <span class="math inline">\(y_t\)</span>, can be explained as a function of <span class="math inline">\(p\)</span> past values, <span class="math inline">\(y_{t-1}\)</span>, <span class="math inline">\(y_{t-2}\)</span>, …, <span class="math inline">\(y_{t-p}\)</span> where <span class="math inline">\(p\)</span> determines the number of steps into the past needed to forecast the current value. The simplest time-series models are linear AutoRegressive (AR) models. The AR(p) model is of the form:
 <span class="math display">\[\begin{equation}
@@ -339,9 +344,10 @@ Figure 7.1: AR(2) model: an observation is conditioned on its two previous insta
 On the right side of this equation, the second term, MA(q), is a linear combination of the successive values of the white noise. The third term includes the influence of the current value and up to <span class="math inline">\(p\)</span> previous values of <span class="math inline">\(K\)</span> explanatory variables. A more general notation could assume a different order <span class="math inline">\(p\)</span> for each separate input.</p>
 <p>ARX and ARMAX models have among others been applied to modelling the heat dynamics of buildings and building components by the collaborative work of the IEA EBC Annex 58 (<span class="citation"><a href="#ref-madsen2015thermal" role="doc-biblioref">Madsen et al.</a> (<a href="#ref-madsen2015thermal" role="doc-biblioref">2015</a>)</span>). Issues when applying AR(MA)X-models are not only the selection and validation of the model, but also the extraction of physical information from the model parameters, as each individual parameter lacks a direct physical meaning. An important step in ARX-modelling is to select suitable orders of the input and output polynomials. This can be done by stepwise increasing the model order until most significant autocorrelation and cross correlation are removed.</p>
 <p>We refer to the books of Madsen (<span class="citation"><a href="#ref-madsen2007time" role="doc-biblioref">Madsen</a> (<a href="#ref-madsen2007time" role="doc-biblioref">2007</a>)</span>) or Shumway et al. (<span class="citation"><a href="#ref-shumway2000time" role="doc-biblioref">Shumway and Stoffer</a> (<a href="#ref-shumway2000time" role="doc-biblioref">2000</a>)</span>), for a more extensive description of all types of AR models. Further structures include Integrated models for non-stationary data (ARIMA), Seasonal components for longer-term cyclic data (SARMA, SARIMAX), and the autoregressive conditionally heteroscedastic (ARCH) model for non-constant conditional noise variance.</p>
-<p>Autoregressive models are also covered <a href="https://mc-stan.org/docs/2_27/stan-users-guide/autoregressive-section.html">in the Stan user’s guide</a>.</p>
-<div id="example-1" class="section level2" number="7.1">
-<h2><span class="header-section-number">7.1</span> Example</h2>
+</div>
+<div id="example-1" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Example</h2>
+<p>I am currently working on the use of time series models for a Bayesian forecasting of building energy use. There will be a tutorial here after I get some results. In the meantime, auto-regressive models are also covered <a href="https://mc-stan.org/docs/2_27/stan-users-guide/autoregressive-section.html">in the Stan user’s guide</a>.</p>
 
 </div>
 </div>

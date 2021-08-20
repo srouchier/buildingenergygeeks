@@ -122,6 +122,7 @@ finite-mixture-models
 principle
 example
 autoregressive-models
+principle-of-armax-models
 example-1
 hmm
 principles
