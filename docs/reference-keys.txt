@@ -146,9 +146,9 @@ stochastic-formulation
 specification
 training
 diagnostics-and-residuals-analysis
+the-pysip-library
 gaussian-process-models
 principle-2
 gaussian-processes-for-prediction-of-energy-use
 gaussian-processes-for-time-series-data
 latent-force-models
-the-pysip-library
