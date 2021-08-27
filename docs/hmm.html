@@ -24,7 +24,7 @@
 <meta name="author" content="Simon Rouchier" />
 
 
-<meta name="date" content="2021-08-20" />
+<meta name="date" content="2021-08-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,6 @@
   
 <link rel="prev" href="autoregressive-models.html"/>
 <link rel="next" href="markov-switching-models.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,23 +50,24 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
 
 <style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -87,7 +87,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -120,28 +120,6 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
 
 </head>
 
@@ -158,55 +136,46 @@ div.csl-indent {
 <li><a href="./index.html">Building energy statistical modelling</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a>
-<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Home page</a><ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#motivation"><i class="fa fa-check"></i>Motivation</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#content-of-the-book"><i class="fa fa-check"></i>Content of the book</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-this-book-does-not-cover"><i class="fa fa-check"></i>What this book does not cover</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-about-programming-languages"><i class="fa fa-check"></i>What about programming languages?</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-me"><i class="fa fa-check"></i>About me</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#programming-languages"><i class="fa fa-check"></i>Programming languages</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about"><i class="fa fa-check"></i>About</a></li>
 </ul></li>
 <li class="part"><span><b>I Theory and workflow</b></span></li>
-<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a>
-<ul>
+<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a><ul>
 <li class="chapter" data-level="1.1" data-path="scope.html"><a href="scope.html#the-energy-savings-potential-of-buildings"><i class="fa fa-check"></i><b>1.1</b> The energy savings potential of buildings</a></li>
-<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.2</b> From data to energy savings</a>
-<ul>
+<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.2</b> From data to energy savings</a><ul>
 <li class="chapter" data-level="1.2.1" data-path="scope.html"><a href="scope.html#formalisation-of-the-system"><i class="fa fa-check"></i><b>1.2.1</b> Formalisation of the system</a></li>
 <li class="chapter" data-level="1.2.2" data-path="scope.html"><a href="scope.html#some-uses-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Some uses of data</a></li>
 <li class="chapter" data-level="1.2.3" data-path="scope.html"><a href="scope.html#model-calibration-as-the-key-to-data-analysis"><i class="fa fa-check"></i><b>1.2.3</b> Model calibration as the key to data analysis</a></li>
 <li class="chapter" data-level="1.2.4" data-path="scope.html"><a href="scope.html#inverseproblems"><i class="fa fa-check"></i><b>1.2.4</b> The difficulty of inverse problems</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a>
-<ul>
+<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a><ul>
 <li class="chapter" data-level="1.3.1" data-path="scope.html"><a href="scope.html#either-physical-interpretability-or-prediction-accuracy"><i class="fa fa-check"></i><b>1.3.1</b> Either physical interpretability or prediction accuracy</a></li>
 <li class="chapter" data-level="1.3.2" data-path="scope.html"><a href="scope.html#calibrated-simulation-white-box"><i class="fa fa-check"></i><b>1.3.2</b> Calibrated simulation (white-box)</a></li>
 <li class="chapter" data-level="1.3.3" data-path="scope.html"><a href="scope.html#machine-learning-black-box"><i class="fa fa-check"></i><b>1.3.3</b> Machine learning (black-box)</a></li>
 <li class="chapter" data-level="1.3.4" data-path="scope.html"><a href="scope.html#statistical-modelling-and-inference-grey-box"><i class="fa fa-check"></i><b>1.3.4</b> Statistical modelling and inference (grey-box)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a>
-<ul>
+<li class="chapter" data-level="2" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a><ul>
 <li class="chapter" data-level="2.1" data-path="modelling.html"><a href="modelling.html#modelling1"><i class="fa fa-check"></i><b>2.1</b> Building physics in a nutshell</a></li>
 <li class="chapter" data-level="2.2" data-path="modelling.html"><a href="modelling.html#modelling2"><i class="fa fa-check"></i><b>2.2</b> Measurement and modelling boundaries</a></li>
 <li class="chapter" data-level="2.3" data-path="modelling.html"><a href="modelling.html#modelling3"><i class="fa fa-check"></i><b>2.3</b> Categories of statistical models</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a>
-<ul>
+<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a><ul>
+<li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a><ul>
 <li class="chapter" data-level="3.1.1" data-path="workflow.html"><a href="workflow.html#motivation-for-a-bayesian-approach"><i class="fa fa-check"></i><b>3.1.1</b> Motivation for a Bayesian approach</a></li>
+<li class="chapter" data-level="3.1.2" data-path="workflow.html"><a href="workflow.html#general-bayesian-principles"><i class="fa fa-check"></i><b>3.1.2</b> General Bayesian principles</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a>
-<ul>
+<li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="workflow.html"><a href="workflow.html#overview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
 <li class="chapter" data-level="3.2.2" data-path="workflow.html"><a href="workflow.html#step-1-model-specification"><i class="fa fa-check"></i><b>3.2.2</b> Step 1: model specification</a></li>
 <li class="chapter" data-level="3.2.3" data-path="workflow.html"><a href="workflow.html#priorpredictivechecking"><i class="fa fa-check"></i><b>3.2.3</b> Prior predictive checking</a></li>
 <li class="chapter" data-level="3.2.4" data-path="workflow.html"><a href="workflow.html#computation"><i class="fa fa-check"></i><b>3.2.4</b> Step 2: computation with Markov Chain Monte Carlo</a></li>
 <li class="chapter" data-level="3.2.5" data-path="workflow.html"><a href="workflow.html#modelvalidation"><i class="fa fa-check"></i><b>3.2.5</b> Step 3: model checking and validation</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a>
-<ul>
+<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a><ul>
 <li class="chapter" data-level="3.3.1" data-path="workflow.html"><a href="workflow.html#model-selection-workflows"><i class="fa fa-check"></i><b>3.3.1</b> Model selection workflows</a></li>
 <li class="chapter" data-level="3.3.2" data-path="workflow.html"><a href="workflow.html#sensitivity-analysis"><i class="fa fa-check"></i><b>3.3.2</b> Sensitivity analysis</a></li>
 <li class="chapter" data-level="3.3.3" data-path="workflow.html"><a href="workflow.html#structural-identifiability"><i class="fa fa-check"></i><b>3.3.3</b> Structural identifiability</a></li>
@@ -215,73 +184,61 @@ div.csl-indent {
 </ul></li>
 </ul></li>
 <li class="part"><span><b>II Temporally independent data</b></span></li>
-<li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a>
-<ul>
+<li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a><ul>
 <li class="chapter" data-level="4.1" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#introduction-to-olr"><i class="fa fa-check"></i><b>4.1</b> Introduction to OLR</a></li>
-<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#case-study"><i class="fa fa-check"></i><b>4.2</b> Case study</a></li>
+<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#tutorial-olr-with-r"><i class="fa fa-check"></i><b>4.2</b> Tutorial: OLR with R</a></li>
 <li class="chapter" data-level="4.3" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#simple-linear-regression-with-r"><i class="fa fa-check"></i><b>4.3</b> Simple linear regression with R</a></li>
-<li class="chapter" data-level="4.4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-linear-regression-with-stan"><i class="fa fa-check"></i><b>4.4</b> Bayesian linear regression with STAN</a></li>
+<li class="chapter" data-level="4.4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-regression-with-stan"><i class="fa fa-check"></i><b>4.4</b> Bayesian regression with Stan</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="bayesian-mv.html"><a href="bayesian-mv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a>
-<ul>
+<li class="chapter" data-level="5" data-path="bayesian-mv.html"><a href="bayesian-mv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a><ul>
 <li class="chapter" data-level="5.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#a-bayesian-workflow-for-mv"><i class="fa fa-check"></i><b>5.1</b> A Bayesian workflow for M&amp;V</a></li>
 <li class="chapter" data-level="5.2" data-path="bayesian-mv.html"><a href="bayesian-mv.html#change-point-models"><i class="fa fa-check"></i><b>5.2</b> Change-point models</a></li>
-<li class="chapter" data-level="5.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#ipmvp-option-c-example"><i class="fa fa-check"></i><b>5.3</b> IPMVP option C example</a>
-<ul>
+<li class="chapter" data-level="5.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#ipmvp-option-c-example"><i class="fa fa-check"></i><b>5.3</b> IPMVP option C example</a><ul>
 <li class="chapter" data-level="5.3.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#loading-and-displaying-the-data"><i class="fa fa-check"></i><b>5.3.1</b> Loading and displaying the data</a></li>
 <li class="chapter" data-level="5.3.2" data-path="bayesian-mv.html"><a href="bayesian-mv.html#daily-averaged-data"><i class="fa fa-check"></i><b>5.3.2</b> Daily averaged data</a></li>
 <li class="chapter" data-level="5.3.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-definition"><i class="fa fa-check"></i><b>5.3.3</b> Model definition</a></li>
-<li class="chapter" data-level="5.3.4" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-specification-with-stan"><i class="fa fa-check"></i><b>5.3.4</b> Model specification with STAN</a></li>
+<li class="chapter" data-level="5.3.4" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-specification-with-stan"><i class="fa fa-check"></i><b>5.3.4</b> Model specification with Stan</a></li>
 <li class="chapter" data-level="5.3.5" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-fitting"><i class="fa fa-check"></i><b>5.3.5</b> Model fitting</a></li>
 <li class="chapter" data-level="5.3.6" data-path="bayesian-mv.html"><a href="bayesian-mv.html#validation-and-results"><i class="fa fa-check"></i><b>5.3.6</b> Validation and results</a></li>
 <li class="chapter" data-level="5.3.7" data-path="bayesian-mv.html"><a href="bayesian-mv.html#residuals"><i class="fa fa-check"></i><b>5.3.7</b> Residuals</a></li>
 <li class="chapter" data-level="5.3.8" data-path="bayesian-mv.html"><a href="bayesian-mv.html#savings"><i class="fa fa-check"></i><b>5.3.8</b> Savings</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a>
-<ul>
+<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a><ul>
 <li class="chapter" data-level="6.1" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#principle"><i class="fa fa-check"></i><b>6.1</b> Principle</a></li>
 <li class="chapter" data-level="6.2" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#example"><i class="fa fa-check"></i><b>6.2</b> Example</a></li>
 </ul></li>
 <li class="part"><span><b>III Time-series modelling</b></span></li>
-<li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a>
-<ul>
+<li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a><ul>
 <li class="chapter" data-level="7.1" data-path="autoregressive-models.html"><a href="autoregressive-models.html#principle-of-armax-models"><i class="fa fa-check"></i><b>7.1</b> Principle of ARMAX models</a></li>
 <li class="chapter" data-level="7.2" data-path="autoregressive-models.html"><a href="autoregressive-models.html#example-1"><i class="fa fa-check"></i><b>7.2</b> Example</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a>
-<ul>
-<li class="chapter" data-level="8.1" data-path="hmm.html"><a href="hmm.html#principles"><i class="fa fa-check"></i><b>8.1</b> Principles</a>
-<ul>
+<li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a><ul>
+<li class="chapter" data-level="8.1" data-path="hmm.html"><a href="hmm.html#principles"><i class="fa fa-check"></i><b>8.1</b> Principles</a><ul>
 <li class="chapter" data-level="8.1.1" data-path="hmm.html"><a href="hmm.html#the-forward-algorithm"><i class="fa fa-check"></i><b>8.1.1</b> The forward algorithm</a></li>
 <li class="chapter" data-level="8.1.2" data-path="hmm.html"><a href="hmm.html#the-viterbi-algorithm"><i class="fa fa-check"></i><b>8.1.2</b> The Viterbi algorithm</a></li>
 </ul></li>
 <li class="chapter" data-level="8.2" data-path="hmm.html"><a href="hmm.html#example-2"><i class="fa fa-check"></i><b>8.2</b> Example</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a>
-<ul>
+<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a><ul>
 <li class="chapter" data-level="9.1" data-path="markov-switching-models.html"><a href="markov-switching-models.html#principle-1"><i class="fa fa-check"></i><b>9.1</b> Principle</a></li>
 <li class="chapter" data-level="9.2" data-path="markov-switching-models.html"><a href="markov-switching-models.html#example-3"><i class="fa fa-check"></i><b>9.2</b> Example</a></li>
 </ul></li>
 <li class="part"><span><b>IV State-space models</b></span></li>
-<li class="chapter" data-level="10" data-path="ssmprinciple.html"><a href="ssmprinciple.html"><i class="fa fa-check"></i><b>10</b> Principle of SSMs</a>
-<ul>
+<li class="chapter" data-level="10" data-path="ssmprinciple.html"><a href="ssmprinciple.html"><i class="fa fa-check"></i><b>10</b> Principle of SSMs</a><ul>
 <li class="chapter" data-level="10.1" data-path="ssmprinciple.html"><a href="ssmprinciple.html#description"><i class="fa fa-check"></i><b>10.1</b> Description</a></li>
 <li class="chapter" data-level="10.2" data-path="ssmprinciple.html"><a href="ssmprinciple.html#linearssm"><i class="fa fa-check"></i><b>10.2</b> Linear state-space models</a></li>
 <li class="chapter" data-level="10.3" data-path="ssmprinciple.html"><a href="ssmprinciple.html#kalmanfilter"><i class="fa fa-check"></i><b>10.3</b> The Kalman filter</a></li>
 <li class="chapter" data-level="10.4" data-path="ssmprinciple.html"><a href="ssmprinciple.html#non-linear-state-space-models"><i class="fa fa-check"></i><b>10.4</b> Non-linear state-space models</a></li>
 <li class="chapter" data-level="10.5" data-path="ssmprinciple.html"><a href="ssmprinciple.html#switching-state-space-models"><i class="fa fa-check"></i><b>10.5</b> Switching state-space models</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html"><i class="fa fa-check"></i><b>11</b> A simple RC model</a>
-<ul>
-<li class="chapter" data-level="11.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#case-study-1"><i class="fa fa-check"></i><b>11.1</b> Case study</a></li>
-<li class="chapter" data-level="11.2" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#modelling-1"><i class="fa fa-check"></i><b>11.2</b> Modelling</a>
-<ul>
+<li class="chapter" data-level="11" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html"><i class="fa fa-check"></i><b>11</b> A simple RC model</a><ul>
+<li class="chapter" data-level="11.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#case-study"><i class="fa fa-check"></i><b>11.1</b> Case study</a></li>
+<li class="chapter" data-level="11.2" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#modelling-1"><i class="fa fa-check"></i><b>11.2</b> Modelling</a><ul>
 <li class="chapter" data-level="11.2.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#rc-model"><i class="fa fa-check"></i><b>11.2.1</b> RC model</a></li>
 </ul></li>
 <li class="chapter" data-level="11.3" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#deterministic-formulation"><i class="fa fa-check"></i><b>11.3</b> Deterministic formulation</a></li>
-<li class="chapter" data-level="11.4" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#stochastic-formulation"><i class="fa fa-check"></i><b>11.4</b> Stochastic formulation</a>
-<ul>
+<li class="chapter" data-level="11.4" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#stochastic-formulation"><i class="fa fa-check"></i><b>11.4</b> Stochastic formulation</a><ul>
 <li class="chapter" data-level="11.4.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#specification"><i class="fa fa-check"></i><b>11.4.1</b> Specification</a></li>
 <li class="chapter" data-level="11.4.2" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#training"><i class="fa fa-check"></i><b>11.4.2</b> Training</a></li>
 <li class="chapter" data-level="11.4.3" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#diagnostics-and-residuals-analysis"><i class="fa fa-check"></i><b>11.4.3</b> Diagnostics and residuals analysis</a></li>
@@ -289,8 +246,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="12" data-path="the-pysip-library.html"><a href="the-pysip-library.html"><i class="fa fa-check"></i><b>12</b> The pySIP library</a></li>
 <li class="part"><span><b>V Gaussian Process models</b></span></li>
-<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a>
-<ul>
+<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a><ul>
 <li class="chapter" data-level="13.1" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#principle-2"><i class="fa fa-check"></i><b>13.1</b> Principle</a></li>
 <li class="chapter" data-level="13.2" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-prediction-of-energy-use"><i class="fa fa-check"></i><b>13.2</b> Gaussian Processes for prediction of energy use</a></li>
 <li class="chapter" data-level="13.3" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-time-series-data"><i class="fa fa-check"></i><b>13.3</b> Gaussian Processes for time series data</a></li>
@@ -317,9 +273,9 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="hmm" class="section level1" number="8">
+<div id="hmm" class="section level1">
 <h1><span class="header-section-number">Chapter 8</span> Hidden Markov models</h1>
-<div id="principles" class="section level2" number="8.1">
+<div id="principles" class="section level2">
 <h2><span class="header-section-number">8.1</span> Principles</h2>
 <p>In a hidden Markov model (HMM), the sequence of <span class="math inline">\(T\)</span> output variables <span class="math inline">\({y_t}\)</span> is generated by a parallel sequence of latent categorical state variables <span class="math inline">\(z_t \in \left\{ 1,\cdots , K\right\}\)</span>. These hidden states are a Markov chain, so that <span class="math inline">\(z_t\)</span> is conditionally independent of other variables given <span class="math inline">\(z_{t-1}\)</span>.</p>
 <div class="figure"><span style="display:block;" id="fig:tikzhmm"></span>
@@ -328,44 +284,50 @@ div.csl-indent {
 Figure 8.1: Hidden Markov model. Grey nodes denote the observed output sequence; white nodes denote the hidden states. Hidden states are conditioned on each other, while each observation is only conditioned on the current state
 </p>
 </div>
-<p>The primary use of HMMs in building energy simulation is for identifying and modelling occupancy (<span class="citation"><a href="#ref-candanedo2017methodology" role="doc-biblioref">Candanedo, Feldheim, and Deramaix</a> (<a href="#ref-candanedo2017methodology" role="doc-biblioref">2017</a>)</span>). The hidden variable <span class="math inline">\(z_t\)</span> may denote a binary state of occupancy or a finite number of occupants; the observed output <span class="math inline">\(y_t\)</span> may denote any measurement impacted by occupancy: environmental sensors, smart meters, cameras, infrared sensors… There is a vast literature on occupancy detection and estimation from different types of data and methods. The reader is referred to the review of Chen et al (<span class="citation"><a href="#ref-chen2018building" role="doc-biblioref">Chen, Jiang, and Xie</a> (<a href="#ref-chen2018building" role="doc-biblioref">2018</a>)</span>) for a more comprehensive insight.</p>
+<p>The primary use of HMMs in building energy simulation is for identifying and modelling occupancy (<span class="citation">Candanedo, Feldheim, and Deramaix (<a href="#ref-candanedo2017methodology" role="doc-biblioref">2017</a>)</span>). The hidden variable <span class="math inline">\(z_t\)</span> may denote a binary state of occupancy or a finite number of occupants; the observed output <span class="math inline">\(y_t\)</span> may denote any measurement impacted by occupancy: environmental sensors, smart meters, cameras, infrared sensors… There is a vast literature on occupancy detection and estimation from different types of data and methods. The reader is referred to the review of Chen et al (<span class="citation">Chen, Jiang, and Xie (<a href="#ref-chen2018building" role="doc-biblioref">2018</a>)</span>) for a more comprehensive insight.</p>
 <p>A HMM is defined by:</p>
 <ul>
 <li>A sequence of hidden states <span class="math inline">\(\left\{z_t\right\} \in \mathbb{N}^T\)</span>, each of which can take a finite number of values: <span class="math inline">\(z_t \in \left[1,...,K\right]\)</span></li>
 <li>An observed variable <span class="math inline">\(\left\{y_t\right\} \in \mathbb{R}^T\)</span></li>
 <li>An initial probability <span class="math inline">\(\pi_0\)</span> which is the likelihood of the state at time <span class="math inline">\(t=0\)</span>. <span class="math inline">\(\pi_0\)</span> is a <span class="math inline">\(K\)</span>-simplex, i.e. a <span class="math inline">\(K\)</span>-vector which components sum to 1.</li>
 <li>A <span class="math inline">\(K\times K\)</span> one-step transition probability matrix <span class="math inline">\(\mathbf{A}(t) = \left(a_{ij}(t)\right)\)</span> so that
-<span class="math display">\[ a_{ij}(t)=p\left(z_t=j |z_{t-1}=i\right) \]</span>
+<span class="math display" id="eq:hmm1">\[\begin{equation}
+a_{ij}(t)=p\left(z_t=j |z_{t-1}=i\right)
+\tag{8.1}
+\end{equation}\]</span>
 is the probability at time <span class="math inline">\(t\)</span> for the hidden variable to switch from state <span class="math inline">\(i\)</span> to state <span class="math inline">\(j\)</span>. Like <span class="math inline">\(\pi_0\)</span>, each row of <span class="math inline">\(\mathbf{A}(t)\)</span> must sum to 1.</li>
 <li>Emission probabilities <span class="math inline">\(b_{i}(y_t) = p(y_t | z_t=i)\)</span>, i.e. the probability distribution of the output variable given each possible state.</li>
 </ul>
-<p>The transition probabilities <span class="math inline">\(\left(a_{ij}(t)\right)\)</span> are shown here as functions of time because they can be formulated as parametric expressions of external observed variables, such as the time of the day or weather variables. The Markov chain is then called *inhomogeneous. Inhomogeneous transition probability matrices can capture occupancy properties at different time instances and thus encode occupancy dynamics: there can a higher probability of people entering the building at a certain time of the day, or if the outdoor temperature is high, etc.</p>
+<p>The transition probabilities <span class="math inline">\(\left(a_{ij}(t)\right)\)</span> are shown here as functions of time because they can be formulated as parametric expressions of external observed variables, such as the time of the day or weather variables. The Markov chain is then called <em>inhomogeneous</em>. Inhomogeneous transition probability matrices can capture occupancy properties at different time instances and thus encode occupancy dynamics: there can a higher probability of people entering the building at a certain time of the day, or if the outdoor temperature is high, etc.</p>
 <p><strong>Training</strong> an HMM means finding the set of parameters <span class="math inline">\(\theta\)</span> which best explain the observations. This can be done by in least two ways: the first option is to compute the likelihood function with the forward algorithm, explained below, and to perform its direct numerical maximization. The second option is the Baum-Welch algorithm, a special case of the expectation-maximization (EM) algorithm: it alternates between a forward-backward algorithm for the expectation step, and an updating phase for the maximization step.</p>
 <p>A trained HMM can then be used to predict states and future values of the outcome variable. The estimation of the most likely state sequence given the observations is called <strong>decoding</strong>.
-<span class="math display">\[\begin{equation}
+<span class="math display" id="eq:hmm2">\[\begin{equation}
 z^*_{0:T} = \mathrm{arg max}_z \; p(z_{0:T} | y_{0:T})
+\tag{8.2}
 \end{equation}\]</span>
 and can be done by the Viterbi algorithm described below.</p>
-<div id="the-forward-algorithm" class="section level3" number="8.1.1">
+<div id="the-forward-algorithm" class="section level3">
 <h3><span class="header-section-number">8.1.1</span> The forward algorithm</h3>
 <p>The forward algorithm computes the likelihood function <span class="math inline">\(p(y_{1:T}|\theta)\)</span> of a hidden Markov model, given the values of its parameters <span class="math inline">\(\theta\)</span>. These parameters come from the parametric expressions of <span class="math inline">\(\pi_0\)</span>, <span class="math inline">\(a_{ij}(t)\)</span> and <span class="math inline">\(b_{i}\)</span>.</p>
 <p>The algorithm works by calculating the components of a <span class="math inline">\([T \times K]\)</span> matrix <span class="math inline">\(\alpha\)</span> of <em>forward variables</em> defined by:
-<span class="math display">\[\begin{equation}
+<span class="math display" id="eq:hmm3">\[\begin{equation}
     \alpha_{ij} = p(y_{0:i},z_i=j)
+    \tag{8.3}
 \end{equation}\]</span>
 The forward variable <span class="math inline">\(\alpha_{ij}\)</span> is the joint probability of observations up to time <span class="math inline">\(i\)</span>, and of the current hidden variable <span class="math inline">\(z_i\)</span> being in state <span class="math inline">\(j\)</span>. The <span class="math inline">\(\alpha\)</span> matrix is filled row by row, and the total likelihood of the data is the sum of its last row.</p>
 <div class="figure"><span style="display:block;" id="fig:algoforward"></span>
-<img src="figures/algo_forward.png" alt="Forward algorithm for computing the likelihood of the data $y_{1:T}$ given the parameter $ heta$ of a HMM" width="70%" />
+<img src="figures/algo_forward.png" alt="Forward algorithm for computing the likelihood of the data $y_{1:T}$ given the parameters of a HMM" width="70%" />
 <p class="caption">
-Figure 8.2: Forward algorithm for computing the likelihood of the data <span class="math inline">\(y_{1:T}\)</span> given the parameter $ heta$ of a HMM
+Figure 8.2: Forward algorithm for computing the likelihood of the data <span class="math inline">\(y_{1:T}\)</span> given the parameters of a HMM
 </p>
 </div>
 </div>
-<div id="the-viterbi-algorithm" class="section level3" number="8.1.2">
+<div id="the-viterbi-algorithm" class="section level3">
 <h3><span class="header-section-number">8.1.2</span> The Viterbi algorithm</h3>
 <p>Supposing a trained HMM with known parameters in the initial probability <span class="math inline">\(\pi_0\)</span>, transition matrix <span class="math inline">\(\mathbf{A}(t)\)</span> and emission probabilities <span class="math inline">\(\mathrm{b}(y)\)</span>; the Viterbi algorithm finds the best sequence of hidden states, so that their probability conditioned on the data <span class="math inline">\(y_{0:T}\)</span> is at a maximum:
-<span class="math display">\[\begin{equation}
+<span class="math display" id="eq:hmm4">\[\begin{equation}
 z^*_{0:T} = \mathrm{arg max}_z \; p(z_{0:T} | y_{0:T})
+\tag{8.4}
 \end{equation}\]</span>
 This process is called global decoding, and one of the possible inferences from HMMs.</p>
 <p>The Viterbi algorithm looks similar to the backward algorithm, with an additional backtracking phase. It produces two <span class="math inline">\([T \times K]\)</span> matrices <span class="math inline">\(\delta\)</span> and <span class="math inline">\(\psi\)</span> and fills them row by row in a forward phase. Then, a backtracking phase computes <span class="math inline">\(z^*_{0:T}\)</span> from the <span class="math inline">\(\psi\)</span> matrix. The algorithm is described with more detail <a href="https://medium.com/@Ayra_Lux/hidden-markov-models-part-2-the-decoding-problem-c628ba474e69">here</a>.</p>
@@ -377,19 +339,19 @@ Figure 8.3: The Viterbi algorithm finds the best sequence of hidden states <span
 </div>
 </div>
 </div>
-<div id="example-2" class="section level2" number="8.2">
+<div id="example-2" class="section level2">
 <h2><span class="header-section-number">8.2</span> Example</h2>
 <p>I am currently working on the use of time series models for a Bayesian forecasting of building energy use. There will be a tutorial here after I get some results. In the meantime, hidden Markov models are also covered <a href="https://mc-stan.org/docs/2_27/stan-users-guide/hmms-section.html">in the Stan user’s guide</a>.</p>
 
 </div>
 </div>
 <h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-candanedo2017methodology" class="csl-entry">
-Candanedo, Luis M, Véronique Feldheim, and Dominique Deramaix. 2017. <span>“A Methodology Based on Hidden Markov Models for Occupancy Detection and a Case Study in a Low Energy Residential Building.”</span> <em>Energy and Buildings</em> 148: 327–41.
+<div id="refs" class="references">
+<div id="ref-candanedo2017methodology">
+<p>Candanedo, Luis M, Véronique Feldheim, and Dominique Deramaix. 2017. “A Methodology Based on Hidden Markov Models for Occupancy Detection and a Case Study in a Low Energy Residential Building.” <em>Energy and Buildings</em> 148: 327–41.</p>
 </div>
-<div id="ref-chen2018building" class="csl-entry">
-Chen, Zhenghua, Chaoyang Jiang, and Lihua Xie. 2018. <span>“Building Occupancy Estimation and Detection: A Review.”</span> <em>Energy and Buildings</em> 169: 260–70.
+<div id="ref-chen2018building">
+<p>Chen, Zhenghua, Chaoyang Jiang, and Lihua Xie. 2018. “Building Occupancy Estimation and Detection: A Review.” <em>Energy and Buildings</em> 169: 260–70.</p>
 </div>
 </div>
             </section>
