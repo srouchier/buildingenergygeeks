@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 11 A simple RC model (Python) | Building energy statistical modelling</title>
+  <meta name="description" content="Handbook of statistical learning for building energy performance." />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 11 A simple RC model (Python) | Building energy statistical modelling" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Handbook of statistical learning for building energy performance." />
+  <meta name="github-repo" content="srouchier/buildingenergygeeks" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 11 A simple RC model (Python) | Building energy statistical modelling" />
+  
+  <meta name="twitter:description" content="Handbook of statistical learning for building energy performance." />
+  
+
+<meta name="author" content="Simon Rouchier" />
+
+
+<meta name="date" content="2022-07-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ssmprinciple.html"/>
+<link rel="next" href="the-pysip-library-python.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./index.html">Building energy statistical modelling</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Home page</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#motivation"><i class="fa fa-check"></i>Motivation</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#content-of-the-book"><i class="fa fa-check"></i>Content of the book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#programming-languages"><i class="fa fa-check"></i>Programming languages</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about"><i class="fa fa-check"></i>About</a></li>
+</ul></li>
+<li class="part"><span><b>I Theory and workflow</b></span></li>
+<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="scope.html"><a href="scope.html#the-energy-savings-potential-of-buildings"><i class="fa fa-check"></i><b>1.1</b> The energy savings potential of buildings</a></li>
+<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.2</b> From data to energy savings</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="scope.html"><a href="scope.html#formalisation-of-the-system"><i class="fa fa-check"></i><b>1.2.1</b> Formalisation of the system</a></li>
+<li class="chapter" data-level="1.2.2" data-path="scope.html"><a href="scope.html#some-uses-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Some uses of data</a></li>
+<li class="chapter" data-level="1.2.3" data-path="scope.html"><a href="scope.html#model-calibration-as-the-key-to-data-analysis"><i class="fa fa-check"></i><b>1.2.3</b> Model calibration as the key to data analysis</a></li>
+<li class="chapter" data-level="1.2.4" data-path="scope.html"><a href="scope.html#inverseproblems"><i class="fa fa-check"></i><b>1.2.4</b> The difficulty of inverse problems</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="scope.html"><a href="scope.html#either-physical-interpretability-or-prediction-accuracy"><i class="fa fa-check"></i><b>1.3.1</b> Either physical interpretability or prediction accuracy</a></li>
+<li class="chapter" data-level="1.3.2" data-path="scope.html"><a href="scope.html#calibrated-simulation-white-box"><i class="fa fa-check"></i><b>1.3.2</b> Calibrated simulation (white-box)</a></li>
+<li class="chapter" data-level="1.3.3" data-path="scope.html"><a href="scope.html#machine-learning-black-box"><i class="fa fa-check"></i><b>1.3.3</b> Machine learning (black-box)</a></li>
+<li class="chapter" data-level="1.3.4" data-path="scope.html"><a href="scope.html#statistical-modelling-and-inference-grey-box"><i class="fa fa-check"></i><b>1.3.4</b> Statistical modelling and inference (grey-box)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="modelling.html"><a href="modelling.html#modelling1"><i class="fa fa-check"></i><b>2.1</b> Building physics in a nutshell</a></li>
+<li class="chapter" data-level="2.2" data-path="modelling.html"><a href="modelling.html#modelling2"><i class="fa fa-check"></i><b>2.2</b> Measurement and modelling boundaries</a></li>
+<li class="chapter" data-level="2.3" data-path="modelling.html"><a href="modelling.html#modelling3"><i class="fa fa-check"></i><b>2.3</b> Categories of statistical models</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="workflow.html"><a href="workflow.html#motivation-for-a-bayesian-approach"><i class="fa fa-check"></i><b>3.1.1</b> Motivation for a Bayesian approach</a></li>
+<li class="chapter" data-level="3.1.2" data-path="workflow.html"><a href="workflow.html#general-bayesian-principles"><i class="fa fa-check"></i><b>3.1.2</b> General Bayesian principles</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="workflow.html"><a href="workflow.html#overview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
+<li class="chapter" data-level="3.2.2" data-path="workflow.html"><a href="workflow.html#step-1-model-specification"><i class="fa fa-check"></i><b>3.2.2</b> Step 1: model specification</a></li>
+<li class="chapter" data-level="3.2.3" data-path="workflow.html"><a href="workflow.html#priorpredictivechecking"><i class="fa fa-check"></i><b>3.2.3</b> Prior predictive checking</a></li>
+<li class="chapter" data-level="3.2.4" data-path="workflow.html"><a href="workflow.html#computation"><i class="fa fa-check"></i><b>3.2.4</b> Step 2: computation with Markov Chain Monte Carlo</a></li>
+<li class="chapter" data-level="3.2.5" data-path="workflow.html"><a href="workflow.html#modelvalidation"><i class="fa fa-check"></i><b>3.2.5</b> Step 3: model checking and validation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="workflow.html"><a href="workflow.html#model-selection-workflows"><i class="fa fa-check"></i><b>3.3.1</b> Model selection workflows</a></li>
+<li class="chapter" data-level="3.3.2" data-path="workflow.html"><a href="workflow.html#sensitivity-analysis"><i class="fa fa-check"></i><b>3.3.2</b> Sensitivity analysis</a></li>
+<li class="chapter" data-level="3.3.3" data-path="workflow.html"><a href="workflow.html#structural-identifiability"><i class="fa fa-check"></i><b>3.3.3</b> Structural identifiability</a></li>
+<li class="chapter" data-level="3.3.4" data-path="workflow.html"><a href="workflow.html#inferencediagnostics"><i class="fa fa-check"></i><b>3.3.4</b> Practical identifiability</a></li>
+<li class="chapter" data-level="3.3.5" data-path="workflow.html"><a href="workflow.html#modelcomparison"><i class="fa fa-check"></i><b>3.3.5</b> Model comparison criteria</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Temporally independent data</b></span></li>
+<li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#introduction-to-olr"><i class="fa fa-check"></i><b>4.1</b> Introduction to OLR</a></li>
+<li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#tutorial-olr-with-r"><i class="fa fa-check"></i><b>4.2</b> Tutorial: OLR with R</a></li>
+<li class="chapter" data-level="4.3" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#simple-linear-regression-with-r"><i class="fa fa-check"></i><b>4.3</b> Simple linear regression with R</a></li>
+<li class="chapter" data-level="4.4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-regression-with-stan"><i class="fa fa-check"></i><b>4.4</b> Bayesian regression with Stan</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bayesianmv.html"><a href="bayesianmv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="bayesianmv.html"><a href="bayesianmv.html#a-bayesian-workflow-for-mv"><i class="fa fa-check"></i><b>5.1</b> A Bayesian workflow for M&amp;V</a></li>
+<li class="chapter" data-level="5.2" data-path="bayesianmv.html"><a href="bayesianmv.html#change-point-models"><i class="fa fa-check"></i><b>5.2</b> Change-point models</a></li>
+<li class="chapter" data-level="5.3" data-path="bayesianmv.html"><a href="bayesianmv.html#ipmvp-option-c-example-rstan"><i class="fa fa-check"></i><b>5.3</b> IPMVP option C example (Rstan)</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="bayesianmv.html"><a href="bayesianmv.html#loading-and-displaying-the-data"><i class="fa fa-check"></i><b>5.3.1</b> Loading and displaying the data</a></li>
+<li class="chapter" data-level="5.3.2" data-path="bayesianmv.html"><a href="bayesianmv.html#daily-averaged-data"><i class="fa fa-check"></i><b>5.3.2</b> Daily averaged data</a></li>
+<li class="chapter" data-level="5.3.3" data-path="bayesianmv.html"><a href="bayesianmv.html#model-definition"><i class="fa fa-check"></i><b>5.3.3</b> Model definition</a></li>
+<li class="chapter" data-level="5.3.4" data-path="bayesianmv.html"><a href="bayesianmv.html#model-specification-with-stan"><i class="fa fa-check"></i><b>5.3.4</b> Model specification with Stan</a></li>
+<li class="chapter" data-level="5.3.5" data-path="bayesianmv.html"><a href="bayesianmv.html#model-fitting"><i class="fa fa-check"></i><b>5.3.5</b> Model fitting</a></li>
+<li class="chapter" data-level="5.3.6" data-path="bayesianmv.html"><a href="bayesianmv.html#validation-and-results"><i class="fa fa-check"></i><b>5.3.6</b> Validation and results</a></li>
+<li class="chapter" data-level="5.3.7" data-path="bayesianmv.html"><a href="bayesianmv.html#residuals"><i class="fa fa-check"></i><b>5.3.7</b> Residuals</a></li>
+<li class="chapter" data-level="5.3.8" data-path="bayesianmv.html"><a href="bayesianmv.html#savings"><i class="fa fa-check"></i><b>5.3.8</b> Savings</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#principle"><i class="fa fa-check"></i><b>6.1</b> Principle</a></li>
+<li class="chapter" data-level="6.2" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#tutorial-rstan"><i class="fa fa-check"></i><b>6.2</b> Tutorial (Rstan)</a></li>
+</ul></li>
+<li class="part"><span><b>III Time-series modelling</b></span></li>
+<li class="chapter" data-level="7" data-path="armax.html"><a href="armax.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="armax.html"><a href="armax.html#principle-of-armax-models"><i class="fa fa-check"></i><b>7.1</b> Principle of ARMAX models</a></li>
+<li class="chapter" data-level="7.2" data-path="armax.html"><a href="armax.html#tutorial-rstan-1"><i class="fa fa-check"></i><b>7.2</b> Tutorial (Rstan)</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="armax.html"><a href="armax.html#data-the-ashrae-machine-learning-competition"><i class="fa fa-check"></i><b>7.2.1</b> Data: the ASHRAE machine learning competition</a></li>
+<li class="chapter" data-level="7.2.2" data-path="armax.html"><a href="armax.html#a-simple-arx-model"><i class="fa fa-check"></i><b>7.2.2</b> A simple ARX model</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="hmm.html"><a href="hmm.html#principles"><i class="fa fa-check"></i><b>8.1</b> Principles</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="hmm.html"><a href="hmm.html#the-forward-algorithm"><i class="fa fa-check"></i><b>8.1.1</b> The forward algorithm</a></li>
+<li class="chapter" data-level="8.1.2" data-path="hmm.html"><a href="hmm.html#the-viterbi-algorithm"><i class="fa fa-check"></i><b>8.1.2</b> The Viterbi algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="hmm.html"><a href="hmm.html#tutorial-python"><i class="fa fa-check"></i><b>8.2</b> Tutorial (Python)</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="composite-time-series-models.html"><a href="composite-time-series-models.html"><i class="fa fa-check"></i><b>9</b> Composite time series models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="composite-time-series-models.html"><a href="composite-time-series-models.html#markov-switching-models"><i class="fa fa-check"></i><b>9.1</b> Markov switching models</a></li>
+<li class="chapter" data-level="9.2" data-path="composite-time-series-models.html"><a href="composite-time-series-models.html#hidden-markov-energy-signature"><i class="fa fa-check"></i><b>9.2</b> Hidden Markov energy signature</a></li>
+</ul></li>
+<li class="part"><span><b>IV State-space models</b></span></li>
+<li class="chapter" data-level="10" data-path="ssmprinciple.html"><a href="ssmprinciple.html"><i class="fa fa-check"></i><b>10</b> Principle of SSMs</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="ssmprinciple.html"><a href="ssmprinciple.html#description"><i class="fa fa-check"></i><b>10.1</b> Description</a></li>
+<li class="chapter" data-level="10.2" data-path="ssmprinciple.html"><a href="ssmprinciple.html#linearssm"><i class="fa fa-check"></i><b>10.2</b> Linear state-space models</a></li>
+<li class="chapter" data-level="10.3" data-path="ssmprinciple.html"><a href="ssmprinciple.html#kalmanfilter"><i class="fa fa-check"></i><b>10.3</b> The Kalman filter</a></li>
+<li class="chapter" data-level="10.4" data-path="ssmprinciple.html"><a href="ssmprinciple.html#non-linear-state-space-models"><i class="fa fa-check"></i><b>10.4</b> Non-linear state-space models</a></li>
+<li class="chapter" data-level="10.5" data-path="ssmprinciple.html"><a href="ssmprinciple.html#switching-state-space-models"><i class="fa fa-check"></i><b>10.5</b> Switching state-space models</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html"><i class="fa fa-check"></i><b>11</b> A simple RC model (Python)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#case-study"><i class="fa fa-check"></i><b>11.1</b> Case study</a></li>
+<li class="chapter" data-level="11.2" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#modelling-1"><i class="fa fa-check"></i><b>11.2</b> Modelling</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#rc-model"><i class="fa fa-check"></i><b>11.2.1</b> RC model</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#deterministic-formulation"><i class="fa fa-check"></i><b>11.3</b> Deterministic formulation</a></li>
+<li class="chapter" data-level="11.4" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#stochastic-formulation"><i class="fa fa-check"></i><b>11.4</b> Stochastic formulation</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#specification"><i class="fa fa-check"></i><b>11.4.1</b> Specification</a></li>
+<li class="chapter" data-level="11.4.2" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#training"><i class="fa fa-check"></i><b>11.4.2</b> Training</a></li>
+<li class="chapter" data-level="11.4.3" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#diagnostics-and-residuals-analysis"><i class="fa fa-check"></i><b>11.4.3</b> Diagnostics and residuals analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="the-pysip-library-python.html"><a href="the-pysip-library-python.html"><i class="fa fa-check"></i><b>12</b> The pySIP library (Python)</a></li>
+<li class="part"><span><b>V Gaussian Process models</b></span></li>
+<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#principle-1"><i class="fa fa-check"></i><b>13.1</b> Principle</a></li>
+<li class="chapter" data-level="13.2" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-prediction-of-energy-use"><i class="fa fa-check"></i><b>13.2</b> Gaussian Processes for prediction of energy use</a></li>
+<li class="chapter" data-level="13.3" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-time-series-data"><i class="fa fa-check"></i><b>13.3</b> Gaussian Processes for time series data</a></li>
+<li class="chapter" data-level="13.4" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#latent-force-models"><i class="fa fa-check"></i><b>13.4</b> Latent Force Models</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Building energy statistical modelling</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="a-simple-rc-model-python" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">Chapter 11</span> A simple RC model (Python)<a href="a-simple-rc-model-python.html#a-simple-rc-model-python" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>As a practical example of linear state-space models, the simplified resistor-capacitor (RC) model structures are a popular choice for either parameter estimation or system identification. When written as a set of stochastic differential equations, they allow accounting for modelling approximations (<span class="citation">Madsen and Holst (<a href="#ref-madsen1995estimation" role="doc-biblioref">1995</a>)</span>) and offer a more reproducible parameter estimation than deterministic models that overlook modelling errors (<span class="citation">Rouchier, Rabouille, and Oberlé (<a href="#ref-rouchier2018calibration" role="doc-biblioref">2018</a>)</span>).</p>
+<p>This <strong>Python</strong> tutorial shows an RC model being used to estimate the heat resistance and capacitance of a test house. The model will be implemented twice: the first time in a deterministic formulation, without system uncertainty; the second time in a stochastic formulation, solved by the Kalman filter.</p>
+<div id="case-study" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Case study<a href="a-simple-rc-model-python.html#case-study" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The experimental test cell used in this study is called the Armadillo Box. It is a demonstration building of 42 m<span class="math inline">\(^2\)</span> floor area, designed for the 2010 European Solar Decathlon by the ENSAG-GAIA-INES team. The envelope is a light wood framed construction with integrated insulation. Heating and cooling is performed by a “3 in 1” heat pump, and photovoltaic solar panels provide recharge for electric vehicles.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb64-1"><a href="a-simple-rc-model-python.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb64-2"><a href="a-simple-rc-model-python.html#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb64-3"><a href="a-simple-rc-model-python.html#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb64-4"><a href="a-simple-rc-model-python.html#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-5"><a href="a-simple-rc-model-python.html#cb64-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">&#39;data/statespace.csv&#39;</span>)</span></code></pre></div>
+<p><img src="figures/rcexample01.png" width="60%" /></p>
+<p>The building is monitored by a variety of sensors, but the present study only uses records of indoor temperature and prescribed heating power, in addition to weather data. The indoor temperature profiles used here have been averaged over several sensors distributed in the living space. The measurement time is 4 days, during which there is a 24 hour heat input.</p>
+<p><em>Note from the author: I chose not to display the code that generated the figures in this page. This is not just for clarity, but mostly because matplotlib integrates poorly into Rmarkdown documents.</em></p>
+</div>
+<div id="modelling-1" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Modelling<a href="a-simple-rc-model-python.html#modelling-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="rc-model" class="section level3 hasAnchor" number="11.2.1">
+<h3><span class="header-section-number">11.2.1</span> RC model<a href="a-simple-rc-model-python.html#rc-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Consider the example of a simple building represented by a 2-resistor, 2-capacitor model structure (2R2C), described in Sec. <a href="ssmprinciple.html#linearssm">10.2</a>.</p>
+<p><img src="figures/rcmodel.png" width="65%" /></p>
+<p>The equations of this model are:
+<span class="math display" id="eq:ssmexample2" id="eq:ssmexample1">\[\begin{align}
+  C_i \, \mathrm{d} T_i &amp; = \dfrac{1}{R_i}\left(T_e-T_i\right)\mathrm{d}t + \Phi_h \, \mathrm{d}t + A_i \Phi_s \mathrm{d}t + \sigma_i \,\mathrm{d}\omega_i \tag{11.1} \\
+  C_e \, \mathrm{d} T_e &amp; = \dfrac{1}{R_i}\left(T_i-T_e\right)\mathrm{d}t + \frac{1}{R_o}\left(T_o-T_e\right)\mathrm{d}t + A_e \Phi_s \mathrm{d}t + \sigma_e \, \mathrm{d}\omega_e \tag{11.2}
+\end{align}\]</span>
+where <span class="math inline">\(T_i\)</span>, <span class="math inline">\(T_e\)</span> and <span class="math inline">\(T_o\)</span> are the indoor, envelope and outdoor temperatures. The envelope temperature is associated with the thermal mass of the opaque surfaces, and does not represent a specific coordinate within the envelope. The model has two states <span class="math inline">\(T_e\)</span> (unobserved) and <span class="math inline">\(T_i\)</span> (observed); <span class="math inline">\(\Phi_h\)</span> (W) is the indoor heating power; <span class="math inline">\(\Phi_s\)</span> (W/m<span class="math inline">\(^2\)</span>) is the global horizontal solar irradiance. <span class="math inline">\(R_i\)</span> (K/W) is the thermal resistance between the indoor air temperature and the envelope, <span class="math inline">\(R_e\)</span> the resistance between the envelope and the ambient air. <span class="math inline">\(C_i\)</span> and <span class="math inline">\(C_e\)</span> (J/K) are the heat capacitances of the interior and the envelope, respectively, and <span class="math inline">\(A_i\)</span> and <span class="math inline">\(A_e\)</span> (m<span class="math inline">\(^2\)</span>) are their solar gain coefficients. <span class="math inline">\(\{\omega_i\}\)</span> and <span class="math inline">\(\{\omega_e\}\)</span> are standard Wiener processes and <span class="math inline">\(\sigma_i^2\)</span> are <span class="math inline">\(\sigma_e^2\)</span> are their variances. This process noise is a way to account for modelling approximations, unrecognized inputs or noise-corrupted input measurements.</p>
+<p>Despite its simplicity, this model structure is able to reproduce the thermal behaviour of a simple unoccupied building. The equations can be written in matrix form:
+<span class="math display" id="eq:ssmexample3">\[\begin{align}
+\mathrm{d} \begin{bmatrix} T_i \\ T_e \end{bmatrix} &amp; = \begin{pmatrix} -\frac{1}{R_i \, C_i} &amp; \frac{1}{R_i \, C_i} \\ \frac{1}{R_i \, C_e} &amp; -\frac{1}{R_i \, C_e}-\frac{1}{R_e \, C_e}\end{pmatrix} \begin{bmatrix} T_i \\ T_e \end{bmatrix}\, \mathrm{d}t \\
+&amp; + \begin{pmatrix} 0 &amp; \frac{1}{C_i} &amp; \frac{A_i}{C_i} \\ \frac{1}{R_o \, C_e} &amp; 0 &amp; \frac{A_e}{C_e} \end{pmatrix} \begin{bmatrix} T_o \\ \Phi_h \\ \Phi_s \end{bmatrix} \, \mathrm{d}t + \mathbf{\sigma} \, \mathrm{d}\omega
+\tag{11.3}
+\end{align}\]</span>
+which is the dynamic model of the following stochastic state-space model, written in continuous-discrete form:
+<span class="math display" id="eq:ssmexample5" id="eq:ssmexample4">\[\begin{align}
+\mathrm{d}\mathbf{x}(t) &amp; = \mathbf{A}_\mathit{rc} \, \mathbf{x}(t) \, \mathrm{d}t + \mathbf{B}_\mathit{rc} \, \mathbf{u}(t)\,\mathrm{d}t + \mathbf{\sigma}_\theta \mathrm{d}\omega \tag{11.4} \\
+\mathbf{y}_t &amp; = \mathbf{C}_\theta \, \mathbf{x}_t + \mathbf{v}_t
+\tag{11.5}
+\end{align}\]</span>
+The state vector <span class="math inline">\(\mathbf{x}\)</span> includes the temperatures <span class="math inline">\(T_i\)</span> and <span class="math inline">\(T_e\)</span> calculated by the model, and <span class="math inline">\(\mathbf{u}=\left[T_o, \Phi_h, \Phi_s\right]\)</span> is the input vector including boundary conditions and excitations. The second equation is the observation equation. It indicates that the measured quantity <span class="math inline">\(y_t\)</span> may be different from the output of the state equation. In our case, the observed temperature is only the first component of the state vector, and is encumbered with some measurement error <span class="math inline">\(\mathbf{v}_t\)</span>. In this equation, time is noted as a subscript to indicate that observations come in a discrete sequence.</p>
+</div>
+</div>
+<div id="deterministic-formulation" class="section level2 hasAnchor" number="11.3">
+<h2><span class="header-section-number">11.3</span> Deterministic formulation<a href="a-simple-rc-model-python.html#deterministic-formulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We first consider the most simple implementation of the model: if the modelling errors <span class="math inline">\(\{\omega_i\}\)</span> and <span class="math inline">\(\{\omega_e\}\)</span> are neglected. This is what we call a deterministic formulation, as this hypothesis is equivalent to assuming that the model is absolutely correct in reproducing the behaviour of the house.</p>
+<p>Perhaps the easiest way to solve Eq. <a href="a-simple-rc-model-python.html#eq:ssmexample3">(11.3)</a> for the temperatures is an explicit discretisation scheme: the indoor and envelope temperatures at time <span class="math inline">\(t+1\)</span> are functions of all variables at time <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display" id="eq:ssmexample7" id="eq:ssmexample6">\[\begin{align}
+T_i^{(t+1)} &amp; = T_i^{(t)} + \frac{\mathrm{d}t}{C_i} \left( \dfrac{1}{R_i}\left(T_e-T_i\right) + \Phi_h + A_i \Phi_s \right)^{(t)} \tag{11.6} \\
+T_e^{(t+1)} &amp; = T_e^{(t)} + \frac{\mathrm{d}t}{C_e} \left( \dfrac{1}{R_i}\left(T_i-T_e\right) + \frac{1}{R_o} \left(T_o-T_e\right) + A_e \Phi_s \Phi_s\right)^{(t)} \tag{11.7}
+\end{align}\]</span></p>
+<p>In Python, we define this model in a function that takes the inputs <span class="math inline">\(\mathbf{u}\)</span> as first argument, and the model parameters as other arguments. This syntax is necessary so that we can call Scipy’s <code>curve_fit</code> method later. The function returns the indoor temperature, to be compared with the measurements.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb65-1"><a href="a-simple-rc-model-python.html#cb65-1" aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> df[[<span class="st">&#39;Time&#39;</span>, <span class="st">&#39;T_ext&#39;</span>, <span class="st">&#39;P_hea&#39;</span>, <span class="st">&#39;I_sol&#39;</span>]].values</span>
+<span id="cb65-2"><a href="a-simple-rc-model-python.html#cb65-2" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> df[<span class="st">&#39;T_int&#39;</span>].values</span>
+<span id="cb65-3"><a href="a-simple-rc-model-python.html#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-4"><a href="a-simple-rc-model-python.html#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Function that will calculate the indoor temperature for a given value of R and C</span></span>
+<span id="cb65-5"><a href="a-simple-rc-model-python.html#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simpleRC(inputs, Ri, Ro, Ci, Ce, Ai, Ae):</span>
+<span id="cb65-6"><a href="a-simple-rc-model-python.html#cb65-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb65-7"><a href="a-simple-rc-model-python.html#cb65-7" aria-hidden="true" tabindex="-1"></a>    time <span class="op">=</span> inputs[:, <span class="dv">0</span>]</span>
+<span id="cb65-8"><a href="a-simple-rc-model-python.html#cb65-8" aria-hidden="true" tabindex="-1"></a>    to   <span class="op">=</span> inputs[:, <span class="dv">1</span>]</span>
+<span id="cb65-9"><a href="a-simple-rc-model-python.html#cb65-9" aria-hidden="true" tabindex="-1"></a>    phi_h <span class="op">=</span> inputs[:, <span class="dv">2</span>]</span>
+<span id="cb65-10"><a href="a-simple-rc-model-python.html#cb65-10" aria-hidden="true" tabindex="-1"></a>    phi_s <span class="op">=</span> inputs[:, <span class="dv">3</span>]</span>
+<span id="cb65-11"><a href="a-simple-rc-model-python.html#cb65-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb65-12"><a href="a-simple-rc-model-python.html#cb65-12" aria-hidden="true" tabindex="-1"></a>    ti <span class="op">=</span> np.zeros(<span class="bu">len</span>(time))</span>
+<span id="cb65-13"><a href="a-simple-rc-model-python.html#cb65-13" aria-hidden="true" tabindex="-1"></a>    te <span class="op">=</span> np.zeros(<span class="bu">len</span>(time))</span>
+<span id="cb65-14"><a href="a-simple-rc-model-python.html#cb65-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb65-15"><a href="a-simple-rc-model-python.html#cb65-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initial temperatures</span></span>
+<span id="cb65-16"><a href="a-simple-rc-model-python.html#cb65-16" aria-hidden="true" tabindex="-1"></a>    ti[<span class="dv">0</span>] <span class="op">=</span> output[<span class="dv">0</span>]</span>
+<span id="cb65-17"><a href="a-simple-rc-model-python.html#cb65-17" aria-hidden="true" tabindex="-1"></a>    te[<span class="dv">0</span>] <span class="op">=</span> ( Ri<span class="op">*</span>to[<span class="dv">0</span>] <span class="op">+</span> Ro<span class="op">*</span>ti[<span class="dv">0</span>] ) <span class="op">/</span> (Ri <span class="op">+</span> Ro)</span>
+<span id="cb65-18"><a href="a-simple-rc-model-python.html#cb65-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb65-19"><a href="a-simple-rc-model-python.html#cb65-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop for calculating all temperatures</span></span>
+<span id="cb65-20"><a href="a-simple-rc-model-python.html#cb65-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(output)):</span>
+<span id="cb65-21"><a href="a-simple-rc-model-python.html#cb65-21" aria-hidden="true" tabindex="-1"></a>      dt <span class="op">=</span> time[t] <span class="op">-</span> time[t<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb65-22"><a href="a-simple-rc-model-python.html#cb65-22" aria-hidden="true" tabindex="-1"></a>      ti[t] <span class="op">=</span> ti[t<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> dt <span class="op">/</span> Ci <span class="op">*</span> ( (te[t<span class="op">-</span><span class="dv">1</span>]<span class="op">-</span>ti[t<span class="op">-</span><span class="dv">1</span>])<span class="op">/</span>Ri <span class="op">+</span> phi_h[t<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> Ai<span class="op">*</span>phi_s[t<span class="op">-</span><span class="dv">1</span>] )</span>
+<span id="cb65-23"><a href="a-simple-rc-model-python.html#cb65-23" aria-hidden="true" tabindex="-1"></a>      te[t] <span class="op">=</span> te[t<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> dt <span class="op">/</span> Ce <span class="op">*</span> ( (ti[t<span class="op">-</span><span class="dv">1</span>]<span class="op">-</span>te[t<span class="op">-</span><span class="dv">1</span>])<span class="op">/</span>Ri <span class="op">+</span> (to[t<span class="op">-</span><span class="dv">1</span>]<span class="op">-</span>te[t<span class="op">-</span><span class="dv">1</span>])<span class="op">/</span>Ro <span class="op">+</span> Ae<span class="op">*</span>phi_s[t<span class="op">-</span><span class="dv">1</span>] )</span>
+<span id="cb65-24"><a href="a-simple-rc-model-python.html#cb65-24" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb65-25"><a href="a-simple-rc-model-python.html#cb65-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ti</span></code></pre></div>
+<p>We can find the optimal parameters <span class="math inline">\(\theta=(R_i, R_o, C_i, C_e, A_i, A_e)\)</span> by minimizing the sum of squared residuals between the measured indoor temperature and the output of the function we just defined. This is equivalent to what the <code>curve_fit</code> method of Scipy does here.</p>
+<p>The method requires initial parameter values. They can be picked by running a few simulations first until the predictions are approximately in the right range. This step is not detailed here.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb66-1"><a href="a-simple-rc-model-python.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.optimize <span class="im">as</span> so</span>
+<span id="cb66-2"><a href="a-simple-rc-model-python.html#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="a-simple-rc-model-python.html#cb66-3" aria-hidden="true" tabindex="-1"></a>p_opt, p_cov <span class="op">=</span> so.curve_fit(f<span class="op">=</span>simpleRC,</span>
+<span id="cb66-4"><a href="a-simple-rc-model-python.html#cb66-4" aria-hidden="true" tabindex="-1"></a>                            xdata<span class="op">=</span>inputs,</span>
+<span id="cb66-5"><a href="a-simple-rc-model-python.html#cb66-5" aria-hidden="true" tabindex="-1"></a>                            ydata<span class="op">=</span>output,</span>
+<span id="cb66-6"><a href="a-simple-rc-model-python.html#cb66-6" aria-hidden="true" tabindex="-1"></a>                            p0<span class="op">=</span>(<span class="fl">0.01</span>, <span class="fl">0.01</span>, <span class="fl">1e6</span>, <span class="fl">1e7</span>, <span class="dv">5</span>, <span class="dv">5</span>))</span>
+<span id="cb66-7"><a href="a-simple-rc-model-python.html#cb66-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-8"><a href="a-simple-rc-model-python.html#cb66-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving results into a dataframe and displaying it</span></span>
+<span id="cb66-9"><a href="a-simple-rc-model-python.html#cb66-9" aria-hidden="true" tabindex="-1"></a>res1 <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>[<span class="st">&#39;Ri&#39;</span>, <span class="st">&#39;Ro&#39;</span>, <span class="st">&#39;Ci&#39;</span>, <span class="st">&#39;Ce&#39;</span>, <span class="st">&#39;Ai&#39;</span>, <span class="st">&#39;Ae&#39;</span>])</span>
+<span id="cb66-10"><a href="a-simple-rc-model-python.html#cb66-10" aria-hidden="true" tabindex="-1"></a>res1[<span class="st">&#39;avg&#39;</span>] <span class="op">=</span> p_opt</span>
+<span id="cb66-11"><a href="a-simple-rc-model-python.html#cb66-11" aria-hidden="true" tabindex="-1"></a>res1[<span class="st">&#39;std&#39;</span>] <span class="op">=</span> np.diag(p_cov)<span class="op">**</span><span class="fl">0.5</span></span>
+<span id="cb66-12"><a href="a-simple-rc-model-python.html#cb66-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res1)</span></code></pre></div>
+<pre><code>##              avg            std
+## Ri  4.091570e-03       0.000125
+## Ro  5.038526e-02       0.004552
+## Ci  5.344581e+06  225321.203258
+## Ce  1.761891e+07  841478.831398
+## Ai  1.861247e-01       0.055401
+## Ae -1.571828e+00       0.096530</code></pre>
+<p>The estimated parameters seem consistent with our expectations. We can compare the profile of measured indoor temperature with the output that the model predicts given the identified optimal parameters.</p>
+<p><img src="figures/rcexample02.png" width="50%" /></p>
+</div>
+<div id="stochastic-formulation" class="section level2 hasAnchor" number="11.4">
+<h2><span class="header-section-number">11.4</span> Stochastic formulation<a href="a-simple-rc-model-python.html#stochastic-formulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In more realistic applications, the phenomena that impact the energy balance of a building are far more complex than what such a simple model may predict. We extend the RC model structure in order to include effects of solar irradiance, ventilation, several time constants of inertia… But there is a limit to how complex a model can be made, before parameter identification becomes infeasible.</p>
+<p>If a model does not fully describe the thermal behaviour of the building, and this discrepancy is not somehow explicitely accounted for, then the parameter estimates and predictions will be biased and unreliable. Stochastic state-space models are a way to account for modelling uncertainties and are now standard practice in the field of building energy performance assessment.</p>
+<div id="specification" class="section level3 hasAnchor" number="11.4.1">
+<h3><span class="header-section-number">11.4.1</span> Specification<a href="a-simple-rc-model-python.html#specification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The basics of linear state space models has been explained in Sec. <a href="ssmprinciple.html#linearssm">10.2</a> and the principle of the Kalman filter in Sec. <a href="ssmprinciple.html#kalmanfilter">10.3</a>. In the following block, a class <code>RC</code> is defined which implements these equations for any RC model. Any new RC model can then be inherited from this class, by specifying its matrices <span class="math inline">\(\mathbf{A}_\mathit{rc}\)</span>, <span class="math inline">\(\mathbf{A}_\mathit{rc}\)</span> and <span class="math inline">\(\mathbf{A}_\mathit{rc}\)</span>, and the covariance matrices of the modelling and measurement errors <span class="math inline">\(\mathbf{Q}\)</span> and <span class="math inline">\(\mathbf{R}\)</span> (see eq. <a href="a-simple-rc-model-python.html#eq:ssmexample4">(11.4)</a> and <a href="a-simple-rc-model-python.html#eq:ssmexample5">(11.5)</a>).</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb68-1"><a href="a-simple-rc-model-python.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> expm</span>
+<span id="cb68-2"><a href="a-simple-rc-model-python.html#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> inv</span>
+<span id="cb68-3"><a href="a-simple-rc-model-python.html#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="a-simple-rc-model-python.html#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RC(<span class="bu">object</span>):</span>
+<span id="cb68-5"><a href="a-simple-rc-model-python.html#cb68-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;This is the generic class for any RC model structure&quot;&quot;&quot;</span></span>
+<span id="cb68-6"><a href="a-simple-rc-model-python.html#cb68-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-7"><a href="a-simple-rc-model-python.html#cb68-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb68-8"><a href="a-simple-rc-model-python.html#cb68-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb68-9"><a href="a-simple-rc-model-python.html#cb68-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-10"><a href="a-simple-rc-model-python.html#cb68-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> discretize(<span class="va">self</span>, dt):</span>
+<span id="cb68-11"><a href="a-simple-rc-model-python.html#cb68-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot; This method applies the discretisation equations shown in the previous chapter</span></span>
+<span id="cb68-12"><a href="a-simple-rc-model-python.html#cb68-12" aria-hidden="true" tabindex="-1"></a><span class="co">        It is only function of the time step size dt</span></span>
+<span id="cb68-13"><a href="a-simple-rc-model-python.html#cb68-13" aria-hidden="true" tabindex="-1"></a><span class="co">        &quot;&quot;&quot;</span></span>
+<span id="cb68-14"><a href="a-simple-rc-model-python.html#cb68-14" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> <span class="va">self</span>.N_states</span>
+<span id="cb68-15"><a href="a-simple-rc-model-python.html#cb68-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Discretisation</span></span>
+<span id="cb68-16"><a href="a-simple-rc-model-python.html#cb68-16" aria-hidden="true" tabindex="-1"></a>        F <span class="op">=</span> expm(<span class="va">self</span>.Ac <span class="op">*</span> dt)</span>
+<span id="cb68-17"><a href="a-simple-rc-model-python.html#cb68-17" aria-hidden="true" tabindex="-1"></a>        G <span class="op">=</span> np.dot(inv(<span class="va">self</span>.Ac), np.dot(F <span class="op">-</span> np.eye(n), <span class="va">self</span>.Bc))</span>
+<span id="cb68-18"><a href="a-simple-rc-model-python.html#cb68-18" aria-hidden="true" tabindex="-1"></a>        H <span class="op">=</span> <span class="va">self</span>.Cc</span>
+<span id="cb68-19"><a href="a-simple-rc-model-python.html#cb68-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># System error covariance matrix (continuous Qc and discrete Q)</span></span>
+<span id="cb68-20"><a href="a-simple-rc-model-python.html#cb68-20" aria-hidden="true" tabindex="-1"></a>        foo <span class="op">=</span> expm(np.block([[<span class="op">-</span><span class="va">self</span>.Ac, <span class="va">self</span>.Qc], [np.zeros(np.shape(<span class="va">self</span>.Ac)), <span class="va">self</span>.Ac.T]]) <span class="op">*</span> dt)</span>
+<span id="cb68-21"><a href="a-simple-rc-model-python.html#cb68-21" aria-hidden="true" tabindex="-1"></a>        Q <span class="op">=</span> np.dot(foo[n:<span class="dv">2</span> <span class="op">*</span> n, n:<span class="dv">2</span> <span class="op">*</span> n].T, foo[<span class="dv">0</span>:n, n:<span class="dv">2</span> <span class="op">*</span> n])</span>
+<span id="cb68-22"><a href="a-simple-rc-model-python.html#cb68-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Measurement error covariance matrix (discrete)</span></span>
+<span id="cb68-23"><a href="a-simple-rc-model-python.html#cb68-23" aria-hidden="true" tabindex="-1"></a>        R <span class="op">=</span> <span class="va">self</span>.Rc <span class="op">/</span> dt</span>
+<span id="cb68-24"><a href="a-simple-rc-model-python.html#cb68-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-25"><a href="a-simple-rc-model-python.html#cb68-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F, G, H, Q, R</span>
+<span id="cb68-26"><a href="a-simple-rc-model-python.html#cb68-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-27"><a href="a-simple-rc-model-python.html#cb68-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> prediction(<span class="va">self</span>, x_0, t, u, y<span class="op">=</span><span class="va">None</span>, update<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb68-28"><a href="a-simple-rc-model-python.html#cb68-28" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot; This method predicts the indoor temperature.</span></span>
+<span id="cb68-29"><a href="a-simple-rc-model-python.html#cb68-29" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
+<span id="cb68-30"><a href="a-simple-rc-model-python.html#cb68-30" aria-hidden="true" tabindex="-1"></a><span class="co">        If update=True, the function will apply all steps of the Kalman filter</span></span>
+<span id="cb68-31"><a href="a-simple-rc-model-python.html#cb68-31" aria-hidden="true" tabindex="-1"></a><span class="co">        and return the mean state, covariances of innovations and the likelihood</span></span>
+<span id="cb68-32"><a href="a-simple-rc-model-python.html#cb68-32" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
+<span id="cb68-33"><a href="a-simple-rc-model-python.html#cb68-33" aria-hidden="true" tabindex="-1"></a><span class="co">        If update=False, the function will only predict states and their variance,</span></span>
+<span id="cb68-34"><a href="a-simple-rc-model-python.html#cb68-34" aria-hidden="true" tabindex="-1"></a><span class="co">        as if no measurements were available. Use this for forecasting.</span></span>
+<span id="cb68-35"><a href="a-simple-rc-model-python.html#cb68-35" aria-hidden="true" tabindex="-1"></a><span class="co">        </span></span>
+<span id="cb68-36"><a href="a-simple-rc-model-python.html#cb68-36" aria-hidden="true" tabindex="-1"></a><span class="co">        x_0: initial state vector</span></span>
+<span id="cb68-37"><a href="a-simple-rc-model-python.html#cb68-37" aria-hidden="true" tabindex="-1"></a><span class="co">        t: vector of time coordinates</span></span>
+<span id="cb68-38"><a href="a-simple-rc-model-python.html#cb68-38" aria-hidden="true" tabindex="-1"></a><span class="co">        u: input vector</span></span>
+<span id="cb68-39"><a href="a-simple-rc-model-python.html#cb68-39" aria-hidden="true" tabindex="-1"></a><span class="co">        y: measurement vector (only required if update=True)</span></span>
+<span id="cb68-40"><a href="a-simple-rc-model-python.html#cb68-40" aria-hidden="true" tabindex="-1"></a><span class="co">        &quot;&quot;&quot;</span></span>
+<span id="cb68-41"><a href="a-simple-rc-model-python.html#cb68-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-42"><a href="a-simple-rc-model-python.html#cb68-42" aria-hidden="true" tabindex="-1"></a>        N_time <span class="op">=</span> <span class="bu">len</span>(t)</span>
+<span id="cb68-43"><a href="a-simple-rc-model-python.html#cb68-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-44"><a href="a-simple-rc-model-python.html#cb68-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Initialisation of all arrays that will be used in the calculations</span></span>
+<span id="cb68-45"><a href="a-simple-rc-model-python.html#cb68-45" aria-hidden="true" tabindex="-1"></a>        <span class="co">#  Mean and variance of the states calculated at the prediction step</span></span>
+<span id="cb68-46"><a href="a-simple-rc-model-python.html#cb68-46" aria-hidden="true" tabindex="-1"></a>        x_avg_predict <span class="op">=</span> np.zeros((N_time, <span class="va">self</span>.N_states))</span>
+<span id="cb68-47"><a href="a-simple-rc-model-python.html#cb68-47" aria-hidden="true" tabindex="-1"></a>        x_var_predict <span class="op">=</span> np.zeros((N_time, <span class="va">self</span>.N_states, <span class="va">self</span>.N_states))</span>
+<span id="cb68-48"><a href="a-simple-rc-model-python.html#cb68-48" aria-hidden="true" tabindex="-1"></a>        x_avg_predict[<span class="dv">0</span>] <span class="op">=</span> x_0</span>
+<span id="cb68-49"><a href="a-simple-rc-model-python.html#cb68-49" aria-hidden="true" tabindex="-1"></a>        x_var_predict[<span class="dv">0</span>] <span class="op">=</span> np.eye(<span class="va">self</span>.N_states)</span>
+<span id="cb68-50"><a href="a-simple-rc-model-python.html#cb68-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-51"><a href="a-simple-rc-model-python.html#cb68-51" aria-hidden="true" tabindex="-1"></a>        x_avg_update <span class="op">=</span> np.zeros((N_time, <span class="va">self</span>.N_states))</span>
+<span id="cb68-52"><a href="a-simple-rc-model-python.html#cb68-52" aria-hidden="true" tabindex="-1"></a>        x_var_update <span class="op">=</span> np.zeros((N_time, <span class="va">self</span>.N_states, <span class="va">self</span>.N_states))</span>
+<span id="cb68-53"><a href="a-simple-rc-model-python.html#cb68-53" aria-hidden="true" tabindex="-1"></a>        x_avg_update[<span class="dv">0</span>] <span class="op">=</span> x_0</span>
+<span id="cb68-54"><a href="a-simple-rc-model-python.html#cb68-54" aria-hidden="true" tabindex="-1"></a>        x_var_update[<span class="dv">0</span>] <span class="op">=</span> np.eye(<span class="va">self</span>.N_states)</span>
+<span id="cb68-55"><a href="a-simple-rc-model-python.html#cb68-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-56"><a href="a-simple-rc-model-python.html#cb68-56" aria-hidden="true" tabindex="-1"></a>        epsilon <span class="op">=</span> np.zeros(N_time)  <span class="co"># prediction errors (innovations)</span></span>
+<span id="cb68-57"><a href="a-simple-rc-model-python.html#cb68-57" aria-hidden="true" tabindex="-1"></a>        Sigma <span class="op">=</span> np.zeros(N_time)  <span class="co"># innovation covariances</span></span>
+<span id="cb68-58"><a href="a-simple-rc-model-python.html#cb68-58" aria-hidden="true" tabindex="-1"></a>        loglike <span class="op">=</span> np.zeros(N_time) <span class="co"># log-likelihood to be minimized</span></span>
+<span id="cb68-59"><a href="a-simple-rc-model-python.html#cb68-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-60"><a href="a-simple-rc-model-python.html#cb68-60" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, N_time):</span>
+<span id="cb68-61"><a href="a-simple-rc-model-python.html#cb68-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-62"><a href="a-simple-rc-model-python.html#cb68-62" aria-hidden="true" tabindex="-1"></a>            <span class="co">#  Matrices of the current time step (depend on the time step size dt)</span></span>
+<span id="cb68-63"><a href="a-simple-rc-model-python.html#cb68-63" aria-hidden="true" tabindex="-1"></a>            dt <span class="op">=</span> t[i] <span class="op">-</span> t[i <span class="op">-</span> <span class="dv">1</span>]</span>
+<span id="cb68-64"><a href="a-simple-rc-model-python.html#cb68-64" aria-hidden="true" tabindex="-1"></a>            F, G, H, Q, R <span class="op">=</span> <span class="va">self</span>.discretize(dt)</span>
+<span id="cb68-65"><a href="a-simple-rc-model-python.html#cb68-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-66"><a href="a-simple-rc-model-python.html#cb68-66" aria-hidden="true" tabindex="-1"></a>            <span class="co"># KALMAN 1: Prediction step</span></span>
+<span id="cb68-67"><a href="a-simple-rc-model-python.html#cb68-67" aria-hidden="true" tabindex="-1"></a>            x_avg_predict[i] <span class="op">=</span> np.dot(F, x_avg_update[i<span class="op">-</span><span class="dv">1</span>]) <span class="op">+</span> np.dot(G, u[i])</span>
+<span id="cb68-68"><a href="a-simple-rc-model-python.html#cb68-68" aria-hidden="true" tabindex="-1"></a>            x_var_predict[i] <span class="op">=</span> np.dot(F, np.dot(x_var_update[i<span class="op">-</span><span class="dv">1</span>], F.T)) <span class="op">+</span> Q</span>
+<span id="cb68-69"><a href="a-simple-rc-model-python.html#cb68-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-70"><a href="a-simple-rc-model-python.html#cb68-70" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> update:</span>
+<span id="cb68-71"><a href="a-simple-rc-model-python.html#cb68-71" aria-hidden="true" tabindex="-1"></a>                <span class="co"># KALMAN 2: Residuals and Kalman gain</span></span>
+<span id="cb68-72"><a href="a-simple-rc-model-python.html#cb68-72" aria-hidden="true" tabindex="-1"></a>                epsilon[i] <span class="op">=</span> y[i] <span class="op">-</span> np.dot(H, x_avg_predict[i])</span>
+<span id="cb68-73"><a href="a-simple-rc-model-python.html#cb68-73" aria-hidden="true" tabindex="-1"></a>                foo <span class="op">=</span> np.dot(H, np.dot(x_var_predict[i], H.T)) <span class="op">+</span> R</span>
+<span id="cb68-74"><a href="a-simple-rc-model-python.html#cb68-74" aria-hidden="true" tabindex="-1"></a>                Sigma[i] <span class="op">=</span> foo</span>
+<span id="cb68-75"><a href="a-simple-rc-model-python.html#cb68-75" aria-hidden="true" tabindex="-1"></a>                K <span class="op">=</span> np.dot(x_var_predict[i], np.dot(H.T, np.linalg.inv(foo)))</span>
+<span id="cb68-76"><a href="a-simple-rc-model-python.html#cb68-76" aria-hidden="true" tabindex="-1"></a>                loglike[i] <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span> <span class="op">*</span> epsilon[i] <span class="op">**</span> <span class="dv">2</span> <span class="op">/</span> Sigma[i] <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> Sigma[i] <span class="op">*</span> <span class="dv">2</span> <span class="op">*</span> np.pi</span>
+<span id="cb68-77"><a href="a-simple-rc-model-python.html#cb68-77" aria-hidden="true" tabindex="-1"></a>                <span class="co"># KALMAN 3: Update and weight</span></span>
+<span id="cb68-78"><a href="a-simple-rc-model-python.html#cb68-78" aria-hidden="true" tabindex="-1"></a>                x_avg_update[i] <span class="op">=</span> x_avg_predict[i] <span class="op">+</span> np.dot(K, y[i] <span class="op">-</span> np.dot(H, x_avg_predict[i]))</span>
+<span id="cb68-79"><a href="a-simple-rc-model-python.html#cb68-79" aria-hidden="true" tabindex="-1"></a>                x_var_update[i] <span class="op">=</span> x_var_predict[i] <span class="op">-</span> np.dot(K, np.dot(H, x_var_predict[i]))</span>
+<span id="cb68-80"><a href="a-simple-rc-model-python.html#cb68-80" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb68-81"><a href="a-simple-rc-model-python.html#cb68-81" aria-hidden="true" tabindex="-1"></a>                x_avg_update[i] <span class="op">=</span> x_avg_predict[i]</span>
+<span id="cb68-82"><a href="a-simple-rc-model-python.html#cb68-82" aria-hidden="true" tabindex="-1"></a>                x_var_update[i] <span class="op">=</span> x_var_predict[i]</span>
+<span id="cb68-83"><a href="a-simple-rc-model-python.html#cb68-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-84"><a href="a-simple-rc-model-python.html#cb68-84" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Returns</span></span>
+<span id="cb68-85"><a href="a-simple-rc-model-python.html#cb68-85" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> update:</span>
+<span id="cb68-86"><a href="a-simple-rc-model-python.html#cb68-86" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If the Kalman update was used, return </span></span>
+<span id="cb68-87"><a href="a-simple-rc-model-python.html#cb68-87" aria-hidden="true" tabindex="-1"></a>            X <span class="op">=</span> np.dot(H, x_avg_predict.T).flatten()</span>
+<span id="cb68-88"><a href="a-simple-rc-model-python.html#cb68-88" aria-hidden="true" tabindex="-1"></a>            S <span class="op">=</span> Sigma.flatten()</span>
+<span id="cb68-89"><a href="a-simple-rc-model-python.html#cb68-89" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> X, S, loglike</span>
+<span id="cb68-90"><a href="a-simple-rc-model-python.html#cb68-90" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb68-91"><a href="a-simple-rc-model-python.html#cb68-91" aria-hidden="true" tabindex="-1"></a>            X_avg <span class="op">=</span> np.dot(H, x_avg_predict.T).flatten()</span>
+<span id="cb68-92"><a href="a-simple-rc-model-python.html#cb68-92" aria-hidden="true" tabindex="-1"></a>            X_var <span class="op">=</span> np.dot(H, np.dot(x_var_predict, H.T)).flatten()</span>
+<span id="cb68-93"><a href="a-simple-rc-model-python.html#cb68-93" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> X_avg, X_var</span></code></pre></div>
+<p>The 2-resistor, 2-capacitor model drawn above is then inherited from this <code>RC</code> class. Upon definition, it takes its parameters as arguments.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb69-1"><a href="a-simple-rc-model-python.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> tite(RC):</span>
+<span id="cb69-2"><a href="a-simple-rc-model-python.html#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="a-simple-rc-model-python.html#cb69-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, Ri, Ro, Ci, Ce, Ai, Ae, qi, qe, r):</span>
+<span id="cb69-4"><a href="a-simple-rc-model-python.html#cb69-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot; Model inputs: ambient temperature, heating, solar irradiance&quot;&quot;&quot;</span></span>
+<span id="cb69-5"><a href="a-simple-rc-model-python.html#cb69-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-6"><a href="a-simple-rc-model-python.html#cb69-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Model parameters</span></span>
+<span id="cb69-7"><a href="a-simple-rc-model-python.html#cb69-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Ri <span class="op">=</span> Ri <span class="co"># The first resistance (K/W) of the model, on the indoor side</span></span>
+<span id="cb69-8"><a href="a-simple-rc-model-python.html#cb69-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Ro <span class="op">=</span> Ro <span class="co"># The second resistance (K/W) of the model, on the outdoor side</span></span>
+<span id="cb69-9"><a href="a-simple-rc-model-python.html#cb69-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Ci <span class="op">=</span> Ci <span class="co"># Heat capacity (J/K) connected to the indoor temperature</span></span>
+<span id="cb69-10"><a href="a-simple-rc-model-python.html#cb69-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Ce <span class="op">=</span> Ce <span class="co"># Heat capacity (J/K) connected to the envelope temperature</span></span>
+<span id="cb69-11"><a href="a-simple-rc-model-python.html#cb69-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Ai <span class="op">=</span> Ai <span class="co"># Solar aperture coefficient directed to the indoor temperature</span></span>
+<span id="cb69-12"><a href="a-simple-rc-model-python.html#cb69-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Ae <span class="op">=</span> Ae <span class="co"># Solar aperture coefficient directed to the envelope temperature</span></span>
+<span id="cb69-13"><a href="a-simple-rc-model-python.html#cb69-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.qi <span class="op">=</span> qi <span class="co"># Standard deviation of the modelling error on Ti</span></span>
+<span id="cb69-14"><a href="a-simple-rc-model-python.html#cb69-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.qe <span class="op">=</span> qe <span class="co"># Standard deviation of the modelling error on Ti</span></span>
+<span id="cb69-15"><a href="a-simple-rc-model-python.html#cb69-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.r <span class="op">=</span> r   <span class="co"># Standard deviation of the measurement error</span></span>
+<span id="cb69-16"><a href="a-simple-rc-model-python.html#cb69-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-17"><a href="a-simple-rc-model-python.html#cb69-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Number of states</span></span>
+<span id="cb69-18"><a href="a-simple-rc-model-python.html#cb69-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.N_states <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb69-19"><a href="a-simple-rc-model-python.html#cb69-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-20"><a href="a-simple-rc-model-python.html#cb69-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Matrices of the continuous system</span></span>
+<span id="cb69-21"><a href="a-simple-rc-model-python.html#cb69-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Ac <span class="op">=</span> np.array([[<span class="op">-</span><span class="dv">1</span><span class="op">/</span>(Ci<span class="op">*</span>Ri), <span class="dv">1</span><span class="op">/</span>(Ci<span class="op">*</span>Ri)],</span>
+<span id="cb69-22"><a href="a-simple-rc-model-python.html#cb69-22" aria-hidden="true" tabindex="-1"></a>                            [<span class="dv">1</span><span class="op">/</span>(Ce<span class="op">*</span>Ri), <span class="op">-</span><span class="dv">1</span><span class="op">/</span>(Ce<span class="op">*</span>Ri) <span class="op">-</span> <span class="dv">1</span><span class="op">/</span>(Ce<span class="op">*</span>Ro)]])</span>
+<span id="cb69-23"><a href="a-simple-rc-model-python.html#cb69-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Bc <span class="op">=</span> np.array([[<span class="dv">0</span>, <span class="dv">1</span> <span class="op">/</span> Ci, Ai <span class="op">/</span> Ci],</span>
+<span id="cb69-24"><a href="a-simple-rc-model-python.html#cb69-24" aria-hidden="true" tabindex="-1"></a>                            [<span class="dv">1</span><span class="op">/</span>(Ce<span class="op">*</span>Ro), <span class="dv">0</span>, Ae<span class="op">/</span>Ce]])</span>
+<span id="cb69-25"><a href="a-simple-rc-model-python.html#cb69-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Cc <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">0</span>]])</span>
+<span id="cb69-26"><a href="a-simple-rc-model-python.html#cb69-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># System and measurement error covariance matrices</span></span>
+<span id="cb69-27"><a href="a-simple-rc-model-python.html#cb69-27" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Qc <span class="op">=</span> np.diag([qi<span class="op">**</span><span class="dv">2</span>, qe<span class="op">**</span><span class="dv">2</span>])</span>
+<span id="cb69-28"><a href="a-simple-rc-model-python.html#cb69-28" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.Rc <span class="op">=</span> np.array([[r <span class="op">**</span> <span class="dv">2</span>]])</span></code></pre></div>
+<p>Notice that this model has four additional parameters compared to the deterministic formulation above: the variance of the modelling errors on each state <code>qi</code> and <code>qe</code>, and the measurement error <code>r</code>.</p>
+</div>
+<div id="training" class="section level3 hasAnchor" number="11.4.2">
+<h3><span class="header-section-number">11.4.2</span> Training<a href="a-simple-rc-model-python.html#training" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We now need to find the parameters that will offer the best fit between predictions of the 2R2C model and indoor temperature measurements. We will simply use the <code>curve_fit</code> method from Scipy again.</p>
+<p>In order to facilitate convergence, an initial parameter value is first defined. Then, the optimiser will act on an evaluation function that receives each parameter as argument, and returns the likelihood value. Some parameters are log-transformed in order to allow the search over larger scales.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb70-1"><a href="a-simple-rc-model-python.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definition of an evaluation function that takes &quot;normalized&quot; values or each parameter</span></span>
+<span id="cb70-2"><a href="a-simple-rc-model-python.html#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluation(df, Ri, Ro, Ci, Ce, Ai, Ae, qi, qe, r, xe0):</span>
+<span id="cb70-3"><a href="a-simple-rc-model-python.html#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="a-simple-rc-model-python.html#cb70-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Reading the dataframe given as argument</span></span>
+<span id="cb70-5"><a href="a-simple-rc-model-python.html#cb70-5" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> df[<span class="st">&#39;Time&#39;</span>].values</span>
+<span id="cb70-6"><a href="a-simple-rc-model-python.html#cb70-6" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> df[[<span class="st">&#39;T_ext&#39;</span>, <span class="st">&#39;P_hea&#39;</span>, <span class="st">&#39;I_sol&#39;</span>]].values</span>
+<span id="cb70-7"><a href="a-simple-rc-model-python.html#cb70-7" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> df[<span class="st">&#39;T_int&#39;</span>].values</span>
+<span id="cb70-8"><a href="a-simple-rc-model-python.html#cb70-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-9"><a href="a-simple-rc-model-python.html#cb70-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Model specification and initial condition</span></span>
+<span id="cb70-10"><a href="a-simple-rc-model-python.html#cb70-10" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> tite(Ri, Ro, Ci, Ce, Ai, Ae, qi, qe, r)</span>
+<span id="cb70-11"><a href="a-simple-rc-model-python.html#cb70-11" aria-hidden="true" tabindex="-1"></a>    x_0 <span class="op">=</span> [y[<span class="dv">0</span>], xe0]</span>
+<span id="cb70-12"><a href="a-simple-rc-model-python.html#cb70-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-13"><a href="a-simple-rc-model-python.html#cb70-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Model prediction, without Kalman update</span></span>
+<span id="cb70-14"><a href="a-simple-rc-model-python.html#cb70-14" aria-hidden="true" tabindex="-1"></a>    X, S, L <span class="op">=</span> model.prediction(x_0, t, u, y, update<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb70-15"><a href="a-simple-rc-model-python.html#cb70-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb70-16"><a href="a-simple-rc-model-python.html#cb70-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We only need the likelihood for the minimize method</span></span>
+<span id="cb70-17"><a href="a-simple-rc-model-python.html#cb70-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb71-1"><a href="a-simple-rc-model-python.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> curve_fit</span>
+<span id="cb71-2"><a href="a-simple-rc-model-python.html#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="a-simple-rc-model-python.html#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Curve fitting happens here. popt and pcov are the mean and covariance of parameter estimates</span></span>
+<span id="cb71-4"><a href="a-simple-rc-model-python.html#cb71-4" aria-hidden="true" tabindex="-1"></a>popt, pcov <span class="op">=</span> curve_fit(evaluation,</span>
+<span id="cb71-5"><a href="a-simple-rc-model-python.html#cb71-5" aria-hidden="true" tabindex="-1"></a>                       xdata <span class="op">=</span> df,</span>
+<span id="cb71-6"><a href="a-simple-rc-model-python.html#cb71-6" aria-hidden="true" tabindex="-1"></a>                       ydata <span class="op">=</span> df[<span class="st">&#39;T_int&#39;</span>],</span>
+<span id="cb71-7"><a href="a-simple-rc-model-python.html#cb71-7" aria-hidden="true" tabindex="-1"></a>                       p0 <span class="op">=</span> np.append(res1[<span class="st">&#39;avg&#39;</span>], [<span class="fl">1e-3</span>, <span class="fl">1e-3</span>, <span class="fl">1e-1</span>, <span class="dv">20</span>]) ,</span>
+<span id="cb71-8"><a href="a-simple-rc-model-python.html#cb71-8" aria-hidden="true" tabindex="-1"></a>                       method<span class="op">=</span><span class="st">&#39;lm&#39;</span>)</span>
+<span id="cb71-9"><a href="a-simple-rc-model-python.html#cb71-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-10"><a href="a-simple-rc-model-python.html#cb71-10" aria-hidden="true" tabindex="-1"></a>res2 <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>[<span class="st">&#39;Ri&#39;</span>, <span class="st">&#39;Ro&#39;</span>, <span class="st">&#39;Ci&#39;</span>, <span class="st">&#39;Ce&#39;</span>, <span class="st">&#39;Ai&#39;</span>, <span class="st">&#39;Ae&#39;</span>, <span class="st">&#39;qi&#39;</span>, <span class="st">&#39;qe&#39;</span>, <span class="st">&#39;r&#39;</span>, <span class="st">&#39;xe0&#39;</span>])</span>
+<span id="cb71-11"><a href="a-simple-rc-model-python.html#cb71-11" aria-hidden="true" tabindex="-1"></a>res2[<span class="st">&#39;avg&#39;</span>] <span class="op">=</span> popt</span>
+<span id="cb71-12"><a href="a-simple-rc-model-python.html#cb71-12" aria-hidden="true" tabindex="-1"></a>res2[<span class="st">&#39;std&#39;</span>] <span class="op">=</span> np.diag(pcov)<span class="op">**</span><span class="fl">0.5</span></span>
+<span id="cb71-13"><a href="a-simple-rc-model-python.html#cb71-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-14"><a href="a-simple-rc-model-python.html#cb71-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res2)</span></code></pre></div>
+<pre><code>##               avg            std
+## Ri   2.799801e-03       0.000125
+## Ro   1.680273e-02       0.001284
+## Ci   3.773714e+06  152372.536275
+## Ce   1.469854e+07  876101.583123
+## Ai   1.561966e-01       0.045091
+## Ae  -3.933333e-02       0.124889
+## qi   8.516594e-09       0.000244
+## qe   6.275908e-06       0.008552
+## r   -2.055527e-02      28.008709
+## xe0  2.992531e+01       0.562491</code></pre>
+<p>Notice that <code>Ae</code>, the solar gain coefficient on the envelope capacity, has an average value lower than its standard deviation: this parameter is likely not influential on the outcome.</p>
+</div>
+<div id="diagnostics-and-residuals-analysis" class="section level3 hasAnchor" number="11.4.3">
+<h3><span class="header-section-number">11.4.3</span> Diagnostics and residuals analysis<a href="a-simple-rc-model-python.html#diagnostics-and-residuals-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In order to evaluate the agreement between the fitted model and the data, let us first simply view the model output in prediction mode (without Kalman update at every time step).</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb73-1"><a href="a-simple-rc-model-python.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model specification with the mean of optimised parameters</span></span>
+<span id="cb73-2"><a href="a-simple-rc-model-python.html#cb73-2" aria-hidden="true" tabindex="-1"></a>model_opt <span class="op">=</span> tite(<span class="op">*</span>res2[<span class="st">&#39;avg&#39;</span>][:<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb73-3"><a href="a-simple-rc-model-python.html#cb73-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-4"><a href="a-simple-rc-model-python.html#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial states</span></span>
+<span id="cb73-5"><a href="a-simple-rc-model-python.html#cb73-5" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> df[<span class="st">&#39;Time&#39;</span>].values</span>
+<span id="cb73-6"><a href="a-simple-rc-model-python.html#cb73-6" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> df[[<span class="st">&#39;T_ext&#39;</span>, <span class="st">&#39;P_hea&#39;</span>, <span class="st">&#39;I_sol&#39;</span>]].values</span>
+<span id="cb73-7"><a href="a-simple-rc-model-python.html#cb73-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">&#39;T_int&#39;</span>].values</span>
+<span id="cb73-8"><a href="a-simple-rc-model-python.html#cb73-8" aria-hidden="true" tabindex="-1"></a>x_0 <span class="op">=</span> [y[<span class="dv">0</span>], res2[<span class="st">&#39;avg&#39;</span>][<span class="st">&#39;xe0&#39;</span>] ]</span>
+<span id="cb73-9"><a href="a-simple-rc-model-python.html#cb73-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-10"><a href="a-simple-rc-model-python.html#cb73-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Prediction without Kalman update, to be compared with the data</span></span>
+<span id="cb73-11"><a href="a-simple-rc-model-python.html#cb73-11" aria-hidden="true" tabindex="-1"></a>x_avg, x_var <span class="op">=</span> model_opt.prediction(x_0, t, u, y<span class="op">=</span><span class="va">None</span>, update<span class="op">=</span><span class="va">False</span>)</span></code></pre></div>
+<p><img src="figures/rcexample03.png" width="50%" /></p>
+<p>The model fits the data well. The 95% confidence intervals are relatively narrow, indicating a good confidence in the prediction.</p>
+<p>Another important criterion on which to judge the fitted model is the autocorrelation function (ACF) of the one-step ahead prediction residuals. In order to view these residuals, the prediction function should be run with the Kalman updating switched on, so that the states it returns are one-step ahead predictions only.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb74-1"><a href="a-simple-rc-model-python.html#cb74-1" aria-hidden="true" tabindex="-1"></a>X, S, L <span class="op">=</span> model_opt.prediction(x_0, t, u, y, update<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb74-2"><a href="a-simple-rc-model-python.html#cb74-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-3"><a href="a-simple-rc-model-python.html#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="co"># eps_ are the one-step ahead prediction residuals</span></span>
+<span id="cb74-4"><a href="a-simple-rc-model-python.html#cb74-4" aria-hidden="true" tabindex="-1"></a>eps_ <span class="op">=</span> y <span class="op">-</span> X</span>
+<span id="cb74-5"><a href="a-simple-rc-model-python.html#cb74-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s only take every other value, so that we have time lags of one hour.</span></span>
+<span id="cb74-6"><a href="a-simple-rc-model-python.html#cb74-6" aria-hidden="true" tabindex="-1"></a>eps_ <span class="op">=</span> eps_[::<span class="dv">2</span>]</span>
+<span id="cb74-7"><a href="a-simple-rc-model-python.html#cb74-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-8"><a href="a-simple-rc-model-python.html#cb74-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation function of two time series. Can be used for the autocorrelation of a single time series</span></span>
+<span id="cb74-9"><a href="a-simple-rc-model-python.html#cb74-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> crosscorrelation(x, u):</span>
+<span id="cb74-10"><a href="a-simple-rc-model-python.html#cb74-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb74-11"><a href="a-simple-rc-model-python.html#cb74-11" aria-hidden="true" tabindex="-1"></a><span class="co">    http://stackoverflow.com/q/14297012/190597</span></span>
+<span id="cb74-12"><a href="a-simple-rc-model-python.html#cb74-12" aria-hidden="true" tabindex="-1"></a><span class="co">    http://en.wikipedia.org/wiki/Autocorrelation#Estimation</span></span>
+<span id="cb74-13"><a href="a-simple-rc-model-python.html#cb74-13" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb74-14"><a href="a-simple-rc-model-python.html#cb74-14" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb74-15"><a href="a-simple-rc-model-python.html#cb74-15" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x<span class="op">-</span>x.mean()</span>
+<span id="cb74-16"><a href="a-simple-rc-model-python.html#cb74-16" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> u<span class="op">-</span>u.mean()</span>
+<span id="cb74-17"><a href="a-simple-rc-model-python.html#cb74-17" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> np.correlate(x, u, mode <span class="op">=</span> <span class="st">&#39;full&#39;</span>)[<span class="op">-</span>n:]</span>
+<span id="cb74-18"><a href="a-simple-rc-model-python.html#cb74-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r<span class="op">/</span>(x.std()<span class="op">*</span>u.std()<span class="op">*</span>(np.arange(n, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>)))</span>
+<span id="cb74-19"><a href="a-simple-rc-model-python.html#cb74-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-20"><a href="a-simple-rc-model-python.html#cb74-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Autocorrelation of the residuals (only keeping the first 50 lags)</span></span>
+<span id="cb74-21"><a href="a-simple-rc-model-python.html#cb74-21" aria-hidden="true" tabindex="-1"></a>ACF <span class="op">=</span> crosscorrelation(eps_, eps_)[<span class="dv">0</span>:<span class="dv">50</span>]</span>
+<span id="cb74-22"><a href="a-simple-rc-model-python.html#cb74-22" aria-hidden="true" tabindex="-1"></a>lags <span class="op">=</span> np.linspace(<span class="dv">0</span>,<span class="dv">49</span>,<span class="dv">50</span>)</span></code></pre></div>
+<p><img src="figures/rcexample04.png" width="50%" /></p>
+<p>The residuals are low, except from one important peak at 24h lag. This suggests that an important influence occuring with a period of 24 hours has been insufficiently accounted for by the model.</p>
+
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-madsen1995estimation" class="csl-entry">
+Madsen, Henrik, and Jan Holst. 1995. <span>“Estimation of Continuous-Time Models for the Heat Dynamics of a Building.”</span> <em>Energy and Buildings</em> 22 (1): 67–79.
+</div>
+<div id="ref-rouchier2018calibration" class="csl-entry">
+Rouchier, Simon, Mickaël Rabouille, and Pierre Oberlé. 2018. <span>“Calibration of Simplified Building Energy Models for Parameter Estimation and Forecasting: Stochastic Versus Deterministic Modelling.”</span> <em>Building and Environment</em> 134: 181–90.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ssmprinciple.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-pysip-library-python.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"info": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

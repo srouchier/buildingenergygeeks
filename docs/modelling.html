@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Building energy statistical modelling | Building energy statistical modelling</title>
   <meta name="description" content="Handbook of statistical learning for building energy performance." />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Building energy statistical modelling | Building energy statistical modelling" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Handbook of statistical learning for building energy performance." />
   <meta name="github-repo" content="srouchier/buildingenergygeeks" />
@@ -24,7 +23,7 @@
 <meta name="author" content="Simon Rouchier" />
 
 
-<meta name="date" content="2021-08-27" />
+<meta name="date" content="2022-07-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -34,6 +33,7 @@
 <link rel="prev" href="scope.html"/>
 <link rel="next" href="workflow.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -50,24 +50,24 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -87,7 +87,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -120,6 +120,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 </head>
 
@@ -136,46 +158,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./index.html">Building energy statistical modelling</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Home page</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Home page</a>
+<ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#motivation"><i class="fa fa-check"></i>Motivation</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#content-of-the-book"><i class="fa fa-check"></i>Content of the book</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#programming-languages"><i class="fa fa-check"></i>Programming languages</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#about"><i class="fa fa-check"></i>About</a></li>
 </ul></li>
 <li class="part"><span><b>I Theory and workflow</b></span></li>
-<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a><ul>
+<li class="chapter" data-level="1" data-path="scope.html"><a href="scope.html"><i class="fa fa-check"></i><b>1</b> Background on data analysis</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="scope.html"><a href="scope.html#the-energy-savings-potential-of-buildings"><i class="fa fa-check"></i><b>1.1</b> The energy savings potential of buildings</a></li>
-<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.2</b> From data to energy savings</a><ul>
+<li class="chapter" data-level="1.2" data-path="scope.html"><a href="scope.html#from-data-to-energy-savings"><i class="fa fa-check"></i><b>1.2</b> From data to energy savings</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="scope.html"><a href="scope.html#formalisation-of-the-system"><i class="fa fa-check"></i><b>1.2.1</b> Formalisation of the system</a></li>
 <li class="chapter" data-level="1.2.2" data-path="scope.html"><a href="scope.html#some-uses-of-data"><i class="fa fa-check"></i><b>1.2.2</b> Some uses of data</a></li>
 <li class="chapter" data-level="1.2.3" data-path="scope.html"><a href="scope.html#model-calibration-as-the-key-to-data-analysis"><i class="fa fa-check"></i><b>1.2.3</b> Model calibration as the key to data analysis</a></li>
 <li class="chapter" data-level="1.2.4" data-path="scope.html"><a href="scope.html#inverseproblems"><i class="fa fa-check"></i><b>1.2.4</b> The difficulty of inverse problems</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a><ul>
+<li class="chapter" data-level="1.3" data-path="scope.html"><a href="scope.html#categories"><i class="fa fa-check"></i><b>1.3</b> Categories of data-driven modelling approaches</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="scope.html"><a href="scope.html#either-physical-interpretability-or-prediction-accuracy"><i class="fa fa-check"></i><b>1.3.1</b> Either physical interpretability or prediction accuracy</a></li>
 <li class="chapter" data-level="1.3.2" data-path="scope.html"><a href="scope.html#calibrated-simulation-white-box"><i class="fa fa-check"></i><b>1.3.2</b> Calibrated simulation (white-box)</a></li>
 <li class="chapter" data-level="1.3.3" data-path="scope.html"><a href="scope.html#machine-learning-black-box"><i class="fa fa-check"></i><b>1.3.3</b> Machine learning (black-box)</a></li>
 <li class="chapter" data-level="1.3.4" data-path="scope.html"><a href="scope.html#statistical-modelling-and-inference-grey-box"><i class="fa fa-check"></i><b>1.3.4</b> Statistical modelling and inference (grey-box)</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a><ul>
+<li class="chapter" data-level="2" data-path="modelling.html"><a href="modelling.html"><i class="fa fa-check"></i><b>2</b> Building energy statistical modelling</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="modelling.html"><a href="modelling.html#modelling1"><i class="fa fa-check"></i><b>2.1</b> Building physics in a nutshell</a></li>
 <li class="chapter" data-level="2.2" data-path="modelling.html"><a href="modelling.html#modelling2"><i class="fa fa-check"></i><b>2.2</b> Measurement and modelling boundaries</a></li>
 <li class="chapter" data-level="2.3" data-path="modelling.html"><a href="modelling.html#modelling3"><i class="fa fa-check"></i><b>2.3</b> Categories of statistical models</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a><ul>
-<li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a><ul>
+<li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> A Bayesian data analysis workflow</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="workflow.html"><a href="workflow.html#bayesian"><i class="fa fa-check"></i><b>3.1</b> Bayesian inference summarised</a>
+<ul>
 <li class="chapter" data-level="3.1.1" data-path="workflow.html"><a href="workflow.html#motivation-for-a-bayesian-approach"><i class="fa fa-check"></i><b>3.1.1</b> Motivation for a Bayesian approach</a></li>
 <li class="chapter" data-level="3.1.2" data-path="workflow.html"><a href="workflow.html#general-bayesian-principles"><i class="fa fa-check"></i><b>3.1.2</b> General Bayesian principles</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a><ul>
+<li class="chapter" data-level="3.2" data-path="workflow.html"><a href="workflow.html#workflow-for-one-model"><i class="fa fa-check"></i><b>3.2</b> Workflow for one model</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="workflow.html"><a href="workflow.html#overview"><i class="fa fa-check"></i><b>3.2.1</b> Overview</a></li>
 <li class="chapter" data-level="3.2.2" data-path="workflow.html"><a href="workflow.html#step-1-model-specification"><i class="fa fa-check"></i><b>3.2.2</b> Step 1: model specification</a></li>
 <li class="chapter" data-level="3.2.3" data-path="workflow.html"><a href="workflow.html#priorpredictivechecking"><i class="fa fa-check"></i><b>3.2.3</b> Prior predictive checking</a></li>
 <li class="chapter" data-level="3.2.4" data-path="workflow.html"><a href="workflow.html#computation"><i class="fa fa-check"></i><b>3.2.4</b> Step 2: computation with Markov Chain Monte Carlo</a></li>
 <li class="chapter" data-level="3.2.5" data-path="workflow.html"><a href="workflow.html#modelvalidation"><i class="fa fa-check"></i><b>3.2.5</b> Step 3: model checking and validation</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a><ul>
+<li class="chapter" data-level="3.3" data-path="workflow.html"><a href="workflow.html#modelselection"><i class="fa fa-check"></i><b>3.3</b> Model assessment and selection</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="workflow.html"><a href="workflow.html#model-selection-workflows"><i class="fa fa-check"></i><b>3.3.1</b> Model selection workflows</a></li>
 <li class="chapter" data-level="3.3.2" data-path="workflow.html"><a href="workflow.html#sensitivity-analysis"><i class="fa fa-check"></i><b>3.3.2</b> Sensitivity analysis</a></li>
 <li class="chapter" data-level="3.3.3" data-path="workflow.html"><a href="workflow.html#structural-identifiability"><i class="fa fa-check"></i><b>3.3.3</b> Structural identifiability</a></li>
@@ -184,70 +215,87 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="part"><span><b>II Temporally independent data</b></span></li>
-<li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a><ul>
+<li class="chapter" data-level="4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html"><i class="fa fa-check"></i><b>4</b> Ordinary linear regression</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#introduction-to-olr"><i class="fa fa-check"></i><b>4.1</b> Introduction to OLR</a></li>
 <li class="chapter" data-level="4.2" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#tutorial-olr-with-r"><i class="fa fa-check"></i><b>4.2</b> Tutorial: OLR with R</a></li>
 <li class="chapter" data-level="4.3" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#simple-linear-regression-with-r"><i class="fa fa-check"></i><b>4.3</b> Simple linear regression with R</a></li>
 <li class="chapter" data-level="4.4" data-path="ordinary-linear-regression.html"><a href="ordinary-linear-regression.html#bayesian-regression-with-stan"><i class="fa fa-check"></i><b>4.4</b> Bayesian regression with Stan</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="bayesian-mv.html"><a href="bayesian-mv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a><ul>
-<li class="chapter" data-level="5.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#a-bayesian-workflow-for-mv"><i class="fa fa-check"></i><b>5.1</b> A Bayesian workflow for M&amp;V</a></li>
-<li class="chapter" data-level="5.2" data-path="bayesian-mv.html"><a href="bayesian-mv.html#change-point-models"><i class="fa fa-check"></i><b>5.2</b> Change-point models</a></li>
-<li class="chapter" data-level="5.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#ipmvp-option-c-example"><i class="fa fa-check"></i><b>5.3</b> IPMVP option C example</a><ul>
-<li class="chapter" data-level="5.3.1" data-path="bayesian-mv.html"><a href="bayesian-mv.html#loading-and-displaying-the-data"><i class="fa fa-check"></i><b>5.3.1</b> Loading and displaying the data</a></li>
-<li class="chapter" data-level="5.3.2" data-path="bayesian-mv.html"><a href="bayesian-mv.html#daily-averaged-data"><i class="fa fa-check"></i><b>5.3.2</b> Daily averaged data</a></li>
-<li class="chapter" data-level="5.3.3" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-definition"><i class="fa fa-check"></i><b>5.3.3</b> Model definition</a></li>
-<li class="chapter" data-level="5.3.4" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-specification-with-stan"><i class="fa fa-check"></i><b>5.3.4</b> Model specification with Stan</a></li>
-<li class="chapter" data-level="5.3.5" data-path="bayesian-mv.html"><a href="bayesian-mv.html#model-fitting"><i class="fa fa-check"></i><b>5.3.5</b> Model fitting</a></li>
-<li class="chapter" data-level="5.3.6" data-path="bayesian-mv.html"><a href="bayesian-mv.html#validation-and-results"><i class="fa fa-check"></i><b>5.3.6</b> Validation and results</a></li>
-<li class="chapter" data-level="5.3.7" data-path="bayesian-mv.html"><a href="bayesian-mv.html#residuals"><i class="fa fa-check"></i><b>5.3.7</b> Residuals</a></li>
-<li class="chapter" data-level="5.3.8" data-path="bayesian-mv.html"><a href="bayesian-mv.html#savings"><i class="fa fa-check"></i><b>5.3.8</b> Savings</a></li>
+<li class="chapter" data-level="5" data-path="bayesianmv.html"><a href="bayesianmv.html"><i class="fa fa-check"></i><b>5</b> Bayesian M&amp;V</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="bayesianmv.html"><a href="bayesianmv.html#a-bayesian-workflow-for-mv"><i class="fa fa-check"></i><b>5.1</b> A Bayesian workflow for M&amp;V</a></li>
+<li class="chapter" data-level="5.2" data-path="bayesianmv.html"><a href="bayesianmv.html#change-point-models"><i class="fa fa-check"></i><b>5.2</b> Change-point models</a></li>
+<li class="chapter" data-level="5.3" data-path="bayesianmv.html"><a href="bayesianmv.html#ipmvp-option-c-example-rstan"><i class="fa fa-check"></i><b>5.3</b> IPMVP option C example (Rstan)</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="bayesianmv.html"><a href="bayesianmv.html#loading-and-displaying-the-data"><i class="fa fa-check"></i><b>5.3.1</b> Loading and displaying the data</a></li>
+<li class="chapter" data-level="5.3.2" data-path="bayesianmv.html"><a href="bayesianmv.html#daily-averaged-data"><i class="fa fa-check"></i><b>5.3.2</b> Daily averaged data</a></li>
+<li class="chapter" data-level="5.3.3" data-path="bayesianmv.html"><a href="bayesianmv.html#model-definition"><i class="fa fa-check"></i><b>5.3.3</b> Model definition</a></li>
+<li class="chapter" data-level="5.3.4" data-path="bayesianmv.html"><a href="bayesianmv.html#model-specification-with-stan"><i class="fa fa-check"></i><b>5.3.4</b> Model specification with Stan</a></li>
+<li class="chapter" data-level="5.3.5" data-path="bayesianmv.html"><a href="bayesianmv.html#model-fitting"><i class="fa fa-check"></i><b>5.3.5</b> Model fitting</a></li>
+<li class="chapter" data-level="5.3.6" data-path="bayesianmv.html"><a href="bayesianmv.html#validation-and-results"><i class="fa fa-check"></i><b>5.3.6</b> Validation and results</a></li>
+<li class="chapter" data-level="5.3.7" data-path="bayesianmv.html"><a href="bayesianmv.html#residuals"><i class="fa fa-check"></i><b>5.3.7</b> Residuals</a></li>
+<li class="chapter" data-level="5.3.8" data-path="bayesianmv.html"><a href="bayesianmv.html#savings"><i class="fa fa-check"></i><b>5.3.8</b> Savings</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a><ul>
+<li class="chapter" data-level="6" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html"><i class="fa fa-check"></i><b>6</b> Finite mixture models</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#principle"><i class="fa fa-check"></i><b>6.1</b> Principle</a></li>
-<li class="chapter" data-level="6.2" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#example"><i class="fa fa-check"></i><b>6.2</b> Example</a></li>
+<li class="chapter" data-level="6.2" data-path="finite-mixture-models.html"><a href="finite-mixture-models.html#tutorial-rstan"><i class="fa fa-check"></i><b>6.2</b> Tutorial (Rstan)</a></li>
 </ul></li>
 <li class="part"><span><b>III Time-series modelling</b></span></li>
-<li class="chapter" data-level="7" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a><ul>
-<li class="chapter" data-level="7.1" data-path="autoregressive-models.html"><a href="autoregressive-models.html#principle-of-armax-models"><i class="fa fa-check"></i><b>7.1</b> Principle of ARMAX models</a></li>
-<li class="chapter" data-level="7.2" data-path="autoregressive-models.html"><a href="autoregressive-models.html#example-1"><i class="fa fa-check"></i><b>7.2</b> Example</a></li>
+<li class="chapter" data-level="7" data-path="armax.html"><a href="armax.html"><i class="fa fa-check"></i><b>7</b> Autoregressive models</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="armax.html"><a href="armax.html#principle-of-armax-models"><i class="fa fa-check"></i><b>7.1</b> Principle of ARMAX models</a></li>
+<li class="chapter" data-level="7.2" data-path="armax.html"><a href="armax.html#tutorial-rstan-1"><i class="fa fa-check"></i><b>7.2</b> Tutorial (Rstan)</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="armax.html"><a href="armax.html#data-the-ashrae-machine-learning-competition"><i class="fa fa-check"></i><b>7.2.1</b> Data: the ASHRAE machine learning competition</a></li>
+<li class="chapter" data-level="7.2.2" data-path="armax.html"><a href="armax.html#a-simple-arx-model"><i class="fa fa-check"></i><b>7.2.2</b> A simple ARX model</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a><ul>
-<li class="chapter" data-level="8.1" data-path="hmm.html"><a href="hmm.html#principles"><i class="fa fa-check"></i><b>8.1</b> Principles</a><ul>
+</ul></li>
+<li class="chapter" data-level="8" data-path="hmm.html"><a href="hmm.html"><i class="fa fa-check"></i><b>8</b> Hidden Markov models</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="hmm.html"><a href="hmm.html#principles"><i class="fa fa-check"></i><b>8.1</b> Principles</a>
+<ul>
 <li class="chapter" data-level="8.1.1" data-path="hmm.html"><a href="hmm.html#the-forward-algorithm"><i class="fa fa-check"></i><b>8.1.1</b> The forward algorithm</a></li>
 <li class="chapter" data-level="8.1.2" data-path="hmm.html"><a href="hmm.html#the-viterbi-algorithm"><i class="fa fa-check"></i><b>8.1.2</b> The Viterbi algorithm</a></li>
 </ul></li>
-<li class="chapter" data-level="8.2" data-path="hmm.html"><a href="hmm.html#example-2"><i class="fa fa-check"></i><b>8.2</b> Example</a></li>
+<li class="chapter" data-level="8.2" data-path="hmm.html"><a href="hmm.html#tutorial-python"><i class="fa fa-check"></i><b>8.2</b> Tutorial (Python)</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="markov-switching-models.html"><a href="markov-switching-models.html"><i class="fa fa-check"></i><b>9</b> Markov switching models</a><ul>
-<li class="chapter" data-level="9.1" data-path="markov-switching-models.html"><a href="markov-switching-models.html#principle-1"><i class="fa fa-check"></i><b>9.1</b> Principle</a></li>
-<li class="chapter" data-level="9.2" data-path="markov-switching-models.html"><a href="markov-switching-models.html#example-3"><i class="fa fa-check"></i><b>9.2</b> Example</a></li>
+<li class="chapter" data-level="9" data-path="composite-time-series-models.html"><a href="composite-time-series-models.html"><i class="fa fa-check"></i><b>9</b> Composite time series models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="composite-time-series-models.html"><a href="composite-time-series-models.html#markov-switching-models"><i class="fa fa-check"></i><b>9.1</b> Markov switching models</a></li>
+<li class="chapter" data-level="9.2" data-path="composite-time-series-models.html"><a href="composite-time-series-models.html#hidden-markov-energy-signature"><i class="fa fa-check"></i><b>9.2</b> Hidden Markov energy signature</a></li>
 </ul></li>
 <li class="part"><span><b>IV State-space models</b></span></li>
-<li class="chapter" data-level="10" data-path="ssmprinciple.html"><a href="ssmprinciple.html"><i class="fa fa-check"></i><b>10</b> Principle of SSMs</a><ul>
+<li class="chapter" data-level="10" data-path="ssmprinciple.html"><a href="ssmprinciple.html"><i class="fa fa-check"></i><b>10</b> Principle of SSMs</a>
+<ul>
 <li class="chapter" data-level="10.1" data-path="ssmprinciple.html"><a href="ssmprinciple.html#description"><i class="fa fa-check"></i><b>10.1</b> Description</a></li>
 <li class="chapter" data-level="10.2" data-path="ssmprinciple.html"><a href="ssmprinciple.html#linearssm"><i class="fa fa-check"></i><b>10.2</b> Linear state-space models</a></li>
 <li class="chapter" data-level="10.3" data-path="ssmprinciple.html"><a href="ssmprinciple.html#kalmanfilter"><i class="fa fa-check"></i><b>10.3</b> The Kalman filter</a></li>
 <li class="chapter" data-level="10.4" data-path="ssmprinciple.html"><a href="ssmprinciple.html#non-linear-state-space-models"><i class="fa fa-check"></i><b>10.4</b> Non-linear state-space models</a></li>
 <li class="chapter" data-level="10.5" data-path="ssmprinciple.html"><a href="ssmprinciple.html#switching-state-space-models"><i class="fa fa-check"></i><b>10.5</b> Switching state-space models</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html"><i class="fa fa-check"></i><b>11</b> A simple RC model</a><ul>
-<li class="chapter" data-level="11.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#case-study"><i class="fa fa-check"></i><b>11.1</b> Case study</a></li>
-<li class="chapter" data-level="11.2" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#modelling-1"><i class="fa fa-check"></i><b>11.2</b> Modelling</a><ul>
-<li class="chapter" data-level="11.2.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#rc-model"><i class="fa fa-check"></i><b>11.2.1</b> RC model</a></li>
+<li class="chapter" data-level="11" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html"><i class="fa fa-check"></i><b>11</b> A simple RC model (Python)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#case-study"><i class="fa fa-check"></i><b>11.1</b> Case study</a></li>
+<li class="chapter" data-level="11.2" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#modelling-1"><i class="fa fa-check"></i><b>11.2</b> Modelling</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#rc-model"><i class="fa fa-check"></i><b>11.2.1</b> RC model</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#deterministic-formulation"><i class="fa fa-check"></i><b>11.3</b> Deterministic formulation</a></li>
-<li class="chapter" data-level="11.4" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#stochastic-formulation"><i class="fa fa-check"></i><b>11.4</b> Stochastic formulation</a><ul>
-<li class="chapter" data-level="11.4.1" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#specification"><i class="fa fa-check"></i><b>11.4.1</b> Specification</a></li>
-<li class="chapter" data-level="11.4.2" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#training"><i class="fa fa-check"></i><b>11.4.2</b> Training</a></li>
-<li class="chapter" data-level="11.4.3" data-path="a-simple-rc-model.html"><a href="a-simple-rc-model.html#diagnostics-and-residuals-analysis"><i class="fa fa-check"></i><b>11.4.3</b> Diagnostics and residuals analysis</a></li>
+<li class="chapter" data-level="11.3" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#deterministic-formulation"><i class="fa fa-check"></i><b>11.3</b> Deterministic formulation</a></li>
+<li class="chapter" data-level="11.4" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#stochastic-formulation"><i class="fa fa-check"></i><b>11.4</b> Stochastic formulation</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#specification"><i class="fa fa-check"></i><b>11.4.1</b> Specification</a></li>
+<li class="chapter" data-level="11.4.2" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#training"><i class="fa fa-check"></i><b>11.4.2</b> Training</a></li>
+<li class="chapter" data-level="11.4.3" data-path="a-simple-rc-model-python.html"><a href="a-simple-rc-model-python.html#diagnostics-and-residuals-analysis"><i class="fa fa-check"></i><b>11.4.3</b> Diagnostics and residuals analysis</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="the-pysip-library.html"><a href="the-pysip-library.html"><i class="fa fa-check"></i><b>12</b> The pySIP library</a></li>
+<li class="chapter" data-level="12" data-path="the-pysip-library-python.html"><a href="the-pysip-library-python.html"><i class="fa fa-check"></i><b>12</b> The pySIP library (Python)</a></li>
 <li class="part"><span><b>V Gaussian Process models</b></span></li>
-<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a><ul>
-<li class="chapter" data-level="13.1" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#principle-2"><i class="fa fa-check"></i><b>13.1</b> Principle</a></li>
+<li class="chapter" data-level="13" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html"><i class="fa fa-check"></i><b>13</b> Gaussian Process models</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#principle-1"><i class="fa fa-check"></i><b>13.1</b> Principle</a></li>
 <li class="chapter" data-level="13.2" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-prediction-of-energy-use"><i class="fa fa-check"></i><b>13.2</b> Gaussian Processes for prediction of energy use</a></li>
 <li class="chapter" data-level="13.3" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#gaussian-processes-for-time-series-data"><i class="fa fa-check"></i><b>13.3</b> Gaussian Processes for time series data</a></li>
 <li class="chapter" data-level="13.4" data-path="gaussian-process-models.html"><a href="gaussian-process-models.html#latent-force-models"><i class="fa fa-check"></i><b>13.4</b> Latent Force Models</a></li>
@@ -273,12 +321,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="modelling" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Building energy statistical modelling</h1>
+<div id="modelling" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Building energy statistical modelling<a href="modelling.html#modelling" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The positioning of this book is statistical modelling and inference, applied to building energy performance assessment. In the previous chapter, this approach was presented as a compromise between physical interpretability of parameter estimates, and flexibility of predictive models.</p>
 <p>The first step into this approach, before taking data into consideration, is the probabilistic modelling of the energy balance of buildings. Rather than using Building Energy Simulation (BES) software, our approach is generally to start from simple models and gradually increase complexity if required. This means writing each equation individually, and formulating uncertainty into the probabilistic framework.</p>
-<div id="modelling1" class="section level2">
-<h2><span class="header-section-number">2.1</span> Building physics in a nutshell</h2>
+<div id="modelling1" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Building physics in a nutshell<a href="modelling.html#modelling1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>BES decomposes a building into separate thermal zones, each of which is assumed to have a uniform air temperature. A single-family house may be split into one or two zones, while larger housings and office buildings have more, usually denoted by their orientation and usage. The temporal evolution of temperature, humidity and other variables of comfort or indoor air quality, are calculated in each zone as consequences of: influence of the weather; exchange between zones; HVAC settings; occupancy. BES software can reach quite a high level of detail when modelling the phenomena that influence these indoor variables: long-wave radiative heat exchange between all walls; position of the sunspot; influence of furniture on indoor humidity; CFD modelling of air flow…</p>
 <p>Since we will give our building energy models a statistical formulation, these models should stay as simple as possible, while staying close to the main phenomena that govern the heat and energy balance of an observed building. A schematic outlook of heat gains and losses in a heated space is shown here, which we will summarise by three main equations (Fig. <a href="modelling.html#fig:sankey">2.1</a> below assumes the example of a heated building in which gas is the main fuel used by the heating appliances. A similar reasoning can be done in other conditions, such as an air conditioned building in summer).</p>
 <div class="figure"><span style="display:block;" id="fig:sankey"></span>
@@ -293,7 +341,7 @@ Figure 2.1: Decomposition of heat gains and losses in a heated zone
     \tag{2.1}
 \end{equation}\]</span></p>
 <p>Where <span class="math inline">\(C\)</span> is an effective heat capacity of the thermal zone.</p>
-<p>The second equation is the breakdown of <span class="math inline">\(\Phi_\mathit{in}\)</span>, which includes all heat gains of the room other than transmission and ventilation exchanges. This part is shown by red lines on Fig.  and will depend on the specificities of each building. A common list of usual heat inputs can be the following.
+<p>The second equation is the breakdown of <span class="math inline">\(\Phi_\mathit{in}\)</span>, which includes all heat gains of the room other than transmission and ventilation exchanges. This part is shown by red lines on Fig. <span class="math inline">\(\ref{fig:sankey}\)</span> and will depend on the specificities of each building. A common list of usual heat inputs can be the following.
 <span class="math display" id="eq:bilan2">\[\begin{equation}
     \Phi_\mathit{in} = \Phi_h + \Phi_\mathit{sol} + \Phi_\mathit{int}
     \tag{2.2}
@@ -335,8 +383,8 @@ The consumption intended for domestic hot water production <span class="math inl
 \end{align}\]</span>
 The <span class="math inline">\(H_\mathit{tr}\)</span> coefficient describes all heat transmission through the envelope, and the HTC also includes the effect of air infiltration. Controlled mechanical ventilation is not included in these coefficients, but may as well be considered as part of the heat gains in Eq. <a href="modelling.html#eq:bilan2">(2.2)</a>. One of the essential questions of this book will be the characterisation of HTC and <span class="math inline">\(H_\mathit{tr}\)</span>, using short-term or long-term measurements that may be recorded without disturbing the normal operation of the building.</p>
 </div>
-<div id="modelling2" class="section level2">
-<h2><span class="header-section-number">2.2</span> Measurement and modelling boundaries</h2>
+<div id="modelling2" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Measurement and modelling boundaries<a href="modelling.html#modelling2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The first step into setting up a probability model is the choice of its boundaries, i.e. which of the measured data is the <em>dependent</em> variable, and which are the <em>explanatory</em> variables.</p>
 <ul>
 <li>The dependent variable <span class="math inline">\(y\)</span>, or model output, is a variable that we wish for a fitted model to be able to predict (this book does not cover situations with several dependent variables in a single model).</li>
@@ -361,8 +409,8 @@ Figure 2.3: Assessing the performance of the envelope may involve models with th
 </div>
 <p>If the target of a study is to characterise some parameter <span class="math inline">\(\theta\)</span>, or evaluate the evolution of a latent variable, rather than train a predictive model, then the same dataset <span class="math inline">\(\mathcal{D}\)</span> can be mapped into input and output variables in different ways. Regardless of this choice, the principles of the above definition of measurement boundaries should be applied to modelling: any effects that are believed to influence the dependent variable should be either measured (explanatory variables), given assumed values (interactive effects), or estimated by fitting.</p>
 </div>
-<div id="modelling3" class="section level2">
-<h2><span class="header-section-number">2.3</span> Categories of statistical models</h2>
+<div id="modelling3" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Categories of statistical models<a href="modelling.html#modelling3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Once the modelling boundaries are set, the next step is choosing the model structure itself, i.e. the equations that relate dependent variables to independent variables and eventual latent variables. The next few sections will describe the different categories of models that will be implemented later in the applications, also summarized by Fig. <a href="modelling.html#fig:modeltypes">2.4</a>. Before getting to these descriptions, a summary of some notations and vocabulary they have in common might be helpful.</p>
 <div class="figure"><span style="display:block;" id="fig:modeltypes"></span>
 <img src="figures/204_modeltypes.png" alt="This book separates statistical models in categories according to two questions: whether the time resolution of data is high enough so that temporal dependencies should be accounted for; whether there is a direct relationship between dependent and independent variables or an indirect relationship through latent variables. Gaussian Process models will be presented separately because they can apply to most situations." width="90%" />
@@ -404,16 +452,16 @@ Finite mixture models can be parameterized as latent variable models, although t
 
 </div>
 </div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-gelman2013bayesian">
-<p>Gelman, Andrew, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. 2013. <em>Bayesian Data Analysis</em>. CRC press.</p>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-gelman2013bayesian" class="csl-entry">
+Gelman, Andrew, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. 2013. <em>Bayesian Data Analysis</em>. CRC press.
 </div>
-<div id="ref-murphy2002dynamic">
-<p>Murphy, Kevin Patrick. 2002. “Dynamic Bayesian Networks: Representation, Inference and Learning.”</p>
+<div id="ref-murphy2002dynamic" class="csl-entry">
+Murphy, Kevin Patrick. 2002. <span>“Dynamic Bayesian Networks: Representation, Inference and Learning.”</span>
 </div>
-<div id="ref-shumway2000time">
-<p>Shumway, Robert H, and David S Stoffer. 2000. <em>Time Series Analysis and Its Applications</em>. Vol. 3. Springer.</p>
+<div id="ref-shumway2000time" class="csl-entry">
+Shumway, Robert H, and David S Stoffer. 2000. <em>Time Series Analysis and Its Applications</em>. Vol. 3. Springer.
 </div>
 </div>
             </section>
@@ -454,8 +502,8 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/A02-modelling.Rmd",
-"text": "Edit"
+"link": null,
+"text": null
 },
 "history": {
 "link": null,
@@ -465,7 +513,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["buildingenergygeeks.pdf", "buildingenergygeeks.epub"],
+"download": null,
 "search": {
 "engine": "lunr",
 "options": null
