@@ -22,3 +22,5 @@ buildingenergygeeks.Rproj
 build_the_book.R
 /figures
 /backup bookdown
+# MyST build outputs
+_build

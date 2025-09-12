@@ -1,0 +1,22 @@
+version: 1
+project:
+  title: Building energy probabilistic modelling
+  authors:
+    - name: Simon Rouchier
+  github: srouchier/buildingenergygeeks
+  bibliography:
+    - references.bib
+  exports:
+    - format: pdf
+      template: plain_latex_book
+      output: exports/book.pdf
+  toc:
+    - file: index.md
+    - title: Part 1
+      children:
+        - file: a01_background.ipynb
+site:
+  options:
+    logo: logo.png
+    folders: true
+  template: book-theme
