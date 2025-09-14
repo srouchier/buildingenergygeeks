@@ -1,22 +1,15 @@
+# See docs at: https://mystmd.org/guide/frontmatter
 version: 1
 project:
-  title: Building energy probabilistic modelling
-  authors:
-    - name: Simon Rouchier
-  github: srouchier/buildingenergygeeks
-  bibliography:
-    - references.bib
-  exports:
-    - format: pdf
-      template: plain_latex_book
-      output: exports/book.pdf
-  toc:
-    - file: index.md
-    - title: Part 1
-      children:
-        - file: a01_background.ipynb
+  id: 67764986-d519-4b76-a657-56e9bd18ae19
+  # title:
+  # description:
+  # keywords: []
+  # authors: []
+  github: https://github.com/srouchier/buildingenergygeeks
+  # To autogenerate a Table of Contents, run "jupyter book init --write-toc"
 site:
-  options:
-    logo: logo.png
-    folders: true
   template: book-theme
+  # options:
+  #   favicon: favicon.ico
+  #   logo: site_logo.png

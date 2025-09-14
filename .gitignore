@@ -24,3 +24,6 @@ build_the_book.R
 /backup bookdown
 # MyST build outputs
 _build
+
+# MyST build outputs
+_build
