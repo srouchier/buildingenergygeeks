@@ -2,12 +2,13 @@
 version: 1
 project:
   id: 67764986-d519-4b76-a657-56e9bd18ae19
-  # title:
-  # description:
+  title: Building energy probabilistic modelling
+  description: Bayesian inference and prediction for building energy use
   # keywords: []
-  # authors: []
+  authors: Simon Rouchier
   github: https://github.com/srouchier/buildingenergygeeks
   # To autogenerate a Table of Contents, run "jupyter book init --write-toc"
+  exclude: data/**
 site:
   template: book-theme
   # options:
