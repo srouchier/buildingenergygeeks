@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Background on data analysis &#8212; Building energy probabilistic modelling</title>
+    <title>Motivation for probabilistic modelling &#8212; Building energy probabilistic modelling</title>
   
   
   
@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'a01_background';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Linear regression" href="b01_linearregression.html" />
+    <link rel="next" title="Simplified building energy modelling" href="a02_modelling.html" />
     <link rel="prev" title="Building energy probabilistic modelling" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -183,7 +183,9 @@
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Background</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Background on data analysis</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Motivation for probabilistic modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="a02_modelling.html">Simplified building energy modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="a03_workflow.html">A Bayesian data analysis workflow</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simple regression</span></p>
 <ul class="nav bd-sidenav">
@@ -373,7 +375,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Background on data analysis</h1>
+    <h1>Motivation for probabilistic modelling</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -409,8 +411,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="background-on-data-analysis">
-<span id="background"></span><h1>Background on data analysis<a class="headerlink" href="#background-on-data-analysis" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="motivation-for-probabilistic-modelling">
+<span id="background"></span><h1>Motivation for probabilistic modelling<a class="headerlink" href="#motivation-for-probabilistic-modelling" title="Link to this heading">#</a></h1>
 <section id="the-energy-savings-potential-of-buildings">
 <h2>The energy savings potential of buildings<a class="headerlink" href="#the-energy-savings-potential-of-buildings" title="Link to this heading">#</a></h2>
 <p>The energy consumption of buildings accounts for 40% of the global primary energy use and up to 33% of carbon emissions in some countries, mainly from the operation of heating, ventilation and air conditioning (HVAC) systems. The gap in energy performance between older, poorly insulated constructions, and newer net-zero energy or passive buildings with efficient energy control strategies, shows the magnitude of the improvement that could be brought to the energy efficiency of the building stock. It is commonly known that the share of new buildings in the overall construction sector is very low. Most buildings are several decades old and often have poor energy performance, especially compared to recent standards for new constructions. The largest potential for energy savings in the building sector therefore lies in the renovation of the existing building stock, or its proper energy management.</p>
@@ -423,10 +425,10 @@ document.write(`
 <h3>Formalisation of the system<a class="headerlink" href="#formalisation-of-the-system" title="Link to this heading">#</a></h3>
 <p>Before proposing a few examples on how data acquisition may support energy conservation measures, let us first formalise the framework, in which the following parts of this book will describe building energy performance.</p>
 <figure class="align-center" id="formalisation">
-<a class="reference internal image-reference" href="_images/101_formalisation.png"><img alt="_images/101_formalisation.png" src="_images/101_formalisation.png" style="width: 600px;" />
+<a class="reference internal image-reference" href="_images/101_formalisation.png"><img alt="_images/101_formalisation.png" src="_images/101_formalisation.png" style="width: 700px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Formalisation of the system into observable variables and non-measurable influences</span><a class="headerlink" href="#formalisation" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Formalisation of the system into observable variables and non-measurable influences. A slightly more elaborate formalisation will be proposed in <a class="reference internal" href="a02_modelling.html#modelling"><span class="std std-ref">the next chapter</span></a>.</span><a class="headerlink" href="#formalisation" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The first level of this formalisation are the two <strong>conditions</strong> imposed on the building: weather and occupancy. What these two terms have in common is the fact that the building’s designer does not get to choose or influence them: every analysis that we will conduct will be conditional on these imposed conditions.</p>
@@ -559,7 +561,14 @@ document.write(`
 <li><p>The GUM defines <strong>uncertainty</strong> (of measurement) as the dispersion of the values that could reasonably be attributed to a measured quantity. Similarly, parameter estimates or model predictions come with an uncertainty, which quantifies their possible range of values caused by the random errors in the measurement and modelling processes. Precision is an indicator of low uncertainty, and can be conveyed by <strong>confidence intervals</strong>.</p></li>
 <li><p>On the other hand, accuracy is a measure of <strong>bias</strong>. It is the difference between the “true” value of the target variable and the mean of our estimation.</p></li>
 </ul>
-<p>Biased estimates and predictions are the outcome of errors that have not been explicitely taken into account in the inverse problem. We tend to prefer low bias and high uncertainty, than high bias and low uncertainty: indeed, a high uncertainty suggests that the data were not sufficient to provide confident inferences, which incites caution when communicating the results. On the contrary, the bias cannot be simply estimated and is not visible. The worst case scenario is obtaining a bias higher than the uncertainty, which means that the true reference value is not even contained in our confidence interval. By including possible systematic errors in the model formulation, we wish to “turn bias into uncertainty”.</p>
+<p>Biased estimates and predictions are the outcome of errors that have not been explicitely taken into account in the inverse problem. We tend to prefer low bias and high uncertainty, than high bias and low uncertainty: indeed, a high uncertainty suggests that the data were not sufficient to provide confident inferences, which incites caution when communicating the results. On the contrary, the bias cannot be simply estimated and is not visible. The worst case scenario is obtaining a bias higher than the uncertainty, which means that the true reference value is not even contained in our confidence interval.</p>
+<figure class="align-center" id="errors2">
+<a class="reference internal image-reference" href="_images/111_errors2.png"><img alt="_images/111_errors2.png" src="_images/111_errors2.png" style="width: 400px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Even accounting for input uncertainty, a biased model will produced biased output after training.</span><a class="headerlink" href="#errors2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <p>In order to ensure, as much as possible, that the parameters and predictions returned by the model calibration procedure are unbiased and physically interpretable, a complete workflow will be described in the next chapter of this book. This workflow sums up the important steps that should be followed before and after applying the training algorithm itself, and the various tests to be performed to prevent biased conclusions. Statistical modelling will give us the tools to perform such a careful analysis of data.</p>
 </section>
 </section>
@@ -571,10 +580,10 @@ document.write(`
 <p>The previous sections have used expressions that seemed interchangeable, or at least overlapping in their definitions: model calibration; data-driven modelling; statistical learning and inference; inverse problems… These terms can describe the same process, or a part of it: collecting data and interpreting them with a numerical or a statistical model, in order to draw conclusions that will support energy conservation measures. There is so much literature on data-driven approaches for forecasting building energy consumption and demand, that several reviews are made every year, and a review of these reviews could be done. One noticeable trend is to classify models into white-box, grey-box and black-box (&#64;deb2021review), according to their physical interpretability.</p>
 <p>A classification of data analysis methods and terms is proposed here: models categories from white-box to black-box are shown on a scale of two criteria: physical interpretability and forecasting accuracy. They are then roughly separated into three types of approaches: model calibration (mostly for white-box models), machine learning (black-box) and statistical learning with (grey-box) probabilistic models).</p>
 <figure class="align-center" id="methods">
-<a class="reference internal image-reference" href="_images/111_methods.png"><img alt="_images/111_methods.png" src="_images/111_methods.png" style="width: 600px;" />
+<a class="reference internal image-reference" href="_images/112_methods.png"><img alt="_images/112_methods.png" src="_images/112_methods.png" style="width: 600px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Data analysis methods can be split into three categories.</span><a class="headerlink" href="#methods" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Data analysis methods can be split into three categories.</span><a class="headerlink" href="#methods" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The first criterion by which methods can be classified is their <strong>requirements</strong>. These applications shown above essentially have at least one of the following two requirements:</p>
@@ -686,11 +695,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="b01_linearregression.html"
+       href="a02_modelling.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Linear regression</p>
+        <p class="prev-next-title">Simplified building energy modelling</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

@@ -1,5 +1,13 @@
 # Building energy probabilistic modelling
 
+```{image} logo.png
+:alt: logo
+:width: 400px
+:align: center
+```
+
+This website promotes the use of Bayesian inference and prediction for building energy use. It includes some background on the Bayesian data analysis workflow, and tutorials with common building energy models.
+
 **September 2025**: This website is being migrated from bookdown (R) to jupyter-book (Python). This will take a few days. Thank you for your patience!
 
 ## Motivation

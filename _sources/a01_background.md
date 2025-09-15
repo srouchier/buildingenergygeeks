@@ -1,5 +1,5 @@
 (background)=
-# Background on data analysis
+# Motivation for probabilistic modelling
 
 ## The energy savings potential of buildings
 
@@ -18,10 +18,10 @@ Before proposing a few examples on how data acquisition may support energy conse
 ```{figure} /figures/101_formalisation.png
 ---
 name: formalisation
-width: 600px
+width: 700px
 align: center
 ---
-Formalisation of the system into observable variables and non-measurable influences
+Formalisation of the system into observable variables and non-measurable influences. A slightly more elaborate formalisation will be proposed in [the next chapter](modelling).
 ```
 
 The first level of this formalisation are the two **conditions** imposed on the building: weather and occupancy. What these two terms have in common is the fact that the building's designer does not get to choose or influence them: every analysis that we will conduct will be conditional on these imposed conditions.
@@ -200,7 +200,16 @@ We divided source of errors into experimental and numerical errors. The Guide to
 * The GUM defines **uncertainty** (of measurement) as the dispersion of the values that could reasonably be attributed to a measured quantity. Similarly, parameter estimates or model predictions come with an uncertainty, which quantifies their possible range of values caused by the random errors in the measurement and modelling processes. Precision is an indicator of low uncertainty, and can be conveyed by **confidence intervals**.
 * On the other hand, accuracy is a measure of **bias**. It is the difference between the "true" value of the target variable and the mean of our estimation.
 
-Biased estimates and predictions are the outcome of errors that have not been explicitely taken into account in the inverse problem. We tend to prefer low bias and high uncertainty, than high bias and low uncertainty: indeed, a high uncertainty suggests that the data were not sufficient to provide confident inferences, which incites caution when communicating the results. On the contrary, the bias cannot be simply estimated and is not visible. The worst case scenario is obtaining a bias higher than the uncertainty, which means that the true reference value is not even contained in our confidence interval. By including possible systematic errors in the model formulation, we wish to "turn bias into uncertainty”.
+Biased estimates and predictions are the outcome of errors that have not been explicitely taken into account in the inverse problem. We tend to prefer low bias and high uncertainty, than high bias and low uncertainty: indeed, a high uncertainty suggests that the data were not sufficient to provide confident inferences, which incites caution when communicating the results. On the contrary, the bias cannot be simply estimated and is not visible. The worst case scenario is obtaining a bias higher than the uncertainty, which means that the true reference value is not even contained in our confidence interval.
+
+```{figure} /figures/111_errors2.png
+---
+name: errors2
+width: 400px
+align: center
+---
+Even accounting for input uncertainty, a biased model will produced biased output after training.
+```
 
 In order to ensure, as much as possible, that the parameters and predictions returned by the model calibration procedure are unbiased and physically interpretable, a complete workflow will be described in the next chapter of this book. This workflow sums up the important steps that should be followed before and after applying the training algorithm itself, and the various tests to be performed to prevent biased conclusions. Statistical modelling will give us the tools to perform such a careful analysis of data.
 
@@ -215,7 +224,7 @@ The previous sections have used expressions that seemed interchangeable, or at l
 
 A classification of data analysis methods and terms is proposed here: models categories from white-box to black-box are shown on a scale of two criteria: physical interpretability and forecasting accuracy. They are then roughly separated into three types of approaches: model calibration (mostly for white-box models), machine learning (black-box) and statistical learning with (grey-box) probabilistic models).
 
-```{figure} /figures/111_methods.png
+```{figure} /figures/112_methods.png
 ---
 name: methods
 width: 600px
