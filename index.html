@@ -382,7 +382,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subsection-2">Subsection 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-of-the-book">Content of the book</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#programming-languages">Programming languages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about">About</a></li>
 </ul>
             </nav>
         </div>
@@ -396,9 +399,47 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="building-energy-probabilistic-modelling">
 <h1>Building energy probabilistic modelling<a class="headerlink" href="#building-energy-probabilistic-modelling" title="Link to this heading">#</a></h1>
-<p><strong>September 2025</strong>: This website is being migrated from bookdown (R) to jupyter-book (Python). This will take a few days: thank you for your patience!</p>
-<section id="subsection-2">
-<h2>Subsection 2<a class="headerlink" href="#subsection-2" title="Link to this heading">#</a></h2>
+<p><strong>September 2025</strong>: This website is being migrated from bookdown (R) to jupyter-book (Python). This will take a few days. Thank you for your patience!</p>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
+<p>Data science offers promising prospects for improving the energy efficiency of buildings. Thanks to the availability of smart meters and sensor networks, along with increasingly accessible algorithms for data processing and analysis, statistical models may be trained to predict the energy use of HVAC systems or the indoor conditions. These trained models and their predictions then lead to various inferences: assessing the real impact of energy conservation measures; identifying HVAC faults or physical properties of the envelope in order to provide incentive for retrofitting; minimizing energy consumption through model	predictive control; detecting and diagnosing faults; etc.</p>
+<p>The availability of measurements and computational power have given data mining methods an increasing popularity. The field of data analysis applied to building energy performance assessment however faces two main challenges to this day. Ironically, the first challenge is the abundance of data. Smart meters and building management systems deliver large amounts of information which can hide the few readings which are the most relevant to energy conservation. Automated monitoring and fault detection algorithms only do what they are told, and will hardly replace human intervention when it comes to understanding readings. The second challenge is the difficulty of data science. Without a principled methodology, it is very easy to draw erroneous conclusions, by incorrectly assuming that a model is properly trained. By lack of a background in statistics, building energy practitioners often lack the tools to ensure their inferences are correct.</p>
+</section>
+<section id="content-of-the-book">
+<h2>Content of the book<a class="headerlink" href="#content-of-the-book" title="Link to this heading">#</a></h2>
+<p>The topic of this book is statistical modelling and inference applied to building energy performance assessment. It has two target audiences: building energy researchers and practitioners who need a gentle introduction to statistical modelling; statisticians who may be interested in applications to energy performance.</p>
+<p>The first part of the book covers the motivation and theoretical background.</p>
+<ul class="simple">
+<li><p>An overview of the possibilities of data analysis applied to building energy performance assessment, and of the main categories and challenges of data analysis methods.</p></li>
+<li><p>A quick description of building physics and how they can be formulated as statistical models.</p></li>
+<li><p>The main steps of a Bayesian workflow for statistical modelling and inference, which aims at making sure that models are well defined and trained for a given application.</p></li>
+</ul>
+<p>Then, the rest of the book shows some applications. It is a series of Python notebooks classified into chapters, each focusing on a type of model. The notebooks are self-sufficient, and mention whether non-standard libraries or other software should be installed.</p>
+<ul class="simple">
+<li><p>Regression and mixture models</p></li>
+<li><p>Time series analysis</p></li>
+<li><p>State-space models for</p></li>
+<li><p>Gaussian Process models</p></li>
+</ul>
+<p>The target of the book is that the basics of Bayesian data analysis are explained to building energy practitioners who don’t necessarily have a large background on statistics.</p>
+<p>The book <strong>does not</strong> cover:</p>
+<ul class="simple">
+<li><p>Data acquisition and pre-processing, although a crucial step of data analysis, will not be explained in detail for each problem.</p></li>
+<li><p>Big data. The typical size of our data files is a few MB, up to a few GB for the largest sets. This is far from what computer scientists consider “big data”.</p></li>
+<li><p>Machine learning. Even when the target of a particular problem is prediction rather than inference of physical properties, our statistical models will always have some degree of physical interpretability.</p></li>
+<li><p>Classification. Most of the methods shown are variations of regression problems, as our models will almost always have quantitative responses. There are however strong links with classification problems, especially when it comes to identifying occupant presence and behaviour.</p></li>
+</ul>
+</section>
+<section id="programming-languages">
+<h2>Programming languages<a class="headerlink" href="#programming-languages" title="Link to this heading">#</a></h2>
+<p>This book is written and maintained with <a class="reference external" href="https://jupyterbook.org/en/stable/intro.html">jupyter-book</a>.</p>
+<p>This section will be updated later into a list of packages used in the tutorials.</p>
+</section>
+<section id="about">
+<h2>About<a class="headerlink" href="#about" title="Link to this heading">#</a></h2>
+<p>I am <a class="reference external" href="https://srouchier.github.io/">Simon Rouchier</a>, lecturer at the <a class="reference external" href="https://www.univ-smb.fr/">Université Savoie Mont Blanc</a>, Chambéry, France.</p>
+<p>This website is the beta version of a future book. It possibly still has some typos and inconsistencies: I welcome all feedback by <a class="reference external" href="https://srouchier.github.io/">email</a> or through the book’s <a class="reference external" href="https://github.com/srouchier/buildingenergygeeks">Github repo</a>.</p>
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Ce(tte) œuvre est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.</p>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -461,7 +502,10 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subsection-2">Subsection 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-of-the-book">Content of the book</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#programming-languages">Programming languages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about">About</a></li>
 </ul>
   </nav></div>
 
@@ -486,7 +530,7 @@ By Simon Rouchier
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>
