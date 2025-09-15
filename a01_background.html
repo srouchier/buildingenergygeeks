@@ -57,6 +57,8 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'a01_background';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -384,6 +386,16 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-energy-savings-potential-of-buildings">The energy savings potential of buildings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-data-to-energy-savings">From data to energy savings</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formalisation-of-the-system">Formalisation of the system</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-uses-of-data">Some uses of data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-calibration-as-the-key-to-data-analysis">Model calibration as the key to data analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-difficulty-of-inverse-problems">The difficulty of inverse problems</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categories-of-data-driven-modelling-approaches">Categories of data-driven modelling approaches</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#either-physical-interpretability-or-prediction-accuracy">Either physical interpretability or prediction accuracy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calibrated-simulation-white-box">Calibrated simulation (white-box)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-learning-black-box">Machine learning (black-box)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-modelling-and-inference-grey-box">Statistical modelling and inference (grey-box)</a></li>
 </ul>
 </li>
 </ul>
@@ -410,8 +422,226 @@ document.write(`
 <section id="formalisation-of-the-system">
 <h3>Formalisation of the system<a class="headerlink" href="#formalisation-of-the-system" title="Link to this heading">#</a></h3>
 <p>Before proposing a few examples on how data acquisition may support energy conservation measures, let us first formalise the framework, in which the following parts of this book will describe building energy performance.</p>
-<a class="reference internal image-reference" href="_images/101_formalisation.png"><img alt="fishy" class="align-center" src="_images/101_formalisation.png" style="width: 400px;" />
+<figure class="align-center" id="formalisation">
+<a class="reference internal image-reference" href="_images/101_formalisation.png"><img alt="_images/101_formalisation.png" src="_images/101_formalisation.png" style="width: 600px;" />
 </a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Formalisation of the system into observable variables and non-measurable influences</span><a class="headerlink" href="#formalisation" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The first level of this formalisation are the two <strong>conditions</strong> imposed on the building: weather and occupancy. What these two terms have in common is the fact that the building’s designer does not get to choose or influence them: every analysis that we will conduct will be conditional on these imposed conditions.</p>
+<p>The weather imposes the outdoor boundary conditions of the building envelope. It can be described as a set of measurable quantities (outdoor air temperature, humidity, direct and diffuse solar irradiance, wind speed and direction…), some of which are predictable to some extent. The occupancy is more difficult to extensively describe with a finite set of variables. This term is used here to encompass all actions and choices of the occupants regarding their own comfort and how they “operate” the building: leaving and entering the building, setting indoor temperature set points, opening and closing windows, operating appliances that consume energy… These actions cannot be simply measured and summarised into a few descriptive variables, as can be the weather.</p>
+<p>The second level of the formalisation is the <strong>building</strong> itself. Building energy simulation usually separates the description of the HVAC systems and the envelope. Both can be characterised in terms of energy performance by a finite set of <strong>intrinsic performance metrics</strong>: heat transfer coefficient of the envelope, boiler efficiency, window transmissivity, pipe network heat loss… These quantities cannot be directly observed, and define the intrinsic energy performance of the building: their values should not depend on the current state of the two previously mentioned conditions.</p>
+<p>The third level of the formalisation includes all extensive and intensive <strong>variables that can be measured</strong> by any kind of meter or sensor, inside or near the building. These variables are the consequences of the two conditions (weather and occupancy) coupled with the building’s intrinsic performance. They include readings from energy meters, variables which describe the indoor air (temperature, relative humidity, CO<span class="math notranslate nohighlight">\(_2\)</span> concentration…) and various signals that describe the state of operation of HVAC systems or envelope components. The indoor air temperature, for instance, is influenced by the weather (outdoor air temperature, solar irradiance), the occupants (who chose the set point) and the intrinsic building energy performance (heat transfer coefficient and inertia of the envelope, efficiency of the temperature control loop). These variables, along with weather variables, constitute the <strong>data</strong> from which we will perform inferences and predictions.</p>
+</section>
+<section id="some-uses-of-data">
+<h3>Some uses of data<a class="headerlink" href="#some-uses-of-data" title="Link to this heading">#</a></h3>
+<p>We now use this formalisation to demonstrate a few examples of how recorded data may be used to motivate energy conservation measures or verify their efficiency.</p>
+<figure class="align-center" id="applications">
+<a class="reference internal image-reference" href="_images/102_applications.png"><img alt="_images/102_applications.png" src="_images/102_applications.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">How data can be used for various inferences and predictions</span><a class="headerlink" href="#applications" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p><strong>Forecasting energy use</strong></p></li>
+</ul>
+<p>The ability to predict the energy use of buildings is a useful tool for energy management, from the scale of a single dwelling to the scale of energy distribution in a smart grid. On a side note, we can mention a difference between the terms of <em>prediction</em> and <em>forecasting</em>. In modelling studies, prediction is a general term that means computing the outcome of any simulation model, while forecasting specifically denotes estimating the future values of a time series, on a time horizon where observations are not available.</p>
+<p>Two factors may facilitate the ability to forecast a time series. The first of these advantageous characteristics is a repetitive trend in an energy consumption profile (see Fig. <a class="reference internal" href="#prediction1"><span class="std std-numref">Fig. 3</span></a>). Large office buildings, collective housing and retail facilities tend to display a predictable daily profile for energy uses that have a low dependency on environmental factors, such as lighting and electrical appliances. Some energy uses mostly depend on user behaviour, whose stochastic behaviour tend to be smoothed out at larger scales of observation.</p>
+<figure class="align-center" id="prediction1">
+<a class="reference internal image-reference" href="_images/103_prediction1.png"><img alt="_images/103_prediction1.png" src="_images/103_prediction1.png" style="width: 300px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Repetitive consumption profiles are easy to forecast by extrapolating daily and seasonal fluctuations</span><a class="headerlink" href="#prediction1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Another factor that facilitates the prediction of energy use is a high dependency on an environmental factor that is itself easy to get forecasts of. In a building with a controlled set-point indoor temperature, a strong correlation may be observed between the outdoor temperature and the heating power in winter (see Fig. <a class="reference internal" href="#prediction2"><span class="std std-numref">Fig. 4</span></a>). The outdoor temperature is then considered a significant <strong>explanatory variable</strong>: its forecasts will allow forecasting the heating power with a satisfactory confidence.</p>
+<figure class="align-center" id="prediction2">
+<a class="reference internal image-reference" href="_images/104_prediction2.png"><img alt="_images/104_prediction2.png" src="_images/104_prediction2.png" style="width: 300px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">A correlation between outdoor temperature and heating power can be used to predict future demand</span><a class="headerlink" href="#prediction2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>These two examples illustrate two categories of leverages in time series analysis and forecasting. When forecasting a particular series, we can either make use of its own characteristics (periodicity, seasonality, autocorrelation…), or identify dependencies with other measurable data.</p>
+<ul class="simple">
+<li><p><strong>Measurement and verification (M&amp;V)</strong></p></li>
+</ul>
+<p>The ability to predict energy demand can also be valued in the context of Measurement and Verification (M&amp;V). M&amp;V is the process of assessing savings caused by an Energy Conservation Measure (ECM). Savings are determined by comparing measured consumption or demand before and after implementation of a program, making suitable adjustments for changes in conditions. The International Performance Measurement and Verification Protocol (IPMVP) formalizes this process, and presents several options to conduct it.</p>
+<figure class="align-center" id="ipmvp">
+<a class="reference internal image-reference" href="_images/105_mv.png"><img alt="_images/105_mv.png" src="_images/105_mv.png" style="width: 300px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The IPMVP provides guidelines on how to perform M&amp;V</span><a class="headerlink" href="#ipmvp" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>An example of adjustment is, when estimating the energy savings delivered by an ECM, to substract its new energy consumption from the consumption that would have occurred <em>if the building had stayed in the same situation</em> in the weather conditions of the reporting period (adjusted baseline consumption). This requires a prediction model that can extrapolate the initial behaviour of the building by accounting for variable weather conditions. Other possible adjustments include changes in occupancy schedules. This is necessary to assess whether measured energy savings are caused by the ECM itself, or by changes in these influences.</p>
+<p>The IPMVP presents several options, depending on whether the operation concerns an entire facility or a portion, and defines the notion of <em>measurement boundary</em> as the set of measurements that are relevant to determine savings. In order to verify the savings from a single equipment, and a measurement boundary can be drawn around it, the approach used is retrofit-isolation: IPMVP options A and B. If the purpose of reporting is to verify total facility energy performance, the approach is the whole-facility option C. All options must account for the presence of interactive effects: energy impacts created by the ECM that cannot be measured within the measurement boundary. Any option that requires adjustment on measured independent variables implies the use of a prediction model, even a simple one. In the IPMVP option D, savings are determined through simulation of the energy consumption rather than direct measurements. The simulation model is calibrated so that it predicts the energy and load that matches the actual metered data. Under the correct assumptions, and with the right methodology (which we propose in this book!), calibrated simulation is potentially a very powerful M&amp;V methodology, as it may disaggregate energy uses and estimate interactive effects outside of the measurement boundary.</p>
+<p>M&amp;V is a crucial tool in the establishment of Energy Performance Contracts (EPC), which can be established on the basis of designed performance (building energy simulation), with an eventual uncertainty analysis and/or sensitivity analysis, or on the basis of measured energy consumption.</p>
+<ul class="simple">
+<li><p><strong>Intrinsic performance assessment</strong></p></li>
+</ul>
+<p>The third hereby presented application of data analysis is the estimation of quantitative indicators of the intrinsic energy performance of a building. This is different from the M&amp;V process as it does not necessarily imply the comparison between before/after situations. One typical example is the Heat Loss Coefficient (HLC), or the Heat Transfer Coefficient, which characterize heat transmission through the envelope, eventually including air infiltration. The co-heating test is one of the well-known methods for HLC assessment: it measures the heating power required to maintain a steady indoor temperature, and obtains HLC by averaging these measurements over a sufficiently long period.</p>
+<figure class="align-center" id="hlc">
+<a class="reference internal image-reference" href="_images/106_hlc.png"><img alt="_images/106_hlc.png" src="_images/106_hlc.png" style="width: 300px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The co-heating test records the heating power, indoor and outdoor temperature, in order to estimate the heat loss coefficient of the envelope</span><a class="headerlink" href="#hlc" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>What is referred here as <em>intrinsic performance assessment</em> may also be called characterization, or parameter estimation, since it primarily works by estimating the values of static parameters of a simulation model. Such parameters may include the HLC, but also the efficiency of a system, an air infiltration rate… Hence, it can be part of an energy audit to help characterize the state of a building and its eventual flaws before the design of an ECM.</p>
+<ul class="simple">
+<li><p><strong>Fault detection and diagnostics</strong></p></li>
+</ul>
+<p>One of the characteristics of “smart buildings” is the ability to monitor energy usage with the aim of identifying abnormal consumption behaviour and notifying the building manager to implement appropriate procedures (&#64;araya2017ensemble). Fault detection and diagnostics (FDD) is the process of using building operational data to detect the occurence of faults and identify their root causes (&#64;granderson2020building). This process can be done manually, or by an algorithm delevoped to perform it automatically.</p>
+<figure class="align-center" id="fdd">
+<a class="reference internal image-reference" href="_images/107_fault.png"><img alt="_images/107_fault.png" src="_images/107_fault.png" style="width: 300px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Fault detection is a double challenge: (1) automatically detecting a difference between measurements and normal behaviour; (2) identifying its possible cause.</span><a class="headerlink" href="#fdd" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Many supervised statistical learning methods for building energy load forecasting and anomaly detection have been developed in the last years. FDD is a challenging topic because it needs to reconcile two targets: efficient pattern detection among possibly large amounts of data, and physical interpretability of detected anomalies based on a detailed description of the building and its components.</p>
+</section>
+<section id="model-calibration-as-the-key-to-data-analysis">
+<h3>Model calibration as the key to data analysis<a class="headerlink" href="#model-calibration-as-the-key-to-data-analysis" title="Link to this heading">#</a></h3>
+<p>All the applications described above can be summarized by the same description: data are recorded and interpreted to draw conclusions about quantities that are either not directly observable (such as estimating a heat loss coefficient), or not yet observed (such as forecasting energy use). In all cases, the missing link between the data and the conclusion is a numerical model.</p>
+<figure class="align-center" id="process">
+<a class="reference internal image-reference" href="_images/108_process.png"><img alt="_images/108_process.png" src="_images/108_process.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">The overall process of collecting and analyzing data</span><a class="headerlink" href="#process" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>As was described by the formalisation proposed above, the energy consumption of HVAC systems and other appliances, along with other measurable indoor variables, are the consequences of two sets of conditions (weather and occupancy) and of the intrinsic energy performance of the envelope and systems. Disaggregating each of these influences, and accessing intrinsic energy performance indicators, is a major challenge. For instance, measurement and verification protocols attempt to demonstrate whether energy savings may be attributed to an energy conservation measure, or is partially caused by a change in weather or occupancy behaviour.</p>
+<p>After identifying the phenomena that we wish to predict, or the performance indicators that we wish to estimate, monitoring equipment is implemented for data acquisition. Measurements are an insight of the real behaviour of a building, and are the basis for training the models that will reproduce it. The required types of monitoring depend on the characterisation target and on the specific energy uses of the building under study. In all cases, measurements can only provide a very fractional view of all phenomena that drive the energy performance. Heating and cooling energy consumption, for instance, is the outcome of several concurring heat transfer phenomena: transmission through the envelope and between thermal zones; convection through ventilation and air infiltration; temperature stratification inside each room; long-wave radiative heat exchange between walls… Heating and cooling are also not the only energy consumptions that an operator may wish to be able to predict. Unless separate energy meters are implemented on each system and appliance, measurements of energy consumption are often aggregated values from which separate uses are difficult to isolate. Other important characteristics of the monitoring equipment are: the type and accuracy of sensors used for a given measurement, the acquisition time step, the spatial granularity of observation.</p>
+<p>Raw data only describes a fraction of the overall system, and does not allow disaggregating intrinsic energy performance indicators from influences of the weather and of the occupants. The solution to this problem is to define a <strong>numerical model</strong> as the missing link between the complexity of the real building and the conciseness of the data. The model is a numerical description of the building, where the non-observable performance indicators are given a specified value. The conditions imposed by the weather and the occupants are quantified in the equations of the model, which in turn provides values for energy consumption or indoor variables as output. Model specification is all but trivial, especially because of the variety of model types offered by building energy simulation. Selecting an appropriate model structure is essential to the learning procedure. The complexity of the model is a compromise between realism and parcimony: it should at least describe all the most significant processes occuring in the system, and should not allow any redundancy in the input-output relationship. Among several models, equally capable of reproducing a dataset, the best choice is usually the most simple one <span id="id1">[<a class="reference internal" href="#id17" title="Trevor Hastie, Robert Tibshirani, and Jerome Friedman. The elements of statistical learning: data mining, inference, and prediction. Springer Science &amp; Business Media, 2009.">Hastie <em>et al.</em>, 2009</a>]</span>.</p>
+<p>The model is first defined after our knowledge of the state of the building. The next step is its <strong>calibration</strong> using the measured data. Calibrating a model means finding the settings or set of parameters with which its output best matches a series of observations, called a training dataset. This data usually originates from measurements (in either experimental test cells or real buildings), but may also have been produced by a complex reference model that we wish to approximate by a simplified one. There are two main outcomes of model training, which were already shown by two categories of data analysis applications:</p>
+<ul class="simple">
+<li><p>The first outcome are inferences about the processes that generated the data. If the model structure was appropriately chosen for this purpose, its parameters are related to the intrinsic energy performance indicators of the building.</p></li>
+<li><p>The second outcome is the ability acquired by the model to reproduce measurements, and therefore forecast the future values of some of the observed variables.</p></li>
+</ul>
+<p>Model calibration is therefore the key to all applications of data analysis that we mentioned earlier. It is however a more complicated problem than it seems and requires careful choices at every step of the entire procedure.</p>
+</section>
+<section id="the-difficulty-of-inverse-problems">
+<span id="inverseproblems"></span><h3>The difficulty of inverse problems<a class="headerlink" href="#the-difficulty-of-inverse-problems" title="Link to this heading">#</a></h3>
+<p>Inverse techniques are a suite of methods which promise to provide better experiments and improved understanding of physical processes. Inverse problem theory can be summed up as the science of training models using measurements. The target of such a training is either to learn physical properties of a system by indirect measurements, or setting up a predictive model that can reproduce past observations. In the last couple of decades, building physics researchers have benefited from elements of statistical learning and time series analysis to improve their ability to construct knowledge from data. What is referred to here as inverse problems are actually a very broad field that encompasses any study where data is gathered and mined for information. Inverse heat transfer theory <span id="id2">[<a class="reference internal" href="#id12" title="James V Beck, Ben Blackwell, and Charles R St Clair Jr. Inverse heat conduction: Ill-posed problems. James Beck, 1985.">Beck <em>et al.</em>, 1985</a>]</span> was developed as a way to quantify heat exchange and thermal properties, and has translated well into building physics.</p>
+<p>Many engineers and researchers however lack the tools for a critical analysis of their results. This caution is particularly important as the dimensionality of the problem (i.e. the number of unknown parameters) increases. When data are available and a model is written to get a better understanding of it, it is very tempting to simply run an optimisation algorithm and assume that the calibrated model has become a sensible representation of reality. If the parameter estimation problem has a relatively low complexity (i.e. few parameters and sufficient measurements), it can be solved without difficulty. In these cases, authors often do not carry a thorough analysis of results, their reliability and ranges of uncertainty. However, it is highly interesting to attempt extracting the most possible information from given data, or to lower the experimental cost required by a given estimation target. System identification then becomes a more demanding task, which cannot be done without proof of reliability of its results. One should not overlook the mathematical challenges of inverse problems which, when added to measurement uncertainty and modelling approximations, can easily result in erroneous inferences.</p>
+<figure class="align-center" id="inverse">
+<a class="reference internal image-reference" href="_images/109_inverse.png"><img alt="_images/109_inverse.png" src="_images/109_inverse.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Inverse problems in a nutshell</span><a class="headerlink" href="#inverse" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Following the formalisation of building energy monitoring shown above, we propose a formalisation of a typical inverse problem for building physics <span id="id3">[<a class="reference internal" href="#id13" title="Simon Rouchier. Solving inverse problems in building physics: an overview of guidelines for a careful and optimal use of data. Energy and Buildings, 166:178–195, 2018.">Rouchier, 2018</a>]</span>, without considering any statistical aspects for now.</p>
+<p>The general principle of solving a system identification problem is to describe an observed phenomenon by a model allowing its simulation. Measurements <span class="math notranslate nohighlight">\(\mathbf{z}=(\mathbf{u},\mathbf{y})\)</span> are carried in an experimental setup: a building is probed for the quantities from which we wish to estimate its energy performance (indoor temperature, meter readings, climate, etc.) A model is defined as a mapping between some of the measurements set as input <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> (boundary conditions, weather data) and some as output <span class="math notranslate nohighlight">\(\mathbf{y}\)</span>. A numerical model is a mathematical formulation of the outputs <span class="math notranslate nohighlight">\(\hat y(u, \theta)\)</span>, parameterised by a finite set of variables <span class="math notranslate nohighlight">\(\theta\)</span>. The most intuitive way to calibrate a model is to minimize an indicator such as the sum of squared residuals with an optimisation algorithm, in order to find the value of <span class="math notranslate nohighlight">\(\theta\)</span> that makes the model most closely match the data.</p>
+<p>Ideally, the model is unbiased: it accurately describes the behaviour of the system, so that there exists a true value <span class="math notranslate nohighlight">\(\theta^*\)</span> of the parameter vector for which the output <span class="math notranslate nohighlight">\(\hat y\)</span> reproduces the undisturbed value of observed variables.</p>
+<div class="math notranslate nohighlight" id="equation-bias">
+<span class="eqno">(1)<a class="headerlink" href="#equation-bias" title="Link to this equation">#</a></span>\[\mathbf{y}_k = \mathbf{\hat y}_k(u, \theta^*) + \varepsilon_k\]</div>
+<p>where <span class="math notranslate nohighlight">\(\varepsilon\)</span> denotes measurement error, i.e. the difference between the real process <span class="math notranslate nohighlight">\(y^*\)</span> and its observed value <span class="math notranslate nohighlight">\(y\)</span>. The most convenient assumption is that of additive noise, i.e. <span class="math notranslate nohighlight">\(\varepsilon_k\)</span> is a sequence of independent and identically distributed random variables.</p>
+<p>In practice, <span class="math notranslate nohighlight">\(\theta^*\)</span> will never be reached exactly, but rather approached by an estimator <span class="math notranslate nohighlight">\(\hat \theta\)</span>, because the entire process of estimating it from measurements is disturbed by an array of approximations <span id="id4">[<a class="reference internal" href="#id14" title="Denis Maillet. Problèmes inverses en diffusion thermique. Ed. Techniques Ingénieur, 2010.">Maillet, 2010</a>]</span></p>
+<ul class="simple">
+<li><p>Experimental errors. The numerical data <span class="math notranslate nohighlight">\((u,y)\)</span> available for model calibration differs from the hypothetical outcome of the ideal, undisturbed physical system <span class="math notranslate nohighlight">\((u^*,y^*)\)</span>. Sensors may be intrusive, produce noisy measurements, may be poorly calibrated, have a finite precision and resolution…</p></li>
+<li><p>Numerical errors. The hypothesis of an unbiased model (Eq. <a class="reference internal" href="#equation-bias">(1)</a>) states that there exists a parameter value <span class="math notranslate nohighlight">\(\theta^*\)</span> for which the model output is separated from the observations <span class="math notranslate nohighlight">\(y\)</span> only by a zero mean, Gaussian distributed measurement noise. It means that the model perfectly reproduces the physical reality, and the only perceptible error is due to the imperfection of sensors. This is exceedingly optimistic, especially in building energy simulation.</p></li>
+</ul>
+<p>Measurement and modelling approximations are problematic because inverse problems are typically ill-posed <span id="id5">[<a class="reference internal" href="#id12" title="James V Beck, Ben Blackwell, and Charles R St Clair Jr. Inverse heat conduction: Ill-posed problems. James Beck, 1985.">Beck <em>et al.</em>, 1985</a>]</span>: their solution is highly sensitive to noise in the measured data and approximation errors. A global optimum of the inverse problem may then be found with unrealistic physical values for <span class="math notranslate nohighlight">\(\theta\)</span> as a consequence of seemingly moderate errors made when setting up the problem.</p>
+<figure class="align-center" id="errors">
+<a class="reference internal image-reference" href="_images/110_errors.png"><img alt="_images/110_errors.png" src="_images/110_errors.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Errors and uncertainties on parameter estimation, caused by measurement and modelling errors</span><a class="headerlink" href="#errors" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>We divided source of errors into experimental and numerical errors. The Guide to the expression of Uncertainty in Measurement (GUM) <span id="id6">[<a class="reference internal" href="#id15" title="JCGM. Evaluation of measurement data—guide to the expression of uncertainty in measurement. Int. Organ. Stand. Geneva ISBN, 50:134, 2008.">JCGM, 2008</a>]</span> then separates errors into a <strong>random</strong> component and a <strong>systematic</strong> component: systematic errors are errors which retain a non-zero mean if the measurement was repeated an infinite number of times under repeatability conditions. Systematic and random errors, whether they concern the measurement or the modelling procedures, will affect the estimation of a parameter <span class="math notranslate nohighlight">\(\theta\)</span> in terms of <strong>accuracy</strong> and <strong>precision</strong>. The figure above illustrates accuracy and precision in the case of estimating a parameter value <span class="math notranslate nohighlight">\(\theta\)</span>, but the exact same terminology can be used if the purpose of the trained model is to predict the future values of a variable <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<ul class="simple">
+<li><p>The GUM defines <strong>uncertainty</strong> (of measurement) as the dispersion of the values that could reasonably be attributed to a measured quantity. Similarly, parameter estimates or model predictions come with an uncertainty, which quantifies their possible range of values caused by the random errors in the measurement and modelling processes. Precision is an indicator of low uncertainty, and can be conveyed by <strong>confidence intervals</strong>.</p></li>
+<li><p>On the other hand, accuracy is a measure of <strong>bias</strong>. It is the difference between the “true” value of the target variable and the mean of our estimation.</p></li>
+</ul>
+<p>Biased estimates and predictions are the outcome of errors that have not been explicitely taken into account in the inverse problem. We tend to prefer low bias and high uncertainty, than high bias and low uncertainty: indeed, a high uncertainty suggests that the data were not sufficient to provide confident inferences, which incites caution when communicating the results. On the contrary, the bias cannot be simply estimated and is not visible. The worst case scenario is obtaining a bias higher than the uncertainty, which means that the true reference value is not even contained in our confidence interval. By including possible systematic errors in the model formulation, we wish to “turn bias into uncertainty”.</p>
+<p>In order to ensure, as much as possible, that the parameters and predictions returned by the model calibration procedure are unbiased and physically interpretable, a complete workflow will be described in the next chapter of this book. This workflow sums up the important steps that should be followed before and after applying the training algorithm itself, and the various tests to be performed to prevent biased conclusions. Statistical modelling will give us the tools to perform such a careful analysis of data.</p>
+</section>
+</section>
+<section id="categories-of-data-driven-modelling-approaches">
+<span id="categories"></span><h2>Categories of data-driven modelling approaches<a class="headerlink" href="#categories-of-data-driven-modelling-approaches" title="Link to this heading">#</a></h2>
+<section id="either-physical-interpretability-or-prediction-accuracy">
+<h3>Either physical interpretability or prediction accuracy<a class="headerlink" href="#either-physical-interpretability-or-prediction-accuracy" title="Link to this heading">#</a></h3>
+<p>The main subject of this book is to propose a workflow for the analysis of building energy data, that attempts to make the most out of the available data while avoiding the inherent pitfalls of inverse problems. This workflow is described and applied in the parts of the book that follow. Before presenting it, it is however perhaps necessary to clarify some aspects of vocabulary.</p>
+<p>The previous sections have used expressions that seemed interchangeable, or at least overlapping in their definitions: model calibration; data-driven modelling; statistical learning and inference; inverse problems… These terms can describe the same process, or a part of it: collecting data and interpreting them with a numerical or a statistical model, in order to draw conclusions that will support energy conservation measures. There is so much literature on data-driven approaches for forecasting building energy consumption and demand, that several reviews are made every year, and a review of these reviews could be done. One noticeable trend is to classify models into white-box, grey-box and black-box (&#64;deb2021review), according to their physical interpretability.</p>
+<p>A classification of data analysis methods and terms is proposed here: models categories from white-box to black-box are shown on a scale of two criteria: physical interpretability and forecasting accuracy. They are then roughly separated into three types of approaches: model calibration (mostly for white-box models), machine learning (black-box) and statistical learning with (grey-box) probabilistic models).</p>
+<figure class="align-center" id="methods">
+<a class="reference internal image-reference" href="_images/111_methods.png"><img alt="_images/111_methods.png" src="_images/111_methods.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Data analysis methods can be split into three categories.</span><a class="headerlink" href="#methods" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The first criterion by which methods can be classified is their <strong>requirements</strong>. These applications shown above essentially have at least one of the following two requirements:</p>
+<ul class="simple">
+<li><p>Applications that require the ability to <strong>accurately forecast</strong> the energy use, or any other variable: energy management, optimised predictive control. These applications do not need the trained predictive model to have physically interpretable parameters, or even parameters at all.</p></li>
+<li><p>Applications that involve learning the value of one or more <strong>interpretable physical values</strong> that describe physical properties of a building. These applications, such as the co-heating test, may be denote performance assessment or characterisation.</p></li>
+</ul>
+<p>Some applications require both prediction accuracy and physical interpretability to some extent: measurement and verification, commissioning, fault detection…</p>
+<p>The requirement of data analysis will determine the type of model that will be trained to replicate the data. The type of model is then closely related to the way that inferences will be drawn from it. We can loosely classify data analysis workflows into the three following categories:</p>
+</section>
+<section id="calibrated-simulation-white-box">
+<h3>Calibrated simulation (white-box)<a class="headerlink" href="#calibrated-simulation-white-box" title="Link to this heading">#</a></h3>
+<p>Model calibration usually denotes fitting numerical models which are based on a more or less detailed physical description of the building, complete with a description of HVAC systems and controls, usually without a statistical representation of variables. The advantage of these models is their interpretability: each parameter has a direct meaning, which can be related to thermophysical properties of the envelope or systems. The IPMVP Option D evaluates energy savings by directly adding or removing energy conservation measures in a calibrated numerical model, and therefore requires such a detailed description of the building.</p>
+<p>Detailed building energy models can be trained to replicate data by manual adjustement of parameters, or by more automated  methods <span id="id7">[<a class="reference internal" href="#id16" title="T Agami Reddy. Literature review on calibration of building energy simulation programs: uses, problems, procedures, uncertainty, and tools. ASHRAE transactions, 112:226, 2006.">Reddy, 2006</a>]</span>. The ASHRAE Guideline 14 specifies what is an acceptable level of accuracy or uncertainty for a calibrated simulation with very permissive criteria: “typically, models are declared to be calibrated if they produce Mean Bias Errors (MBE) within 10% and CV(RMSE) within 30% when using hourly data, or 5% MBE and 15% CV(RMSE) with monthly data.”</p>
+<p>Calibrating detailed models however comes with conditions and limitations. A sufficiently detailed model, with enough degrees of freedom, will have no difficulty satisfying the above criteria, but may do so without necessarily assigning their true physical value to each parameter. This inverse problem may have identifiability issues, i.e. the existence of infinitely many combinations of different parameters which result in the same model output. A preliminary sensitivity analysis may be conducted in order to only select the most significant parameters as free for calibration, while fixing the rest. Still, deterministic models greatly underestimate the bias and uncertainty of their own predictions, and calibrated simulation can easily satisfy ASHRAE’s validation criterion without representing the true state of a building.</p>
+</section>
+<section id="machine-learning-black-box">
+<h3>Machine learning (black-box)<a class="headerlink" href="#machine-learning-black-box" title="Link to this heading">#</a></h3>
+<p>On the other side of the spectrum, <strong>machine learning</strong> (ML) is a purely data-driven approach. ML models are not based on physical considerations, but are designed to replicate observed patterns with maximum flexibility and adaptability. The most popular choices of ML methods are Artificial Neural Networks, Support Vector Machines, Boosting and Random Forests. One of the main references on the field is The Elements of Statistical Learning by <span id="id8">[<a class="reference internal" href="#id17" title="Trevor Hastie, Robert Tibshirani, and Jerome Friedman. The elements of statistical learning: data mining, inference, and prediction. Springer Science &amp; Business Media, 2009.">Hastie <em>et al.</em>, 2009</a>]</span>. As mentioned earlier, there is enough literature on data-driven building energy modelling to motivate a review of reviews <span id="id9">[<a class="reference internal" href="#id18" title="Kadir Amasyali and Nora M El-Gohary. A review of data-driven building energy consumption prediction studies. Renewable and Sustainable Energy Reviews, 81:1192–1205, 2018.">Amasyali and El-Gohary, 2018</a>]</span>, even when only focusing on the machine learning (black-box) side.</p>
+<p>Because of their lack of physical interpretability, it is difficult for trained ML models to provide insight into thermophysical properties of building components. For this reason, their applications are complementary to the energy model calibration approach mentioned in the previous section. However, they are designed for prediction: they are well suited for forecasting energy demand. ML also comes with standard practices of validation and model order selection, in order to find a good bias-variance tradeoff and ensure accurate predictions.</p>
+<p>This book will not venture very far into machine learning territory. We will however use Gaussian Process models at some point, by integrating them into other statistical models rather than by themselves.</p>
+</section>
+<section id="statistical-modelling-and-inference-grey-box">
+<h3>Statistical modelling and inference (grey-box)<a class="headerlink" href="#statistical-modelling-and-inference-grey-box" title="Link to this heading">#</a></h3>
+<p>Calibrated simulation and machine learning both have advantages and limitations, as they are either appropriate for parameter interpretability or prediction accuracy. This book will focus on the third option: probabilistic modelling and statistical inference. Statistical inference can either follow a frequentist or a Bayesian paradigm: both will be introduced and demonstrated in our applications.</p>
+<p>Statistical models represent the data-generating process (the building) as a set of statistical assumptions and stochastic processes, rather than deterministic relationships between variables. The formulation of these stochastic processes can be based on physical considerations, like a typical building energy model, except that they explicitely include possible errors and uncertainty. As a result, parameter estimates and predictions are inferred with a certain uncertainty as well, which translates the confidence that our model is able to produce about them. Model checking criteria then allow us to anticipate possible bias: results produced by a thoroughly validated statistical inference procedure are more reliable than deterministic calibrated simulation.</p>
+<p>Probabilistic modelling starts with the definition of an <em>sampling distribution</em> <span class="math notranslate nohighlight">\(p\left(y|\theta\right)\)</span>, which is the distribution of the observed data <span class="math notranslate nohighlight">\(y\)</span> conditional on the model parameters <span class="math notranslate nohighlight">\(\theta\)</span>. When viewed as a function of <span class="math notranslate nohighlight">\(\theta\)</span> for fixed <span class="math notranslate nohighlight">\(y\)</span>, this distribution is called the likelihood function. Finding the value of <span class="math notranslate nohighlight">\(\theta\)</span> that maximizes the likelihood function is called Maximum Likelihood Estimation, one of the main cases of frequentist inference.</p>
+<p>Bayesian inference adds a prior probability distribution <span class="math notranslate nohighlight">\(p(\theta)\)</span> to the problem. The prior distribution describes any knowledge we may already have regarding the model parameters, before accounting for the measured data. According to <span id="id10">[<a class="reference internal" href="#id19" title="Andrew Gelman, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. Bayesian data analysis. CRC press, 2013.">Gelman <em>et al.</em>, 2013</a>]</span>: “Bayesian inference is the process of fitting a probability model to a set of data and summarizing the result by a probability distribution on the parameters of the model and on unobserved quantities such as predictions for new observations”. Therefore, another specificity of Bayesian inference compared to frequentist inference is the fact that all variables of the problem are described as probability distributions, rather than point estimates.</p>
+<p>This book is focused on statistical modelling and inference applied to building energy performance assessment. The next chapter will now describe how building physics can be formulated with statistical models, and present a few possible structures for these models. Then, we will propose a full workflow for statistical inference, either frequentist or Bayesian, which aims at making sure that models are well defined and trained for a given application.</p>
+<div class="docutils container" id="id11">
+<div role="list" class="citation-list">
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">AEG18</a><span class="fn-bracket">]</span></span>
+<p>Kadir Amasyali and Nora M El-Gohary. A review of data-driven building energy consumption prediction studies. <em>Renewable and Sustainable Energy Reviews</em>, 81:1192–1205, 2018.</p>
+</div>
+<div class="citation" id="id12" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BBCJ85<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id5">2</a>)</span>
+<p>James V Beck, Ben Blackwell, and Charles R St Clair Jr. <em>Inverse heat conduction: Ill-posed problems</em>. James Beck, 1985.</p>
+</div>
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">GCS+13</a><span class="fn-bracket">]</span></span>
+<p>Andrew Gelman, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. <em>Bayesian data analysis</em>. CRC press, 2013.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HTF09<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id8">2</a>)</span>
+<p>Trevor Hastie, Robert Tibshirani, and Jerome Friedman. <em>The elements of statistical learning: data mining, inference, and prediction</em>. Springer Science &amp; Business Media, 2009.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">JCG08</a><span class="fn-bracket">]</span></span>
+<p>JCGM. Evaluation of measurement data—guide to the expression of uncertainty in measurement. <em>Int. Organ. Stand. Geneva ISBN</em>, 50:134, 2008.</p>
+</div>
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">Mai10</a><span class="fn-bracket">]</span></span>
+<p>Denis Maillet. <em>Problèmes inverses en diffusion thermique</em>. Ed. Techniques Ingénieur, 2010.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">Red06</a><span class="fn-bracket">]</span></span>
+<p>T Agami Reddy. Literature review on calibration of building energy simulation programs: uses, problems, procedures, uncertainty, and tools. <em>ASHRAE transactions</em>, 112:226, 2006.</p>
+</div>
+<div class="citation" id="id13" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Rou18</a><span class="fn-bracket">]</span></span>
+<p>Simon Rouchier. Solving inverse problems in building physics: an overview of guidelines for a careful and optimal use of data. <em>Energy and Buildings</em>, 166:178–195, 2018.</p>
+</div>
+</div>
+</div>
 </section>
 </section>
 </section>
@@ -483,6 +713,16 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-energy-savings-potential-of-buildings">The energy savings potential of buildings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-data-to-energy-savings">From data to energy savings</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formalisation-of-the-system">Formalisation of the system</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-uses-of-data">Some uses of data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-calibration-as-the-key-to-data-analysis">Model calibration as the key to data analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-difficulty-of-inverse-problems">The difficulty of inverse problems</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categories-of-data-driven-modelling-approaches">Categories of data-driven modelling approaches</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#either-physical-interpretability-or-prediction-accuracy">Either physical interpretability or prediction accuracy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calibrated-simulation-white-box">Calibrated simulation (white-box)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-learning-black-box">Machine learning (black-box)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-modelling-and-inference-grey-box">Statistical modelling and inference (grey-box)</a></li>
 </ul>
 </li>
 </ul>
