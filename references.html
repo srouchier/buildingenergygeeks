@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Simplified building energy modelling &#8212; Building energy probabilistic modelling</title>
+    <title>References &#8212; Building energy probabilistic modelling</title>
   
   
   
@@ -57,13 +57,10 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'modelling';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'references';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="A Bayesian data analysis workflow" href="workflow.html" />
-    <link rel="prev" title="Motivation for probabilistic modelling" href="background.html" />
+    <link rel="prev" title="Linear regression" href="b01_linearregression.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -182,9 +179,9 @@
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Background</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="background.html">Motivation for probabilistic modelling</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Simplified building energy modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling.html">Simplified building energy modelling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow.html">A Bayesian data analysis workflow</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simple regression</span></p>
@@ -192,8 +189,8 @@
 <li class="toctree-l1"><a class="reference internal" href="b01_linearregression.html">Linear regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">References</a></li>
 </ul>
 
     </div>
@@ -265,7 +262,7 @@
       
       
       
-      <li><a href="https://github.com/srouchier/buildingenergygeeks/issues/new?title=Issue%20on%20page%20%2Fmodelling.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/srouchier/buildingenergygeeks/issues/new?title=Issue%20on%20page%20%2Freferences.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -295,7 +292,7 @@
       
       
       
-      <li><a href="_sources/modelling.md" target="_blank"
+      <li><a href="_sources/references.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -366,9 +363,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -379,20 +374,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Simplified building energy modelling</h1>
+    <h1>References</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measurement-and-modelling-boundaries">Measurement and modelling boundaries</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-physics-in-a-nutshell">Building physics in a nutshell</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -402,44 +388,88 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="simplified-building-energy-modelling">
-<span id="chap-modelling"></span><h1>Simplified building energy modelling<a class="headerlink" href="#simplified-building-energy-modelling" title="Link to this heading">#</a></h1>
-<p>The positioning of this book is Bayesian data analysis applied to building energy performance assessment. The first step into this approach, before taking data into consideration, is the probabilistic modelling of the energy balance of buildings. Rather than using Building Energy Simulation (BES) software, our approach is generally to start from simple models and gradually increase complexity if required. This means writing each equation individually, and formulating uncertainty into the probabilistic framework.</p>
-<section id="measurement-and-modelling-boundaries">
-<h2>Measurement and modelling boundaries<a class="headerlink" href="#measurement-and-modelling-boundaries" title="Link to this heading">#</a></h2>
-<p>The first step into setting up a probability model is the choice of its boundaries, i.e. which of the measured data is the <em>dependent</em> variable, and which are the <em>explanatory</em> variables.</p>
-<ul class="simple">
-<li><p>The dependent variable <span class="math notranslate nohighlight">\(y\)</span>, or model output, is a variable that we wish for a fitted model to be able to predict (this book does not cover situations with several dependent variables in a single model).</p></li>
-<li><p>The explanatory variables, or independent variables, are the model inputs by which we try to explain the evolutions of the dependent variable. Explanatory variables are denoted <span class="math notranslate nohighlight">\(x\)</span> in most regression models, or <span class="math notranslate nohighlight">\(u\)</span> in more complex hierarchical models where <span class="math notranslate nohighlight">\(x\)</span> may denote a latent variable instead.</p></li>
-</ul>
-<p>The IPMVP defines measurement boundaries as “notional boundaries drawn around equipment, systems or facilities to segregate those which are relevant to saving determination from those which are not. All Energy Consumption and Demand of equipment or systems within the boundary must be measured or estimated. […] Any energy effects occurring beyond the selected measurement boundary are called interactive effects. The magnitude of any interactive effects needs to be estimated or evaluated to determine savings associated with the ECMs.”</p>
-<figure class="align-center" id="formalisation2">
-<a class="reference internal image-reference" href="_images/201_formalisation.png"><img alt="_images/201_formalisation.png" src="_images/201_formalisation.png" style="width: 700px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 13 </span><span class="caption-text">A slightly more elaborate formalisation of a building.</span><a class="headerlink" href="#formalisation2" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<p>The same definition of boundaries work for simulations: a model must be defined so that its inputs and outputs are the measured independent and dependent variables, and all energy effects occurring within these boundaries are either fixed, or part of the list of parameters <span class="math notranslate nohighlight">\(\theta\)</span> that will be estimated by calibration.</p>
-<p><a class="reference internal" href="#formalisation2"><span class="std std-numref">Fig. 13</span></a> proposes a decomposition of a building into three main categories of models, with different scopes and purposes, that we will cover in tutorials.</p>
-<ul class="simple">
-<li><p>Some models are focused on a single thermal zone. They solve its energy balance by receiving its heating, cooling and ventilation loads as input, and compute the indoor temperature. The target of these models is often the characterisation of the envelope’s heat transfer coefficient. RC models, covered later in this book, belong in this category. HVAC systems are usually not in the modelling boundary.</p></li>
-<li><p>Whole building models take weather files and occupancy information (set points, schedules, internal heat gain) as input. These models range from very simplified (energy signature models) to detailed BES. The dependent variable can be energy consumption recorded by meters, or heating and cooling loads if such measurements are available.</p></li>
-<li><p>For the purpose of fault detection and diagnosis, models focused on a single system are possible, if measurements are available on its boundaries.</p></li>
-</ul>
-</section>
-<section id="building-physics-in-a-nutshell">
-<h2>Building physics in a nutshell<a class="headerlink" href="#building-physics-in-a-nutshell" title="Link to this heading">#</a></h2>
-<p>BES decomposes a building into separate thermal zones, each of which is assumed to have a uniform air temperature. A single-family house may be split into one or two zones, while larger housings and office buildings have more, usually denoted by their orientation and usage. The temporal evolution of temperature, humidity and other variables of comfort or indoor air quality, are calculated in each zone as consequences of: influence of the weather; exchange between zones; HVAC settings; occupancy. BES software can reach quite a high level of detail when modelling the phenomena that influence these indoor variables: long-wave radiative heat exchange between all walls; position of the sunspot; influence of furniture on indoor humidity; CFD modelling of air flow…</p>
-<p>Since we will give our building energy models a probabilistic formulation, these models should stay as simple as possible, while staying close to the main phenomena that govern the heat and energy balance of an observed building. A schematic outlook of heat gains and losses in a heated space is shown on <a class="reference internal" href="#sankey"><span class="std std-numref">Fig. 14</span></a> on the example of a heated building in which gas is the main fuel used by the heating appliances. A similar reasoning can be done in other conditions, such as an air conditioned building in summer.</p>
-<figure class="align-center" id="sankey">
-<a class="reference internal image-reference" href="_images/202_sankey.png"><img alt="_images/202_sankey.png" src="_images/202_sankey.png" style="width: 800px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Decomposition of heat gain and loss in a heated zone</span><a class="headerlink" href="#sankey" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-</section>
+  <section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<div class="docutils container" id="id1">
+<div role="list" class="citation-list">
+<div class="citation" id="id8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>AEG18<span class="fn-bracket">]</span></span>
+<p>Kadir Amasyali and Nora M El-Gohary. A review of data-driven building energy consumption prediction studies. <em>Renewable and Sustainable Energy Reviews</em>, 81:1192–1205, 2018.</p>
+</div>
+<div class="citation" id="id2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BBCJ85<span class="fn-bracket">]</span></span>
+<p>James V Beck, Ben Blackwell, and Charles R St Clair Jr. <em>Inverse heat conduction: Ill-posed problems</em>. James Beck, 1985.</p>
+</div>
+<div class="citation" id="id13" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Bet17<span class="fn-bracket">]</span></span>
+<p>Michael Betancourt. A conceptual introduction to hamiltonian monte carlo. <em>arXiv preprint arXiv:1701.02434</em>, 2017.</p>
+</div>
+<div class="citation" id="id10" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CXY18<span class="fn-bracket">]</span></span>
+<p>Herman Carstens, Xiaohua Xia, and Sarma Yadavalli. Bayesian energy measurement and verification analysis. <em>Energies</em>, 11(2):380, 2018.</p>
+</div>
+<div class="citation" id="id18" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CAY21<span class="fn-bracket">]</span></span>
+<p>Adrian Chong, Godfried Augenbroe, and Da Yan. Occupancy data at different spatial resolutions: building energy performance and model calibration. <em>Applied Energy</em>, 286:116492, 2021.</p>
+</div>
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CM18<span class="fn-bracket">]</span></span>
+<p>Adrian Chong and Kathrin Menberg. Guidelines for the bayesian calibration of building energy models. <em>Energy and Buildings</em>, 174:527–547, 2018.</p>
+</div>
+<div class="citation" id="id12" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GSV+19<span class="fn-bracket">]</span></span>
+<p>Jonah Gabry, Daniel Simpson, Aki Vehtari, Michael Betancourt, and Andrew Gelman. Visualization in bayesian workflow. <em>Journal of the Royal Statistical Society Series A: Statistics in Society</em>, 182(2):389–402, 2019.</p>
+</div>
+<div class="citation" id="id9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GCS+13<span class="fn-bracket">]</span></span>
+<p>Andrew Gelman, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. <em>Bayesian data analysis</em>. CRC press, 2013.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GR07<span class="fn-bracket">]</span></span>
+<p>Tilmann Gneiting and Adrian E Raftery. Strictly proper scoring rules, prediction, and estimation. <em>Journal of the American statistical Association</em>, 102(477):359–378, 2007.</p>
+</div>
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HTF09<span class="fn-bracket">]</span></span>
+<p>Trevor Hastie, Robert Tibshirani, and Jerome Friedman. <em>The elements of statistical learning: data mining, inference, and prediction</em>. Springer Science &amp; Business Media, 2009.</p>
+</div>
+<div class="citation" id="id5" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>JCG08<span class="fn-bracket">]</span></span>
+<p>JCGM. Evaluation of measurement data—guide to the expression of uncertainty in measurement. <em>Int. Organ. Stand. Geneva ISBN</em>, 50:134, 2008.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LundstromA19<span class="fn-bracket">]</span></span>
+<p>Lukas Lundström and Jan Akander. Bayesian calibration with augmented stochastic state-space models of district-heated multifamily buildings. <em>Energies</em>, 13(1):76, 2019.</p>
+</div>
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Mai10<span class="fn-bracket">]</span></span>
+<p>Denis Maillet. <em>Problèmes inverses en diffusion thermique</em>. Ed. Techniques Ingénieur, 2010.</p>
+</div>
+<div class="citation" id="id11" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>McE18<span class="fn-bracket">]</span></span>
+<p>Richard McElreath. <em>Statistical rethinking: A Bayesian course with examples in R and Stan</em>. Chapman and Hall/CRC, 2018.</p>
+</div>
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Red06<span class="fn-bracket">]</span></span>
+<p>T Agami Reddy. Literature review on calibration of building energy simulation programs: uses, problems, procedures, uncertainty, and tools. <em>ASHRAE transactions</em>, 112:226, 2006.</p>
+</div>
+<div class="citation" id="id3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Rou18<span class="fn-bracket">]</span></span>
+<p>Simon Rouchier. Solving inverse problems in building physics: an overview of guidelines for a careful and optimal use of data. <em>Energy and Buildings</em>, 166:178–195, 2018.</p>
+</div>
+<div class="citation" id="id19" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>VGB16<span class="fn-bracket">]</span></span>
+<p>Aki Vehtari, Andrew Gelman, and Jonah Bagry. Practical bayesian model evaluation using leave-one-out cross-validation and waic. <em>Statistics and Computing</em>, 27:1413–1432, Aug 2016.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>VGS+21<span class="fn-bracket">]</span></span>
+<p>Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian Bürkner. Rank-normalization, folding, and localization: an improved r for assessing convergence of mcmc (with discussion). <em>Bayesian analysis</em>, 16(2):667–718, 2021.</p>
+</div>
+<div class="citation" id="id20" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WO10<span class="fn-bracket">]</span></span>
+<p>Sumio Watanabe and Manfred Opper. Asymptotic equivalence of bayes cross validation and widely applicable information criterion in singular learning theory. <em>Journal of machine learning research</em>, 2010.</p>
+</div>
+</div>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -473,22 +503,13 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="background.html"
+       href="b01_linearregression.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Motivation for probabilistic modelling</p>
+        <p class="prev-next-title">Linear regression</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="workflow.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">A Bayesian data analysis workflow</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -496,22 +517,6 @@ document.write(`
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#measurement-and-modelling-boundaries">Measurement and modelling boundaries</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-physics-in-a-nutshell">Building physics in a nutshell</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

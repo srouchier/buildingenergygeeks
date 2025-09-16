@@ -269,6 +269,3 @@ Probabilistic modelling starts with the definition of an *sampling distribution*
 Bayesian inference adds a prior probability distribution $p(\theta)$ to the problem. The prior distribution describes any knowledge we may already have regarding the model parameters, before accounting for the measured data. According to {cite:p}`gelman2013bayesian`: "Bayesian inference is the process of fitting a probability model to a set of data and summarizing the result by a probability distribution on the parameters of the model and on unobserved quantities such as predictions for new observations". Therefore, another specificity of Bayesian inference compared to frequentist inference is the fact that all variables of the problem are described as probability distributions, rather than point estimates.
 
 This book is focused on statistical modelling and inference applied to building energy performance assessment. The next chapter will now describe how building physics can be formulated with statistical models, and present a few possible structures for these models. Then, we will propose a full workflow for statistical inference, either frequentist or Bayesian, which aims at making sure that models are well defined and trained for a given application.
-
-```{bibliography}
-```

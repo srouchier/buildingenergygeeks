@@ -229,3 +229,4 @@ p(y_i|y_{-i}) = \int p(y_i|\theta)p(\theta|y_{-i})\mathrm{d}\theta
 ```
 
 is the leave-one-out predictive density of data point $y_i$, given the dataset minus the $i$th data point, denoted $y_{-i}$.
+
