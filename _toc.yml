@@ -3,7 +3,12 @@ root: index
 parts:
   - caption: Background
     chapters:
-    - file: a01_background.md
+    - file: background.md
+    - file: modelling.md
+    - file: workflow.md
   - caption: Simple regression
     chapters:
     - file: b01_linearregression.ipynb
+  - caption: References
+    chapters:
+    - file: references.md

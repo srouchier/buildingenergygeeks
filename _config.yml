@@ -1,14 +1,20 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
+# Pour construire le livre, lancer ça dans le répertoire parent :
+# jupyter-book build buildingenergygeeks
+# On peut alors le voir localement. Pour le pousser ensuite sur github:
+# ghp-import -n -p -f _build/html
+
 title: Building energy probabilistic modelling
 author: Simon Rouchier
 logo: logo.png
+copyright: "2025"
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: force
+  execute_notebooks: auto
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -19,14 +25,25 @@ latex:
 bibtex_bibfiles:
   - references.bib
 
+sphinx:
+  config:
+    bibtex_reference_style: author_year
+    mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
 # Information about where the book exists on the web
 repository:
   url: https://github.com/srouchier/buildingenergygeeks  # Online location of your book
-  path_to_book: docs  # Optional path to your book, relative to the repository root
-  branch: main  # Which branch of the repository should be used when creating links (optional)
+  path_to_book: ""  # Optional path to your book, relative to the repository root
+  branch: gh-pages  # Which branch of the repository should be used when creating links (optional)
 
 # Add GitHub buttons to your book
 # See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
 html:
   use_issues_button: true
   use_repository_button: true
+
+parse:
+myst_enable_extensions:
+  # don't forget to list any other extensions you want enabled,
+  # including those that are enabled by default!
+  - amsmath
