@@ -1,0 +1,106 @@
+Traceback (most recent call last):
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 154, in wrapped
+    asyncio.get_running_loop()
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 158, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+az.plot_posterior(fit1, var_names=["alpha", "beta", "sigma"])
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mAttributeError[39m                            Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[10][39m[32m, line 1[39m
+[32m----> [39m[32m1[39m [43maz[49m[43m.[49m[43mplot_posterior[49m[43m([49m[43mfit1[49m[43m,[49m[43m [49m[43mvar_names[49m[43m=[49m[43m[[49m[33;43m"[39;49m[33;43malpha[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[33;43m"[39;49m[33;43mbeta[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[33;43m"[39;49m[33;43msigma[39;49m[33;43m"[39;49m[43m][49m[43m)[49m
+
+[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/plots/posteriorplot.py:227[39m, in [36mplot_posterior[39m[34m(data, var_names, filter_vars, combine_dims, transform, coords, grid, figsize, textsize, hdi_prob, multimodal, skipna, round_to, point_estimate, group, rope, ref_val, rope_color, ref_val_color, kind, bw, circular, bins, labeller, ax, backend, backend_kwargs, show, **kwargs)[39m
+[32m     10[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mplot_posterior[39m(
+[32m     11[39m     data,
+[32m     12[39m     var_names=[38;5;28;01mNone[39;00m,
+[32m   (...)[39m[32m     39[39m     **kwargs
+[32m     40[39m ):
+[32m     41[39m [38;5;250m    [39m[33;03m"""Plot Posterior densities in the style of John K. Kruschke's book.[39;00m
+[32m     42[39m 
+[32m     43[39m [33;03m    Parameters[39;00m
+[32m   (...)[39m[32m    225[39m [33;03m        >>> az.plot_posterior(data, var_names=['mu'], hdi_prob=.75)[39;00m
+[32m    226[39m [33;03m    """[39;00m
+[32m--> [39m[32m227[39m     data = [43mconvert_to_dataset[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[43mgroup[49m[43m=[49m[43mgroup[49m[43m)[49m
+[32m    228[39m     [38;5;28;01mif[39;00m transform [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m    229[39m         data = transform(data)
+
+[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/converters.py:182[39m, in [36mconvert_to_dataset[39m[34m(obj, group, coords, dims)[39m
+[32m    143[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mconvert_to_dataset[39m(obj, *, group=[33m"[39m[33mposterior[39m[33m"[39m, coords=[38;5;28;01mNone[39;00m, dims=[38;5;28;01mNone[39;00m):
+[32m    144[39m [38;5;250m    [39m[33;03m"""Convert a supported object to an xarray dataset.[39;00m
+[32m    145[39m 
+[32m    146[39m [33;03m    This function is idempotent, in that it will return xarray.Dataset functions[39;00m
+[32m   (...)[39m[32m    180[39m [33;03m    xarray.Dataset[39;00m
+[32m    181[39m [33;03m    """[39;00m
+[32m--> [39m[32m182[39m     inference_data = [43mconvert_to_inference_data[49m[43m([49m[43mobj[49m[43m,[49m[43m [49m[43mgroup[49m[43m=[49m[43mgroup[49m[43m,[49m[43m [49m[43mcoords[49m[43m=[49m[43mcoords[49m[43m,[49m[43m [49m[43mdims[49m[43m=[49m[43mdims[49m[43m)[49m
+[32m    183[39m     dataset = [38;5;28mgetattr[39m(inference_data, group, [38;5;28;01mNone[39;00m)
+[32m    184[39m     [38;5;28;01mif[39;00m dataset [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+
+[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/converters.py:89[39m, in [36mconvert_to_inference_data[39m[34m(obj, group, coords, dims, **kwargs)[39m
+[32m     87[39m     kwargs[[33m"[39m[33mprior[39m[33m"[39m] = kwargs.pop(group)
+[32m     88[39m [38;5;28;01mif[39;00m obj.[34m__class__[39m.[34m__name__[39m == [33m"[39m[33mCmdStanMCMC[39m[33m"[39m:
+[32m---> [39m[32m89[39m     [38;5;28;01mreturn[39;00m [43mfrom_cmdstanpy[49m[43m([49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+[32m     90[39m [38;5;28;01melse[39;00m:  [38;5;66;03m# pystan or pystan3[39;00m
+[32m     91[39m     [38;5;28;01mreturn[39;00m from_pystan(**kwargs)
+
+[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/io_cmdstanpy.py:829[39m, in [36mfrom_cmdstanpy[39m[34m(posterior, posterior_predictive, predictions, prior, prior_predictive, observed_data, constant_data, predictions_constant_data, log_likelihood, index_origin, coords, dims, save_warmup, dtypes)[39m
+[32m    763[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mfrom_cmdstanpy[39m(
+[32m    764[39m     posterior=[38;5;28;01mNone[39;00m,
+[32m    765[39m     *,
+[32m   (...)[39m[32m    778[39m     dtypes=[38;5;28;01mNone[39;00m,
+[32m    779[39m ):
+[32m    780[39m [38;5;250m    [39m[33;03m"""Convert CmdStanPy data into an InferenceData object.[39;00m
+[32m    781[39m 
+[32m    782[39m [33;03m    For a usage example read the[39;00m
+[32m   (...)[39m[32m    827[39m [33;03m    InferenceData object[39;00m
+[32m    828[39m [33;03m    """[39;00m
+[32m--> [39m[32m829[39m     [38;5;28;01mreturn[39;00m [43mCmdStanPyConverter[49m[43m([49m
+[32m    830[39m [43m        [49m[43mposterior[49m[43m=[49m[43mposterior[49m[43m,[49m
+[32m    831[39m [43m        [49m[43mposterior_predictive[49m[43m=[49m[43mposterior_predictive[49m[43m,[49m
+[32m    832[39m [43m        [49m[43mpredictions[49m[43m=[49m[43mpredictions[49m[43m,[49m
+[32m    833[39m [43m        [49m[43mprior[49m[43m=[49m[43mprior[49m[43m,[49m
+[32m    834[39m [43m        [49m[43mprior_predictive[49m[43m=[49m[43mprior_predictive[49m[43m,[49m
+[32m    835[39m [43m        [49m[43mobserved_data[49m[43m=[49m[43mobserved_data[49m[43m,[49m
+[32m    836[39m [43m        [49m[43mconstant_data[49m[43m=[49m[43mconstant_data[49m[43m,[49m
+[32m    837[39m [43m        [49m[43mpredictions_constant_data[49m[43m=[49m[43mpredictions_constant_data[49m[43m,[49m
+[32m    838[39m [43m        [49m[43mlog_likelihood[49m[43m=[49m[43mlog_likelihood[49m[43m,[49m
+[32m    839[39m [43m        [49m[43mindex_origin[49m[43m=[49m[43mindex_origin[49m[43m,[49m
+[32m    840[39m [43m        [49m[43mcoords[49m[43m=[49m[43mcoords[49m[43m,[49m
+[32m    841[39m [43m        [49m[43mdims[49m[43m=[49m[43mdims[49m[43m,[49m
+[32m    842[39m [43m        [49m[43msave_warmup[49m[43m=[49m[43msave_warmup[49m[43m,[49m
+[32m    843[39m [43m        [49m[43mdtypes[49m[43m=[49m[43mdtypes[49m[43m,[49m
+[32m    844[39m [43m    [49m[43m)[49m.to_inference_data()
+
+[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/io_cmdstanpy.py:76[39m, in [36mCmdStanPyConverter.__init__[39m[34m(self, posterior, posterior_predictive, predictions, prior, prior_predictive, observed_data, constant_data, predictions_constant_data, log_likelihood, index_origin, coords, dims, save_warmup, dtypes)[39m
+[32m     73[39m [38;5;28mself[39m.dtypes = dtypes
+[32m     75[39m [38;5;28;01mif[39;00m [38;5;28mhasattr[39m([38;5;28mself[39m.posterior, [33m"[39m[33mmetadata[39m[33m"[39m):
+[32m---> [39m[32m76[39m     [38;5;28;01mif[39;00m [38;5;28mself[39m.log_likelihood [38;5;129;01mis[39;00m [38;5;28;01mTrue[39;00m [38;5;129;01mand[39;00m [33m"[39m[33mlog_lik[39m[33m"[39m [38;5;129;01min[39;00m [38;5;28;43mself[39;49m[43m.[49m[43mposterior[49m[43m.[49m[43mmetadata[49m[43m.[49m[43mstan_vars_cols[49m:
+[32m     77[39m         [38;5;28mself[39m.log_likelihood = [[33m"[39m[33mlog_lik[39m[33m"[39m]
+[32m     78[39m [38;5;28;01melif[39;00m [38;5;28mhasattr[39m([38;5;28mself[39m.posterior, [33m"[39m[33mstan_vars_cols[39m[33m"[39m):
+
+[31mAttributeError[39m: 'InferenceMetadata' object has no attribute 'stan_vars_cols'
+

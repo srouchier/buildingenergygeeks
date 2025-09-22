@@ -1,6 +1,10 @@
 (chap:modelling)=
 # Simplified building energy modelling
 
+```{note}
+This section is incomplete and will be updated progressively along with the tutorials.
+```
+
 The positioning of this book is Bayesian data analysis applied to building energy performance assessment. The first step into this approach, before taking data into consideration, is the probabilistic modelling of the energy balance of buildings. Rather than using Building Energy Simulation (BES) software, our approach is generally to start from simple models and gradually increase complexity if required. This means writing each equation individually, and formulating uncertainty into the probabilistic framework.
 
 ## Measurement and modelling boundaries

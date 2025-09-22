@@ -190,10 +190,12 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simple regression</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="b01_linearregression.html">Linear regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linearregression.html">Linear regression (PyMC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linearregression_stan.html">Linear regression (Stan)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
 
@@ -392,7 +394,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-of-the-book">Content of the book</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#programming-languages">Programming languages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">Software</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about">About</a></li>
 </ul>
             </nav>
@@ -441,10 +443,11 @@ document.write(`
 <li><p>Classification. Most of the methods shown are variations of regression problems, as our models will almost always have quantitative responses. There are however strong links with classification problems, especially when it comes to identifying occupant presence and behaviour.</p></li>
 </ul>
 </section>
-<section id="programming-languages">
-<h2>Programming languages<a class="headerlink" href="#programming-languages" title="Link to this heading">#</a></h2>
+<section id="software">
+<h2>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h2>
 <p>This book is written and maintained with <a class="reference external" href="https://jupyterbook.org/en/stable/intro.html">jupyter-book</a>.</p>
-<p>This section will be updated later into a list of packages used in the tutorials.</p>
+<p>Tutorials use either <a class="reference external" href="https://www.pymc.io/welcome.html">PyMC</a> or <a class="reference external" href="https://mc-stan.org/">Stan</a> as a probabilistic programming library. Both have pros and cons.</p>
+<p>From the perspective of a non-statistician, PyMC is probably easier to get started with, but Stan feels more flexible and has a much better documentation. I present examples with both and leave the reader to find their preference.</p>
 </section>
 <section id="about">
 <h2>About<a class="headerlink" href="#about" title="Link to this heading">#</a></h2>
@@ -517,7 +520,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-of-the-book">Content of the book</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#programming-languages">Programming languages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">Software</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about">About</a></li>
 </ul>
   </nav></div>

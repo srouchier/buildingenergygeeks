@@ -59,6 +59,7 @@ This is also called the prior predictive distribution. Computing this distributi
 
 At this point of the workflow, no observed data was used in the model definition. In fact, probabilistic modelling could stop here: a model structure has been assumed, parameter probabilities have been chosen, and the prior predictive distribution can be computed for any prediction horizon. This is equivalent to predicting with an untrained model, while propagating the parameter uncertainty expressed by their prior $p(\theta)$.
 
+(workflow_step2)=
 ### Step 2: learning
 
 The target of Bayesian inference is to make probability statements about $\theta$ given $y$. Once the full probability model has been specified (Eq. {eq}`model01`), conditioning on the known value of the data $y$ using Bayes' rule yields the posterior density:
@@ -109,7 +110,7 @@ with $\rho_l$ the lag-$l$ autocorrelation of a function $f$ over the history of 
 
 The diagnostic tools introduced in this section provide a principled workflow for reliable Bayesian inferences. They are readily available in most Bayesian computation libraries. Based on the recent improvements to the $\hat{R}$ statistic {cite:p}`vehtari2021rank`, it is recommended to use the samples only if $\hat{R} < 1.01$ and $\text{ESS} > 400$.
 
-
+(workflow_step3)=
 ### Step 3: model checking and evaluation
 
 The third step of Bayesian data analysis as formulated by {cite:p}`gelman2013bayesian` is to evaluate the fit of the model and the implications of the resulting posterior distribution. This is done by drawing simulated values from the trained model and comparing them to the observed data.
