@@ -31,8 +31,7 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-['model2 = pm.Model()', '', 'with model2:', '    # Priors for unknown model parameters', '    alpha = pm.Normal("alpha", mu=0, sigma=1)']
-...
-['    # Training', '    trace_2 = pm.sample(chains=4, idata_kwargs={"log_likelihood": True})', '', '    # Posterior', '    pm.sample_posterior_predictive(trace_2, extend_inferencedata=True)']
+with model1:
+    trace_1 = pm.sample(chains=4, idata_kwargs={"log_likelihood": True})
 -------------------
 

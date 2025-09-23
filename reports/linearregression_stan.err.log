@@ -25,49 +25,62 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-az.plot_posterior(fit1, var_names=["alpha", "beta", "sigma"])
+idata1 = az.from_cmdstanpy(
+    posterior = fit1,
+    posterior_predictive="y_hat",
+    observed_data={"y": df_train['consumption'].values},
+    constant_data={"x": df_train[['HDD']].values},
+    log_likelihood="log_lik",
+    dims={
+        "y_hat": ["observations"],
+        "log_lik": ["observations"],
+        "y": ["observations"],
+        "beta": ["features"]
+        },
+)
+
+idata2 = az.from_cmdstanpy(
+    posterior = fit2,
+    posterior_predictive="y_hat",
+    observed_data={"y": df_train['consumption'].values},
+    constant_data={"x": df_train[['HDD', 'CLASSDAYS']].values},
+    log_likelihood="log_lik",
+    dims={
+        "y_hat": ["observations"],
+        "log_lik": ["observations"],
+        "y": ["observations"],
+        "beta": ["features"]
+        },
+)
+
+idata2
 ------------------
 
 
 [31m---------------------------------------------------------------------------[39m
 [31mAttributeError[39m                            Traceback (most recent call last)
 [36mCell[39m[36m [39m[32mIn[10][39m[32m, line 1[39m
-[32m----> [39m[32m1[39m [43maz[49m[43m.[49m[43mplot_posterior[49m[43m([49m[43mfit1[49m[43m,[49m[43m [49m[43mvar_names[49m[43m=[49m[43m[[49m[33;43m"[39;49m[33;43malpha[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[33;43m"[39;49m[33;43mbeta[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[33;43m"[39;49m[33;43msigma[39;49m[33;43m"[39;49m[43m][49m[43m)[49m
+[32m----> [39m[32m1[39m idata1 = [43maz[49m[43m.[49m[43mfrom_cmdstanpy[49m[43m([49m
+[32m      2[39m [43m    [49m[43mposterior[49m[43m [49m[43m=[49m[43m [49m[43mfit1[49m[43m,[49m
+[32m      3[39m [43m    [49m[43mposterior_predictive[49m[43m=[49m[33;43m"[39;49m[33;43my_hat[39;49m[33;43m"[39;49m[43m,[49m
+[32m      4[39m [43m    [49m[43mobserved_data[49m[43m=[49m[43m{[49m[33;43m"[39;49m[33;43my[39;49m[33;43m"[39;49m[43m:[49m[43m [49m[43mdf_train[49m[43m[[49m[33;43m'[39;49m[33;43mconsumption[39;49m[33;43m'[39;49m[43m][49m[43m.[49m[43mvalues[49m[43m}[49m[43m,[49m
+[32m      5[39m [43m    [49m[43mconstant_data[49m[43m=[49m[43m{[49m[33;43m"[39;49m[33;43mx[39;49m[33;43m"[39;49m[43m:[49m[43m [49m[43mdf_train[49m[43m[[49m[43m[[49m[33;43m'[39;49m[33;43mHDD[39;49m[33;43m'[39;49m[43m][49m[43m][49m[43m.[49m[43mvalues[49m[43m}[49m[43m,[49m
+[32m      6[39m [43m    [49m[43mlog_likelihood[49m[43m=[49m[33;43m"[39;49m[33;43mlog_lik[39;49m[33;43m"[39;49m[43m,[49m
+[32m      7[39m [43m    [49m[43mdims[49m[43m=[49m[43m{[49m
+[32m      8[39m [43m        [49m[33;43m"[39;49m[33;43my_hat[39;49m[33;43m"[39;49m[43m:[49m[43m [49m[43m[[49m[33;43m"[39;49m[33;43mobservations[39;49m[33;43m"[39;49m[43m][49m[43m,[49m
+[32m      9[39m [43m        [49m[33;43m"[39;49m[33;43mlog_lik[39;49m[33;43m"[39;49m[43m:[49m[43m [49m[43m[[49m[33;43m"[39;49m[33;43mobservations[39;49m[33;43m"[39;49m[43m][49m[43m,[49m
+[32m     10[39m [43m        [49m[33;43m"[39;49m[33;43my[39;49m[33;43m"[39;49m[43m:[49m[43m [49m[43m[[49m[33;43m"[39;49m[33;43mobservations[39;49m[33;43m"[39;49m[43m][49m[43m,[49m
+[32m     11[39m [43m        [49m[33;43m"[39;49m[33;43mbeta[39;49m[33;43m"[39;49m[43m:[49m[43m [49m[43m[[49m[33;43m"[39;49m[33;43mfeatures[39;49m[33;43m"[39;49m[43m][49m
+[32m     12[39m [43m        [49m[43m}[49m[43m,[49m
+[32m     13[39m [43m)[49m
+[32m     15[39m idata2 = az.from_cmdstanpy(
+[32m     16[39m     posterior = fit2,
+[32m     17[39m     posterior_predictive=[33m"[39m[33my_hat[39m[33m"[39m,
+[32m   (...)[39m[32m     26[39m         },
+[32m     27[39m )
+[32m     29[39m idata2
 
-[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/plots/posteriorplot.py:227[39m, in [36mplot_posterior[39m[34m(data, var_names, filter_vars, combine_dims, transform, coords, grid, figsize, textsize, hdi_prob, multimodal, skipna, round_to, point_estimate, group, rope, ref_val, rope_color, ref_val_color, kind, bw, circular, bins, labeller, ax, backend, backend_kwargs, show, **kwargs)[39m
-[32m     10[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mplot_posterior[39m(
-[32m     11[39m     data,
-[32m     12[39m     var_names=[38;5;28;01mNone[39;00m,
-[32m   (...)[39m[32m     39[39m     **kwargs
-[32m     40[39m ):
-[32m     41[39m [38;5;250m    [39m[33;03m"""Plot Posterior densities in the style of John K. Kruschke's book.[39;00m
-[32m     42[39m 
-[32m     43[39m [33;03m    Parameters[39;00m
-[32m   (...)[39m[32m    225[39m [33;03m        >>> az.plot_posterior(data, var_names=['mu'], hdi_prob=.75)[39;00m
-[32m    226[39m [33;03m    """[39;00m
-[32m--> [39m[32m227[39m     data = [43mconvert_to_dataset[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[43mgroup[49m[43m=[49m[43mgroup[49m[43m)[49m
-[32m    228[39m     [38;5;28;01mif[39;00m transform [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-[32m    229[39m         data = transform(data)
-
-[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/converters.py:182[39m, in [36mconvert_to_dataset[39m[34m(obj, group, coords, dims)[39m
-[32m    143[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mconvert_to_dataset[39m(obj, *, group=[33m"[39m[33mposterior[39m[33m"[39m, coords=[38;5;28;01mNone[39;00m, dims=[38;5;28;01mNone[39;00m):
-[32m    144[39m [38;5;250m    [39m[33;03m"""Convert a supported object to an xarray dataset.[39;00m
-[32m    145[39m 
-[32m    146[39m [33;03m    This function is idempotent, in that it will return xarray.Dataset functions[39;00m
-[32m   (...)[39m[32m    180[39m [33;03m    xarray.Dataset[39;00m
-[32m    181[39m [33;03m    """[39;00m
-[32m--> [39m[32m182[39m     inference_data = [43mconvert_to_inference_data[49m[43m([49m[43mobj[49m[43m,[49m[43m [49m[43mgroup[49m[43m=[49m[43mgroup[49m[43m,[49m[43m [49m[43mcoords[49m[43m=[49m[43mcoords[49m[43m,[49m[43m [49m[43mdims[49m[43m=[49m[43mdims[49m[43m)[49m
-[32m    183[39m     dataset = [38;5;28mgetattr[39m(inference_data, group, [38;5;28;01mNone[39;00m)
-[32m    184[39m     [38;5;28;01mif[39;00m dataset [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-
-[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/converters.py:89[39m, in [36mconvert_to_inference_data[39m[34m(obj, group, coords, dims, **kwargs)[39m
-[32m     87[39m     kwargs[[33m"[39m[33mprior[39m[33m"[39m] = kwargs.pop(group)
-[32m     88[39m [38;5;28;01mif[39;00m obj.[34m__class__[39m.[34m__name__[39m == [33m"[39m[33mCmdStanMCMC[39m[33m"[39m:
-[32m---> [39m[32m89[39m     [38;5;28;01mreturn[39;00m [43mfrom_cmdstanpy[49m[43m([49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
-[32m     90[39m [38;5;28;01melse[39;00m:  [38;5;66;03m# pystan or pystan3[39;00m
-[32m     91[39m     [38;5;28;01mreturn[39;00m from_pystan(**kwargs)
-
-[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/io_cmdstanpy.py:829[39m, in [36mfrom_cmdstanpy[39m[34m(posterior, posterior_predictive, predictions, prior, prior_predictive, observed_data, constant_data, predictions_constant_data, log_likelihood, index_origin, coords, dims, save_warmup, dtypes)[39m
+[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/io_cmdstanpy.py:844[39m, in [36mfrom_cmdstanpy[39m[34m(posterior, posterior_predictive, predictions, prior, prior_predictive, observed_data, constant_data, predictions_constant_data, log_likelihood, index_origin, coords, dims, save_warmup, dtypes)[39m
 [32m    763[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mfrom_cmdstanpy[39m(
 [32m    764[39m     posterior=[38;5;28;01mNone[39;00m,
 [32m    765[39m     *,
@@ -78,7 +91,7 @@ az.plot_posterior(fit1, var_names=["alpha", "beta", "sigma"])
 [32m    782[39m [33;03m    For a usage example read the[39;00m
 [32m   (...)[39m[32m    827[39m [33;03m    InferenceData object[39;00m
 [32m    828[39m [33;03m    """[39;00m
-[32m--> [39m[32m829[39m     [38;5;28;01mreturn[39;00m [43mCmdStanPyConverter[49m[43m([49m
+[32m    829[39m     [38;5;28;01mreturn[39;00m [43mCmdStanPyConverter[49m[43m([49m
 [32m    830[39m [43m        [49m[43mposterior[49m[43m=[49m[43mposterior[49m[43m,[49m
 [32m    831[39m [43m        [49m[43mposterior_predictive[49m[43m=[49m[43mposterior_predictive[49m[43m,[49m
 [32m    832[39m [43m        [49m[43mpredictions[49m[43m=[49m[43mpredictions[49m[43m,[49m
@@ -93,14 +106,44 @@ az.plot_posterior(fit1, var_names=["alpha", "beta", "sigma"])
 [32m    841[39m [43m        [49m[43mdims[49m[43m=[49m[43mdims[49m[43m,[49m
 [32m    842[39m [43m        [49m[43msave_warmup[49m[43m=[49m[43msave_warmup[49m[43m,[49m
 [32m    843[39m [43m        [49m[43mdtypes[49m[43m=[49m[43mdtypes[49m[43m,[49m
-[32m    844[39m [43m    [49m[43m)[49m.to_inference_data()
+[32m--> [39m[32m844[39m [43m    [49m[43m)[49m[43m.[49m[43mto_inference_data[49m[43m([49m[43m)[49m
 
-[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/io_cmdstanpy.py:76[39m, in [36mCmdStanPyConverter.__init__[39m[34m(self, posterior, posterior_predictive, predictions, prior, prior_predictive, observed_data, constant_data, predictions_constant_data, log_likelihood, index_origin, coords, dims, save_warmup, dtypes)[39m
-[32m     73[39m [38;5;28mself[39m.dtypes = dtypes
-[32m     75[39m [38;5;28;01mif[39;00m [38;5;28mhasattr[39m([38;5;28mself[39m.posterior, [33m"[39m[33mmetadata[39m[33m"[39m):
-[32m---> [39m[32m76[39m     [38;5;28;01mif[39;00m [38;5;28mself[39m.log_likelihood [38;5;129;01mis[39;00m [38;5;28;01mTrue[39;00m [38;5;129;01mand[39;00m [33m"[39m[33mlog_lik[39m[33m"[39m [38;5;129;01min[39;00m [38;5;28;43mself[39;49m[43m.[49m[43mposterior[49m[43m.[49m[43mmetadata[49m[43m.[49m[43mstan_vars_cols[49m:
-[32m     77[39m         [38;5;28mself[39m.log_likelihood = [[33m"[39m[33mlog_lik[39m[33m"[39m]
-[32m     78[39m [38;5;28;01melif[39;00m [38;5;28mhasattr[39m([38;5;28mself[39m.posterior, [33m"[39m[33mstan_vars_cols[39m[33m"[39m):
+[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/io_cmdstanpy.py:455[39m, in [36mCmdStanPyConverter.to_inference_data[39m[34m(self)[39m
+[32m    445[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mto_inference_data[39m([38;5;28mself[39m):
+[32m    446[39m [38;5;250m    [39m[33;03m"""Convert all available data to an InferenceData object.[39;00m
+[32m    447[39m 
+[32m    448[39m [33;03m    Note that if groups can not be created (i.e., there is no `output`, so[39;00m
+[32m    449[39m [33;03m    the `posterior` and `sample_stats` can not be extracted), then the InferenceData[39;00m
+[32m    450[39m [33;03m    will not have those groups.[39;00m
+[32m    451[39m [33;03m    """[39;00m
+[32m    452[39m     [38;5;28;01mreturn[39;00m InferenceData(
+[32m    453[39m         save_warmup=[38;5;28mself[39m.save_warmup,
+[32m    454[39m         **{
+[32m--> [39m[32m455[39m             [33m"[39m[33mposterior[39m[33m"[39m: [38;5;28;43mself[39;49m[43m.[49m[43mposterior_to_xarray[49m[43m([49m[43m)[49m,
+[32m    456[39m             [33m"[39m[33msample_stats[39m[33m"[39m: [38;5;28mself[39m.sample_stats_to_xarray(),
+[32m    457[39m             [33m"[39m[33mposterior_predictive[39m[33m"[39m: [38;5;28mself[39m.posterior_predictive_to_xarray(),
+[32m    458[39m             [33m"[39m[33mpredictions[39m[33m"[39m: [38;5;28mself[39m.predictions_to_xarray(),
+[32m    459[39m             [33m"[39m[33mprior[39m[33m"[39m: [38;5;28mself[39m.prior_to_xarray(),
+[32m    460[39m             [33m"[39m[33msample_stats_prior[39m[33m"[39m: [38;5;28mself[39m.sample_stats_prior_to_xarray(),
+[32m    461[39m             [33m"[39m[33mprior_predictive[39m[33m"[39m: [38;5;28mself[39m.prior_predictive_to_xarray(),
+[32m    462[39m             [33m"[39m[33mobserved_data[39m[33m"[39m: [38;5;28mself[39m.observed_data_to_xarray(),
+[32m    463[39m             [33m"[39m[33mconstant_data[39m[33m"[39m: [38;5;28mself[39m.constant_data_to_xarray(),
+[32m    464[39m             [33m"[39m[33mpredictions_constant_data[39m[33m"[39m: [38;5;28mself[39m.predictions_constant_data_to_xarray(),
+[32m    465[39m             [33m"[39m[33mlog_likelihood[39m[33m"[39m: [38;5;28mself[39m.log_likelihood_to_xarray(),
+[32m    466[39m         },
+[32m    467[39m     )
+
+[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/base.py:65[39m, in [36mrequires.__call__.<locals>.wrapped[39m[34m(cls)[39m
+[32m     63[39m     [38;5;28;01mif[39;00m [38;5;28mall[39m(([38;5;28mgetattr[39m([38;5;28mcls[39m, prop_i) [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m [38;5;28;01mfor[39;00m prop_i [38;5;129;01min[39;00m prop)):
+[32m     64[39m         [38;5;28;01mreturn[39;00m [38;5;28;01mNone[39;00m
+[32m---> [39m[32m65[39m [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[38;5;28;43mcls[39;49m[43m)[49m
+
+[36mFile [39m[32m~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/arviz/data/io_cmdstanpy.py:100[39m, in [36mCmdStanPyConverter.posterior_to_xarray[39m[34m(self)[39m
+[32m     97[39m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m.posterior_to_xarray_pre_v_0_9_68()
+[32m     99[39m [38;5;28;01mif[39;00m [38;5;28mhasattr[39m([38;5;28mself[39m.posterior, [33m"[39m[33mmetadata[39m[33m"[39m):
+[32m--> [39m[32m100[39m     items = [38;5;28mlist[39m([38;5;28;43mself[39;49m[43m.[49m[43mposterior[49m[43m.[49m[43mmetadata[49m[43m.[49m[43mstan_vars_cols[49m.keys())
+[32m    101[39m [38;5;28;01melse[39;00m:
+[32m    102[39m     items = [38;5;28mlist[39m([38;5;28mself[39m.posterior.stan_vars_cols.keys())
 
 [31mAttributeError[39m: 'InferenceMetadata' object has no attribute 'stan_vars_cols'
 
