@@ -1,0 +1,1062 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Energy signature &#8212; Building energy probabilistic modelling</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'changepoint';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data" href="data.html" />
+    <link rel="prev" title="Linear regression (Stan)" href="linearregression_stan.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Building energy probabilistic modelling - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Building energy probabilistic modelling - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Building energy probabilistic modelling
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="background.html">Motivation for probabilistic modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling.html">Simplified building energy modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">A Bayesian data analysis workflow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simple regression</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="linearregression.html">Linear regression (PyMC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linearregression_stan.html">Linear regression (Stan)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Energy signature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/srouchier/buildingenergygeeks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/srouchier/buildingenergygeeks/issues/new?title=Issue%20on%20page%20%2Fchangepoint.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/changepoint.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Energy signature</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-bayesian-workflow-for-m-v">A Bayesian workflow for M&amp;V</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#energy-signature-and-change-point-models">Energy signature and change-point models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipmvp-option-c-example-with-stan">IPMVP option C example with Stan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specification">Model specification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-predictions">Posterior predictions</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="energy-signature">
+<span id="changepoint"></span><h1>Energy signature<a class="headerlink" href="#energy-signature" title="Link to this heading">#</a></h1>
+<section id="a-bayesian-workflow-for-m-v">
+<h2>A Bayesian workflow for M&amp;V<a class="headerlink" href="#a-bayesian-workflow-for-m-v" title="Link to this heading">#</a></h2>
+<p>This tutorial applies the principles of Bayesian data analysis to a Measurement and Verification (M&amp;V) problem. In a nutshell, M&amp;V aims at reliably assessing the energy savings that were actually gained from energy conservation measures (ECM). One of the main M&amp;V workflows, formalised by the IPMVP, is the “reporting period basis”, or “avoided consumption” method:</p>
+<ul class="simple">
+<li><p>a numerical model is trained during a baseline observation period (before ECMs are applied);</p></li>
+<li><p>the trained model is used to predict energy consumption during the reporting period (after energy conservation measures);</p></li>
+<li><p>predictions are compared with the measured consumption of the reporting period, in order to estimate adjusted energy savings</p></li>
+</ul>
+<p>This method therefore requires data to be recorded before and after implementation of the ECM, for a sufficiently long time. <a class="reference internal" href="#mvworkflow"><span class="std std-numref">Fig. 18</span></a> shows the main steps of this method, when following a Bayesian approach. We assume that the measurement boundaries have been defined and that data have been recorded during the baseline and reporting period respectively.</p>
+<figure class="align-center" id="mvworkflow">
+<a class="reference internal image-reference" href="_images/501_workflow.png"><img alt="_images/501_workflow.png" src="_images/501_workflow.png" style="width: 700px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Estimation of savings with uncertainty in an avoided consumption workflow. The step of model validation is not displayed</span><a class="headerlink" href="#mvworkflow" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>As with standard approaches, choose a model structure to describe the data with, and formulate it as a likelihood function. Formulate eventual “expert knowledge” assumptions in the form of prior probability distributions.</p></li>
+<li><p>Run a MCMC (or other) algorithm to obtain a set of samples <span class="math notranslate nohighlight">\(\left(\theta^{(1)},...,\theta^{(S)}\right)\)</span> which approximates the posterior distribution of parameters conditioned on the baseline data <span class="math notranslate nohighlight">\(p(\theta|y_\mathit{base})\)</span>. Validate the inference by checking convergence diagnostics: <span class="math notranslate nohighlight">\(\hat{R}\)</span>, ESS, etc.</p></li>
+<li><p>Validate the model by computing its predictions during the baseline period <span class="math notranslate nohighlight">\(p(\tilde{y}_\mathit{base}|y_\mathit{base})\)</span>. This can be done by taking all (or a representative set of) samples individually, and running a model simulation <span class="math notranslate nohighlight">\(\tilde{y}_\mathit{base}^{(s)} \sim p(y_\mathit{base}|\theta=\theta^{(s)})\)</span> for each. This set of simulations generates the posterior predictive distribution of the baseline period, from which any statistic can be derived (mean, median, prediction intervals for any quantile, etc.). The measures of model validation (<span class="math notranslate nohighlight">\(R^2\)</span>, net determination bias, t-statistic…) can then be computed either from the mean, or from all samples in order to obtain their own probability densities.</p></li>
+<li><p>Compute the reporting period predictions in the same discrete way: each sample <span class="math notranslate nohighlight">\(\theta^{(s)}\)</span> generates a profile <span class="math notranslate nohighlight">\(\tilde{y}_\mathit{repo}^{(s)} \sim p(y_\mathit{repo}|\theta=\theta^{(s)})\)</span>, and this set of simulations generates the posterior predictive distribution of the reporting period.</p></li>
+<li><p>Since each reporting period prediction <span class="math notranslate nohighlight">\(\tilde{y}_\mathit{repo}^{(s)}\)</span> can be compared with the measured reporting period consumption <span class="math notranslate nohighlight">\(y_\mathit{repo}\)</span>, we can obtain <span class="math notranslate nohighlight">\(S\)</span> values for the energy savings, which distribution approximate the posterior probability of savings.</p></li>
+</ul>
+</section>
+<section id="energy-signature-and-change-point-models">
+<h2>Energy signature and change-point models<a class="headerlink" href="#energy-signature-and-change-point-models" title="Link to this heading">#</a></h2>
+<p>Some systems are dependent on a variable, but only above or below a certain value. For example, cooling energy use may be proportional to ambient temperature, yet only above a certain threshold. When ambient temperature decreases to below the threshold, the cooling energy use does not continue to decrease, because the fan energy remains constant. In cases like these, simple regression can be improved by using a change-point linear regression. Change point models often have a better fit than a simple regression, especially when modeling energy usage for a facility.</p>
+<p>A simple energy signature of a building decomposes the total energy consumption <span class="math notranslate nohighlight">\(y\)</span> (or power, depending on which measurement is available) into three terms: heating, cooling, and other uses. Heating and cooling are then assumed to be linearly dependent on the outdoor air temperature <span class="math notranslate nohighlight">\(x\)</span>, and only turned on conditionally on two threshold temperatures <span class="math notranslate nohighlight">\(\tau_1\)</span> and <span class="math notranslate nohighlight">\(\tau_2\)</span>, respectively.</p>
+<div class="math notranslate nohighlight" id="equation-cp1">
+<span class="eqno">(24)<a class="headerlink" href="#equation-cp1" title="Link to this equation">#</a></span>\[y_n = \alpha + \beta_1(\tau_1-x_n)^+ + \beta_2(x_n-\tau_2)^+ + \varepsilon_n\]</div>
+<div class="math notranslate nohighlight" id="equation-cp2">
+<span class="eqno">(25)<a class="headerlink" href="#equation-cp2" title="Link to this equation">#</a></span>\[\varepsilon_n \sim \mathrm{normal}\left(0, \sigma\right) \]</div>
+<p>Where the <span class="math notranslate nohighlight">\(1\)</span> and <span class="math notranslate nohighlight">\(2\)</span> subscripts indicate heating and cooling modes. The <span class="math notranslate nohighlight">\(+\)</span> superscript indicates that a term is only applied if above zero. This equation means that we expect the energy use <span class="math notranslate nohighlight">\(y\)</span> to be a normal distribution centered around a change-point model, with a constant standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<p>Data points should be averaged over long enough (at least daily) sampling times, so that the steady-state assumption formulated above can hold. <span class="math notranslate nohighlight">\(\alpha\)</span> is the average baseline consumption during each sampling period, of all energy uses besides heating and cooling. Heating is turned on if the outdoor air temperature drops below a basis temperature <span class="math notranslate nohighlight">\(\tau_1\)</span>, and the heating power <span class="math notranslate nohighlight">\(\beta_1 \, \left(\tau_1 - x_n\right)\)</span> increases linearly with the difference between the change point <span class="math notranslate nohighlight">\(\tau_1\)</span> and the outdoor air temperature <span class="math notranslate nohighlight">\(x_n\)</span>. The same reasoning is used to formulate cooling above a <span class="math notranslate nohighlight">\(\tau_2\)</span> change point.</p>
+<p>The appeal of the energy signature model is that the only data it requires are energy meter readings and outdoor air temperature, with a large time step size.</p>
+<p>This model has 6 possible parameters: a constant term <span class="math notranslate nohighlight">\(\alpha\)</span>, two slopes <span class="math notranslate nohighlight">\(\beta\)</span>, two change points <span class="math notranslate nohighlight">\(\tau\)</span> and the error scale <span class="math notranslate nohighlight">\(\sigma\)</span>. It is not an ordinary linear regression models: there is no analytical way to formulate the prediction uncertainty while accounting for the uncertainty of the change point estimates.</p>
+</section>
+<section id="ipmvp-option-c-example-with-stan">
+<h2>IPMVP option C example with Stan<a class="headerlink" href="#ipmvp-option-c-example-with-stan" title="Link to this heading">#</a></h2>
+<section id="data">
+<h3>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cmdstanpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">CmdStanModel</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The data used in this example is the hourly electricity consumption and outdoor air temperature data for a commercial building in Richmond, USA. Three file are available: <code class="docutils literal notranslate"><span class="pre">building6pre.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">building6during.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">building6post.csv</span></code>, respectively before and after some energy conservation measure has been applied.</p>
+<p>The following block loads the hourly data, resamples it on daily time steps, and removes week ends.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_and_resample_data</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]),</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">32</span><span class="p">)</span><span class="o">/</span><span class="mf">1.8</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;dayofweek&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">dayofweek</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;weekend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;dayofweek&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;dayofweek&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">load_and_resample_data</span><span class="p">(</span><span class="s1">&#39;data/building6pre.csv&#39;</span><span class="p">)</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">load_and_resample_data</span><span class="p">(</span><span class="s1">&#39;data/building6during.csv&#39;</span><span class="p">)</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">load_and_resample_data</span><span class="p">(</span><span class="s1">&#39;data/building6post.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Averaging the data over daily time steps should allow to overlook the dependence between consecutive measurements. In turn, this allows using a model which will be much simpler than time series models, but will only be capable of low frequency predictions.</p>
+<p>The next block plot the daily average power consumption (kW) versus the outdoor air temperature (°C) for both datasets: the year used for training (baseline period) and the year used for forecasting (reporting period).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#weekend = (df1[&#39;dayofweek&#39;] == 5) | (df1[&#39;dayofweek&#39;] == 6)</span>
+<span class="n">df_train</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df1</span><span class="p">[</span><span class="s1">&#39;weekend&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">]</span>
+<span class="n">df_test</span> <span class="o">=</span> <span class="n">df3</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df3</span><span class="p">[</span><span class="s1">&#39;weekend&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training data&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Forecast data&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7ff933b17ad0&gt;
+</pre></div>
+</div>
+<img alt="_images/5a0bad4b47219f17068feacc10cea0a5611e680309e49bff0862cb895dc71b84.png" src="_images/5a0bad4b47219f17068feacc10cea0a5611e680309e49bff0862cb895dc71b84.png" />
+</div>
+</div>
+</section>
+<section id="model-specification">
+<h3>Model specification<a class="headerlink" href="#model-specification" title="Link to this heading">#</a></h3>
+<p>After looking at the data, we can suggest using a change-point model which will include the effects of heating and cooling separately, like we defined in Equation <a class="reference internal" href="#equation-cp1">(24)</a>above.</p>
+<p>The complete Stan code for the energy signature model is written into a separate file, loaded by CmdStanPy:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">CmdStanModel</span><span class="p">(</span><span class="n">stan_file</span><span class="o">=</span><span class="s1">&#39;models/changepoint_101.stan&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>I called it “changepoint_101” because it may have a slope on the low temperatures side (1), then a section of temperature-independent energy use (0), then a slope on the high temperatures side (1).</p>
+<p>The blocks of the code are separated here to facilitate their description.</p>
+<p>First, the data declaration block is more complex than in the previous <a class="reference internal" href="linearregression_stan.html#linreg-stan"><span class="std std-ref">linear regression example</span></a> for two reasons:</p>
+<ul class="simple">
+<li><p>Two datasets are being passed to the Stan model: training data, and forecasting data. Each comes with a variable for the number of data entries <span class="math notranslate nohighlight">\(N\)</span>, input variables <span class="math notranslate nohighlight">\(x\)</span> and output <span class="math notranslate nohighlight">\(y\)</span>.</p></li>
+<li><p>Parameter priors are passed as data into the model. This is so that their values can be modified in the main code before refitting, instead of being defined inside the Stan model, which would require recompiling every time we want to try new prior values.</p></li>
+</ul>
+<div class="highlight-stan notranslate"><div class="highlight"><pre><span></span><span class="kn">data</span> <span class="p">{</span>
+  <span class="c1">// This block declares all data which will be passed to the Stan model.</span>
+  <span class="c1">// Training period</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="o">&gt;</span> <span class="n">N</span><span class="p">;</span>       <span class="c1">// number of data items</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="n">x</span><span class="p">;</span>      <span class="c1">// outdoor temperature</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="n">y</span><span class="p">;</span>      <span class="c1">// outcome energy vector</span>
+  <span class="c1">// Post period</span>
+  <span class="kt">int</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="o">&gt;</span> <span class="n">N_post</span><span class="p">;</span>        <span class="c1">// number of data items</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N_post</span><span class="p">]</span> <span class="n">x_post</span><span class="p">;</span>      <span class="c1">// outdoor temperature</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N_post</span><span class="p">]</span> <span class="n">y_post</span><span class="p">;</span>      <span class="c1">// outcome energy vector</span>
+  <span class="c1">// Priors</span>
+  <span class="kt">array</span><span class="p">[</span><span class="mf">2</span><span class="p">]</span> <span class="kt">real</span> <span class="n">alpha_prior</span><span class="p">;</span>
+  <span class="kt">array</span><span class="p">[</span><span class="mf">2</span><span class="p">]</span> <span class="kt">real</span> <span class="n">beta1_prior</span><span class="p">;</span>
+  <span class="kt">array</span><span class="p">[</span><span class="mf">2</span><span class="p">]</span> <span class="kt">real</span> <span class="n">beta2_prior</span><span class="p">;</span>
+  <span class="kt">array</span><span class="p">[</span><span class="mf">2</span><span class="p">]</span> <span class="kt">real</span> <span class="n">tau1_prior</span><span class="p">;</span>
+  <span class="kt">array</span><span class="p">[</span><span class="mf">2</span><span class="p">]</span> <span class="kt">real</span> <span class="n">tau2_prior</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The parameter block declares the six parameters of the model as separate real-valued variables:</p>
+<div class="highlight-stan notranslate"><div class="highlight"><pre><span></span><span class="kn">parameters</span> <span class="p">{</span>
+  <span class="c1">// This block declares the parameters of the model.</span>
+  <span class="kt">real</span> <span class="n">alpha</span><span class="p">;</span>      <span class="c1">// baseline consumption</span>
+  <span class="kt">real</span> <span class="n">beta1</span><span class="p">;</span>     <span class="c1">// slope for heating</span>
+  <span class="kt">real</span> <span class="n">beta2</span><span class="p">;</span>       <span class="c1">// slope for cooling</span>
+  <span class="kt">real</span> <span class="n">tau1</span><span class="p">;</span>      <span class="c1">// low temperature break point</span>
+  <span class="kt">real</span> <span class="n">tau2</span><span class="p">;</span>      <span class="c1">// high temperature break point</span>
+  <span class="kt">real</span><span class="o">&lt;</span><span class="k">lower</span><span class="p">=</span><span class="mf">0</span><span class="o">&gt;</span> <span class="n">sigma</span><span class="p">;</span>  <span class="c1">// error scale</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The model itself is below. First, it declares the prior distribution of each parameter as a normal distribution, with a mean and standard deviation taken from the declared data. Then, the observational model is the energy signature equation <a class="reference internal" href="#equation-cp1">(24)</a>.</p>
+<div class="highlight-stan notranslate"><div class="highlight"><pre><span></span><span class="kn">model</span> <span class="p">{</span>
+  <span class="c1">// Assigning prior distributions on some parameters</span>
+  <span class="n">alpha</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="n">alpha_prior</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="n">alpha_prior</span><span class="p">[</span><span class="mf">2</span><span class="p">]);</span>
+  <span class="n">beta1</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="n">beta1_prior</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="n">beta1_prior</span><span class="p">[</span><span class="mf">2</span><span class="p">]);</span>
+  <span class="n">beta2</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="n">beta2_prior</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="n">beta2_prior</span><span class="p">[</span><span class="mf">2</span><span class="p">]);</span>
+  <span class="n">tau1</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="n">tau1_prior</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="n">tau1_prior</span><span class="p">[</span><span class="mf">2</span><span class="p">]);</span>
+  <span class="n">tau2</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="n">tau2_prior</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="n">tau2_prior</span><span class="p">[</span><span class="mf">2</span><span class="p">]);</span>
+  <span class="c1">// Observational model</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta1</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">tau1</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="mf">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta2</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">tau2</span><span class="p">,</span> <span class="mf">0</span><span class="p">),</span> <span class="n">sigma</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Finally, the block for generated quantities is quite larger than in the previous tutorial. This block handles the calculation of some posterior variables we want to study after fitting:</p>
+<ul class="simple">
+<li><p>Energy use predictions by the model during the training period <code class="docutils literal notranslate"><span class="pre">y_hat</span></code> and during the reporting period <code class="docutils literal notranslate"><span class="pre">y_hat_post</span></code></p></li>
+<li><p>Log-likelihood <code class="docutils literal notranslate"><span class="pre">log_lik</span></code>, which is useful to save if we want to compare several fitted models.</p></li>
+<li><p>Energy savings, which are the total difference between the forecasts and the measured reporting period energy use.</p></li>
+</ul>
+<div class="highlight-stan notranslate"><div class="highlight"><pre><span></span><span class="kn">generated quantities</span> <span class="p">{</span>
+  <span class="c1">// This block is for posterior predictions. It is not part of model training</span>
+  <span class="kt">array</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="kt">real</span> <span class="n">log_lik</span><span class="p">;</span>
+  <span class="kt">array</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="kt">real</span> <span class="n">y_hat</span><span class="p">;</span>
+  <span class="kt">array</span><span class="p">[</span><span class="n">N_post</span><span class="p">]</span> <span class="kt">real</span> <span class="n">y_hat_post</span><span class="p">;</span>
+  <span class="kt">real</span> <span class="n">savings</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span>
+  
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">y_hat</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">normal_rng</span><span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta1</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">tau1</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="mf">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta2</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">tau2</span><span class="p">,</span> <span class="mf">0</span><span class="p">),</span> <span class="n">sigma</span><span class="p">);</span>
+    <span class="n">log_lik</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">normal_lpdf</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="p">|</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">beta1</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">tau1</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="mf">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta2</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">tau2</span><span class="p">,</span> <span class="mf">0</span><span class="p">),</span> <span class="n">sigma</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N_post</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">y_hat_post</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">normal_rng</span><span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta1</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">tau1</span><span class="o">-</span><span class="n">x_post</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="mf">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta2</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">x_post</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">tau2</span><span class="p">,</span> <span class="mf">0</span><span class="p">),</span> <span class="n">sigma</span><span class="p">);</span>
+    <span class="n">savings</span> <span class="o">+=</span> <span class="n">y_hat_post</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_post</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that predictions are calculated by drawing from a Normal distribution with the <span class="math notranslate nohighlight">\(\sigma\)</span> error of each sample. Therefore, we will obtain a full description of the prediction intervals.</p>
+<p>The next step is to create a list called <code class="docutils literal notranslate"><span class="pre">model_data</span></code>, which maps our data to each appropriate variable into the Stan model. Then the <code class="docutils literal notranslate"><span class="pre">sample()</span></code> command samples from the posterior conditioned on this data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_train</span><span class="p">),</span>
+    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;N_post&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_test</span><span class="p">),</span>
+    <span class="s2">&quot;x_post&quot;</span><span class="p">:</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;y_post&quot;</span><span class="p">:</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;alpha_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="c1"># baseline consumption at intermediate temperatures</span>
+    <span class="s2">&quot;beta1_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="c1"># low temperature slope</span>
+    <span class="s2">&quot;beta2_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="c1"># high temperature slope</span>
+    <span class="s2">&quot;tau1_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="c1"># low temperature break point</span>
+    <span class="s2">&quot;tau2_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="c1"># high temperature break point</span>
+<span class="p">}</span>
+
+<span class="n">fit</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">model_data</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:58:11 - cmdstanpy - INFO - CmdStan start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:58:11 - cmdstanpy - INFO - Chain [1] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:58:11 - cmdstanpy - INFO - Chain [2] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:58:11 - cmdstanpy - INFO - Chain [3] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:58:11 - cmdstanpy - INFO - Chain [4] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:58:26 - cmdstanpy - INFO - Chain [4] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:58:28 - cmdstanpy - INFO - Chain [1] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:58:28 - cmdstanpy - INFO - Chain [3] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:58:30 - cmdstanpy - INFO - Chain [2] done processing
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">diagnose()</span></code> method looks for potential problems which indicate that the sample may not be a representative sample from the posterior. If some of the metrics are not satisfactory, Stan’s documentation has a page suggesting <a class="reference external" href="https://mc-stan.org/misc/warnings.html">how to address these warnings</a>..</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">fit</span><span class="o">.</span><span class="n">diagnose</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing csv files: /tmp/tmpkt5_yu7b/changepoint_101cyi_v_jd/changepoint_101-20251020145811_1.csv, /tmp/tmpkt5_yu7b/changepoint_101cyi_v_jd/changepoint_101-20251020145811_2.csv, /tmp/tmpkt5_yu7b/changepoint_101cyi_v_jd/changepoint_101-20251020145811_3.csv, /tmp/tmpkt5_yu7b/changepoint_101cyi_v_jd/changepoint_101-20251020145811_4.csv
+
+Checking sampler transitions treedepth.
+Treedepth satisfactory for all transitions.
+
+Checking sampler transitions for divergences.
+No divergent transitions found.
+
+Checking E-BFMI - sampler transitions HMC potential energy.
+E-BFMI satisfactory.
+
+Effective sample size satisfactory.
+
+Split R-hat values satisfactory all parameters.
+
+Processing complete, no problems detected.
+</pre></div>
+</div>
+</div>
+</div>
+<p>If no problems are detected, we can take a look at some metrics from the posterior distributions of model parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fs</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">95</span><span class="p">))</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="s1">&#39;beta1&#39;</span><span class="p">,</span> <span class="s1">&#39;beta2&#39;</span><span class="p">,</span> <span class="s1">&#39;tau1&#39;</span><span class="p">,</span> <span class="s1">&#39;tau2&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;lp__&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Mean</th>
+      <th>MCSE</th>
+      <th>StdDev</th>
+      <th>5%</th>
+      <th>50%</th>
+      <th>95%</th>
+      <th>N_Eff</th>
+      <th>N_Eff/s</th>
+      <th>R_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>alpha</th>
+      <td>34.54410</td>
+      <td>0.011027</td>
+      <td>0.493141</td>
+      <td>33.723000</td>
+      <td>34.57340</td>
+      <td>35.31580</td>
+      <td>1999.86</td>
+      <td>56.5668</td>
+      <td>1.001140</td>
+    </tr>
+    <tr>
+      <th>beta1</th>
+      <td>1.38505</td>
+      <td>0.002419</td>
+      <td>0.113326</td>
+      <td>1.200780</td>
+      <td>1.38311</td>
+      <td>1.57116</td>
+      <td>2195.38</td>
+      <td>62.0970</td>
+      <td>0.999669</td>
+    </tr>
+    <tr>
+      <th>beta2</th>
+      <td>1.19454</td>
+      <td>0.002724</td>
+      <td>0.131388</td>
+      <td>0.988654</td>
+      <td>1.18924</td>
+      <td>1.41571</td>
+      <td>2327.20</td>
+      <td>65.8258</td>
+      <td>1.000510</td>
+    </tr>
+    <tr>
+      <th>tau1</th>
+      <td>6.56754</td>
+      <td>0.019500</td>
+      <td>0.771840</td>
+      <td>5.445680</td>
+      <td>6.50424</td>
+      <td>7.93022</td>
+      <td>1566.74</td>
+      <td>44.3157</td>
+      <td>1.000110</td>
+    </tr>
+    <tr>
+      <th>tau2</th>
+      <td>15.58940</td>
+      <td>0.024102</td>
+      <td>0.992924</td>
+      <td>13.864200</td>
+      <td>15.63900</td>
+      <td>17.09370</td>
+      <td>1697.13</td>
+      <td>48.0039</td>
+      <td>1.001260</td>
+    </tr>
+    <tr>
+      <th>sigma</th>
+      <td>4.02751</td>
+      <td>0.003027</td>
+      <td>0.181087</td>
+      <td>3.737430</td>
+      <td>4.02304</td>
+      <td>4.33585</td>
+      <td>3579.85</td>
+      <td>101.2570</td>
+      <td>1.000290</td>
+    </tr>
+    <tr>
+      <th>lp__</th>
+      <td>-490.87700</td>
+      <td>0.047058</td>
+      <td>1.740360</td>
+      <td>-494.200000</td>
+      <td>-490.53800</td>
+      <td>-488.70700</td>
+      <td>1367.75</td>
+      <td>38.6872</td>
+      <td>1.002990</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="posterior-predictions">
+<h3>Posterior predictions<a class="headerlink" href="#posterior-predictions" title="Link to this heading">#</a></h3>
+<p>Our main goal here is to compare the energy use measured during the reporting period <span class="math notranslate nohighlight">\(y_\mathit{repo}\)</span> with the predictions of the model trained on the baseline period. Since it is a probabilistic model, its outcome is actually a probability distribution <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{repo}|x_\mathit{repo}, x_\mathit{base}, y_\mathit{base}\right)\)</span>, based on the observed values of the model inputs <span class="math notranslate nohighlight">\(x\)</span> during the baseline and reporting periods, and on the observed energy use during the baseline period <span class="math notranslate nohighlight">\(y_\mathit{base}\)</span>.</p>
+<p>This posterior predictive distribution <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{repo}|...\right)\)</span> is already directly available, because a value of <span class="math notranslate nohighlight">\(\hat{y}_\mathit{repo}\)</span> (for each time step) was directly calculated by the Stan model for each sample <span class="math notranslate nohighlight">\(\theta^{(m)}\)</span> (see <a class="reference external" href="https://mc-stan.org/docs/2_26/stan-users-guide/posterior-prediction-chapter.html">Stan user’s guide</a> for more details).</p>
+<p>\begin{equation}
+p\left(y_\mathit{repo}|…\right) \approx \frac{1}{M} \sum_{m=1}^M p\left(y_\mathit{repo}|x_\mathit{repo},\theta^{(m)}\right)
+\end{equation}</p>
+<p>First, let us look at the posterior predictive distribution during the baseline period, in order to validate the model compared to its training data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The sampler output is saved into an xarray</span>
+<span class="n">res_xr</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">draws_xr</span><span class="p">()</span>
+
+<span class="c1"># Then the xarray is converted into an ArviZ InferenceData object</span>
+<span class="n">idata</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">from_cmdstanpy</span><span class="p">(</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">fit</span><span class="p">,</span>
+    <span class="n">posterior_predictive</span><span class="o">=</span><span class="s2">&quot;y_hat&quot;</span><span class="p">,</span>
+    <span class="n">observed_data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">},</span>
+    <span class="n">constant_data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">df1</span><span class="p">[[</span><span class="s1">&#39;OAT&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">},</span>
+    <span class="n">log_likelihood</span><span class="o">=</span><span class="s2">&quot;log_lik&quot;</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;y_hat&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;observations&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;log_lik&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;observations&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;observations&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;y_hat_post&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;forecast&quot;</span><span class="p">]</span>
+        <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_hat</span> <span class="o">=</span> <span class="n">idata</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s2">&quot;y_hat&quot;</span><span class="p">]</span>
+<span class="n">y_hat_post</span> <span class="o">=</span> <span class="n">idata</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;y_hat_post&quot;</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">)),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;posterior mean&quot;</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_hdi</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Outdoor air temperature&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">y_hat_post</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">)),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_hdi</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">y_hat_post</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Outdoor air temperature&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Building 6 kW&#39;)
+</pre></div>
+</div>
+<img alt="_images/73f720d6dc586fc37d685adc3674871ab267bda4b5910e7478ec41d092ff20f6.png" src="_images/73f720d6dc586fc37d685adc3674871ab267bda4b5910e7478ec41d092ff20f6.png" />
+</div>
+</div>
+<p>Savings</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># in kW.day</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="s1">&#39;savings&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;savings&#39;}&gt;
+</pre></div>
+</div>
+<img alt="_images/76ba0fe8c28334701c59a3e6d3f88dd1a46cc29bd8e565750a2e2d0ce7a9067c.png" src="_images/76ba0fe8c28334701c59a3e6d3f88dd1a46cc29bd8e565750a2e2d0ce7a9067c.png" />
+</div>
+</div>
+<p>An important validation step is to check for autocorrelation in the residuals of the fitted model, on the baseline data that was used for fitting. Autocorrelation is often a sign of insufficient model complexity, or that the form of the model error term has not been appropriately chosen. In case of strong remaining autocorrelation, inferences should be drawn with caution.</p>
+<p>ArviZ has a built-in function to display the autocorrelation of the posterior traces, but we can also use it for a custom variable that is not contained in an InferenceData object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">resid</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_autocorr</span><span class="p">(</span><span class="n">resid</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;x\n0&#39;}&gt;
+</pre></div>
+</div>
+<img alt="_images/92a10a59cb56cc1289a4fdfd9d5583497bf9ea091c13aa4c1805bca87978d2f5.png" src="_images/92a10a59cb56cc1289a4fdfd9d5583497bf9ea091c13aa4c1805bca87978d2f5.png" />
+</div>
+</div>
+<p>Every vertical line of this graph shows the correlation coefficient between the values of a series and its own values with a certain lag.</p>
+<ul class="simple">
+<li><p>For <code class="docutils literal notranslate"><span class="pre">Lag=0</span></code>, the ACF is 1. This is normal: a series is fully correlated with itself.</p></li>
+<li><p>As much as possible, we want all other ACF values below the dotted line, a threshold value which depends on the length of data.</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">Lag=1</span></code>, the ACF is close to 0.7. This is the average correlation coefficient between residuals and their own previous value. As a consequence, the next lags have high ACF values as well.</p></li>
+<li><p>There is an increased ACF every 5 lags. Reminder: we removed weekends, therefore our dataset has 5 rows per week. This suggests that the data has a weekly pattern that our model doesn’t capture.</p></li>
+</ul>
+<p>We can zoom in on the lag-1 autocorrelation by plotting residuals versus their own previous value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">resid</span><span class="p">,</span> <span class="n">resid</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff933cc7150&gt;
+</pre></div>
+</div>
+<img alt="_images/32111297e0f198fb158cc83c4195fedafe6e412aad08a27818fa3780e136146b.png" src="_images/32111297e0f198fb158cc83c4195fedafe6e412aad08a27818fa3780e136146b.png" />
+</div>
+</div>
+<p>The autocorrelation graph suggests that our model doesn’t predict the variability of the data properly. We should therefore be very cautious when interpreting its inferences. This includes the uncertainty of the savings estimates.</p>
+<p>In order to trust our inferences, we have two options:</p>
+<ul class="simple">
+<li><p>Improve the model so that it better describes the building’s electricity use and its dependency on weather and occupancy. This means more model parameters, but the dataset may no longer bring enough information to identify them.</p></li>
+<li><p>Modify the model to account for an additional uncertainty due to the autocorrelation. This means we will not “fix” the model, but let it aknowledge that it is missing something: inferences will be more “cautious” (more uncertain but more reliable).</p></li>
+</ul>
+<p>In the next tutorial, we show how to do the second option.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="linearregression_stan.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Linear regression (Stan)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-bayesian-workflow-for-m-v">A Bayesian workflow for M&amp;V</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#energy-signature-and-change-point-models">Energy signature and change-point models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipmvp-option-c-example-with-stan">IPMVP option C example with Stan</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specification">Model specification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-predictions">Posterior predictions</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Simon Rouchier
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -131,7 +131,7 @@ The posterior predictive distribution is the distribution of the observable $\ti
 p\left(\tilde{y}|y\right) = \int p\left(\tilde{y}|\theta\right) p\left(\theta | y\right) \mathrm{d}\theta
 ```
 
-This definition is very similar to the prior predictive distribution given in Eq. \ref{eq:priorpredictive}, except that the prior $p(\theta)$ has been replaced by the posterior $p(\theta|y)$. Similarly, it is simple to compute if the posterior has been approximated by an MCMC procedure: a finite number of parameter vectors $\theta^{(s)}$ is drawn from the posterior distribution, and each of them is used to compute a model output $\tilde{y}^{(s)}$:
+This definition is very similar to the prior predictive distribution, except that the prior $p(\theta)$ has been replaced by the posterior $p(\theta|y)$. Similarly, it is simple to compute if the posterior has been approximated by an MCMC procedure: a finite number of parameter vectors $\theta^{(s)}$ is drawn from the posterior distribution, and each of them is used to compute a model output $\tilde{y}^{(s)}$:
 
 ```{math}
 :label: ysample1

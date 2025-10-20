@@ -191,6 +191,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="linearregression.html">Linear regression (PyMC)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="linearregression_stan.html">Linear regression (Stan)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changepoint.html">Energy signature</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -494,7 +495,7 @@ document.write(`
 <p>The posterior predictive distribution is the distribution of the observable <span class="math notranslate nohighlight">\(\tilde{y}\)</span> conditioned on the observed data <span class="math notranslate nohighlight">\(y\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-posteriorpredictive">
 <span class="eqno">(10)<a class="headerlink" href="#equation-posteriorpredictive" title="Link to this equation">#</a></span>\[p\left(\tilde{y}|y\right) = \int p\left(\tilde{y}|\theta\right) p\left(\theta | y\right) \mathrm{d}\theta\]</div>
-<p>This definition is very similar to the prior predictive distribution given in Eq. \ref{eq:priorpredictive}, except that the prior <span class="math notranslate nohighlight">\(p(\theta)\)</span> has been replaced by the posterior <span class="math notranslate nohighlight">\(p(\theta|y)\)</span>. Similarly, it is simple to compute if the posterior has been approximated by an MCMC procedure: a finite number of parameter vectors <span class="math notranslate nohighlight">\(\theta^{(s)}\)</span> is drawn from the posterior distribution, and each of them is used to compute a model output <span class="math notranslate nohighlight">\(\tilde{y}^{(s)}\)</span>:</p>
+<p>This definition is very similar to the prior predictive distribution, except that the prior <span class="math notranslate nohighlight">\(p(\theta)\)</span> has been replaced by the posterior <span class="math notranslate nohighlight">\(p(\theta|y)\)</span>. Similarly, it is simple to compute if the posterior has been approximated by an MCMC procedure: a finite number of parameter vectors <span class="math notranslate nohighlight">\(\theta^{(s)}\)</span> is drawn from the posterior distribution, and each of them is used to compute a model output <span class="math notranslate nohighlight">\(\tilde{y}^{(s)}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-ysample1">
 <span class="eqno">(11)<a class="headerlink" href="#equation-ysample1" title="Link to this equation">#</a></span>\[\theta^{(s)} \sim p(\theta|y)\]</div>
 <div class="math notranslate nohighlight" id="equation-ysample2">
