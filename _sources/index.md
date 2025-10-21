@@ -8,7 +8,15 @@
 
 This website promotes the use of Bayesian inference and prediction for building energy use. It includes some background on the Bayesian data analysis workflow, and tutorials with common building energy models.
 
-**September 2025**: This website is being migrated from bookdown (R) to jupyter-book (Python). I just finished re-writing the Background part (sept. 16th) and am starting update on the tutorials. Stay tuned!
+**Latest update: October 21th 2025**: this website is being migrated from bookdown (R) to jupyter-book (Python). Here is the current checklist of remaining chapters:
+
+* ~~Background~~
+* ~~Simple regression~~
+* Time series: in progress
+* State-space models
+* Gaussian process
+
+I just finished re-writing the Background part (sept. 16th) and am starting update on the tutorials. Stay tuned!
 
 ## Motivation
 
