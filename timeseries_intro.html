@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Building energy probabilistic modelling &#8212; Building energy probabilistic modelling</title>
+    <title>Time series models &#8212; Building energy probabilistic modelling</title>
   
   
   
@@ -59,10 +59,11 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'timeseries_intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Motivation for probabilistic modelling" href="background.html" />
+    <link rel="next" title="Data" href="data.html" />
+    <link rel="prev" title="Energy signature" href="changepoint.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -125,8 +126,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -145,7 +144,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -176,8 +175,8 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
                     Building energy probabilistic modelling
                 </a>
             </li>
@@ -195,8 +194,8 @@
 <li class="toctree-l1"><a class="reference internal" href="changepoint.html">Energy signature</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Time series</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="timeseries_intro.html">Time series models</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Time series models</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -273,7 +272,7 @@
       
       
       
-      <li><a href="https://github.com/srouchier/buildingenergygeeks/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/srouchier/buildingenergygeeks/issues/new?title=Issue%20on%20page%20%2Ftimeseries_intro.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -303,7 +302,7 @@
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/timeseries_intro.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -387,7 +386,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Building energy probabilistic modelling</h1>
+    <h1>Time series models</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -398,9 +397,12 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-of-the-book">Content of the book</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">Software</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about">About</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Time series models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#autoregressive-models-ar-arx">Autoregressive models: AR, ARX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-average-models-ma-arma-armax">Moving average models: MA, ARMA, ARMAX</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-uncertainty">Prediction uncertainty</a></li>
 </ul>
             </nav>
         </div>
@@ -412,62 +414,82 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="building-energy-probabilistic-modelling">
-<h1>Building energy probabilistic modelling<a class="headerlink" href="#building-energy-probabilistic-modelling" title="Link to this heading">#</a></h1>
-<a class="reference internal image-reference" href="_images/logo.png"><img alt="logo" class="align-center" src="_images/logo.png" style="width: 400px;" />
-</a>
-<p>This website promotes the use of Bayesian inference and prediction for building energy use. It includes some background on the Bayesian data analysis workflow, and tutorials with common building energy models.</p>
-<p><strong>September 2025</strong>: This website is being migrated from bookdown (R) to jupyter-book (Python). I just finished re-writing the Background part (sept. 16th) and am starting update on the tutorials. Stay tuned!</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="time-series-models">
+<h1>Time series models<a class="headerlink" href="#time-series-models" title="Link to this heading">#</a></h1>
 <section id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
-<p>Data science offers promising prospects for improving the energy efficiency of buildings. Thanks to the availability of smart meters and sensor networks, along with increasingly accessible algorithms for data processing and analysis, statistical models may be trained to predict the energy use of HVAC systems or the indoor conditions. These trained models and their predictions then lead to various inferences: assessing the real impact of energy conservation measures; identifying HVAC faults or physical properties of the envelope in order to provide incentive for retrofitting; minimizing energy consumption through model	predictive control; detecting and diagnosing faults; etc.</p>
-<p>The availability of measurements and computational power have given data mining methods an increasing popularity. The field of data analysis applied to building energy performance assessment however faces two main challenges to this day. Ironically, the first challenge is the abundance of data. Smart meters and building management systems deliver large amounts of information which can hide the few readings which are the most relevant to energy conservation. Automated monitoring and fault detection algorithms only do what they are told, and will hardly replace human intervention when it comes to understanding readings. The second challenge is the difficulty of data science. Without a principled methodology, it is very easy to draw erroneous conclusions, by incorrectly assuming that a model is properly trained. By lack of a background in statistics, building energy practitioners often lack the tools to ensure their inferences are correct.</p>
+<p>Ordinary linear regression (OLR) is based on an assumption of temporal independence: each observation of energy use <span class="math notranslate nohighlight">\(y_t\)</span> is only explained by current explanatory variables <span class="math notranslate nohighlight">\(x_t\)</span> (weather, occupancy). Consecutive values <span class="math notranslate nohighlight">\(y_t,y_{t-1}, y_{t-2}, \dots\)</span> are independent given these input conditions.</p>
+<p>After model training, this hypothesis is validated by checking residuals between model output <span class="math notranslate nohighlight">\(\hat{y}_t\)</span> and measurements <span class="math notranslate nohighlight">\(y_t\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-ts-residual">
+<span class="eqno">(27)<a class="headerlink" href="#equation-ts-residual" title="Link to this equation">#</a></span>\[\varepsilon_t= \hat{y}_t-y_t\]</div>
+<p>The series of residuals <span class="math notranslate nohighlight">\((\varepsilon_1 ,\varepsilon_2 ,\dots,\varepsilon_t)\)</span> should exhibit low values of autocorrelation, to confirm that the remaining model error after training has white noise properties. The autocorrelation function (ACF) of residuals showing significant values hints that the model did not fully capture the data-generating process. In such cases, OLR estimates of savings uncertainty will be biased and underestimated unless corrected.</p>
+<p>The <a class="reference internal" href="changepoint.html"><span class="std std-doc">tutorial on change-point models</span></a> ended with an ACF graph looking like this:</p>
+<figure class="align-center" id="timeseriesintro1">
+<a class="reference internal image-reference" href="_images/timeseriesintro1.png"><img alt="_images/timeseriesintro1.png" src="_images/timeseriesintro1.png" style="width: 400px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">ACF exhibiting some high values</span><a class="headerlink" href="#timeseriesintro1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In this example, the ACF value is near 0.7 at lag 1: on average, consecutive residuals have a correlation coefficient of 0.7. The lag 2 ACF shows that correlation remains, two observations apart, with an average coefficient over 0.5. The lag 0 ACF is always exactly 1, since each residual is perfectly correlated with itself.</p>
+<p>Autocorrelation occurs with high or medium frequency data. For instance, using daily meter readings, a simple linear regression model may overlook the thermal inertia of the building, which makes the daily consumption dependent on the conditions of the previous day to some extent. With higher frequency data (hourly or subhourly), OLR may not longer be applicable at all.</p>
 </section>
-<section id="content-of-the-book">
-<h2>Content of the book<a class="headerlink" href="#content-of-the-book" title="Link to this heading">#</a></h2>
-<p>The topic of this book is statistical modelling and inference applied to building energy performance assessment. It has two target audiences: building energy researchers and practitioners who need a gentle introduction to statistical modelling; statisticians who may be interested in applications to energy performance.</p>
-<p>The first part of the book covers the motivation and theoretical background.</p>
-<ul class="simple">
-<li><p>An overview of the possibilities of data analysis applied to building energy performance assessment, and of the main categories and challenges of data analysis methods.</p></li>
-<li><p>A quick description of building physics and how they can be formulated as statistical models.</p></li>
-<li><p>The main steps of a Bayesian workflow for statistical modelling and inference, which aims at making sure that models are well defined and trained for a given application.</p></li>
-</ul>
-<p>Then, the rest of the book shows some applications. It is a series of Python notebooks classified into chapters, each focusing on a type of model. The notebooks are self-sufficient, and mention whether non-standard libraries or other software should be installed.</p>
-<ul class="simple">
-<li><p>Regression and mixture models</p></li>
-<li><p>Time series analysis</p></li>
-<li><p>State-space models for</p></li>
-<li><p>Gaussian Process models</p></li>
-</ul>
-<p>The target of the book is that the basics of Bayesian data analysis are explained to building energy practitioners who don’t necessarily have a large background on statistics.</p>
-<p>The book <strong>does not</strong> cover:</p>
-<ul class="simple">
-<li><p>Data acquisition and pre-processing, although a crucial step of data analysis, will not be explained in detail for each problem.</p></li>
-<li><p>Big data. The typical size of our data files is a few MB, up to a few GB for the largest sets. This is far from what computer scientists consider “big data”.</p></li>
-<li><p>Machine learning. Even when the target of a particular problem is prediction rather than inference of physical properties, our statistical models will always have some degree of physical interpretability.</p></li>
-<li><p>Classification. Most of the methods shown are variations of regression problems, as our models will almost always have quantitative responses. There are however strong links with classification problems, especially when it comes to identifying occupant presence and behaviour.</p></li>
-</ul>
+<section id="id1">
+<h2>Time series models<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Time-series models address high frequency data by formulating relationships between consecutive measurements, up to a certain order.</p>
+<section id="autoregressive-models-ar-arx">
+<h3>Autoregressive models: AR, ARX<a class="headerlink" href="#autoregressive-models-ar-arx" title="Link to this heading">#</a></h3>
+<p>An Autoregressive model of order <span class="math notranslate nohighlight">\(p\)</span>, denoted <strong>AR(p)</strong>, states that the current energy use <span class="math notranslate nohighlight">\(y_t\)</span> depends on its past values, up to a certain lag <span class="math notranslate nohighlight">\(p\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-ts-ar">
+<span class="eqno">(28)<a class="headerlink" href="#equation-ts-ar" title="Link to this equation">#</a></span>\[y_t = \varphi_1 y_{t-1} + \varphi_2 y_{t-2} + \dots + \varphi_p y_{t-p} + \varepsilon_t\]</div>
+<p>with <span class="math notranslate nohighlight">\(\varepsilon_t \sim N(0, \sigma)\)</span>. The <span class="math notranslate nohighlight">\(\varphi\)</span> coefficients are model parameters, to be learned by fitting the model.</p>
+<p>This model easily extends into the <strong>ARX</strong> formulation: autoregressive with exogenous variables.</p>
+<div class="math notranslate nohighlight" id="equation-ts-arx">
+<span class="eqno">(29)<a class="headerlink" href="#equation-ts-arx" title="Link to this equation">#</a></span>\[y_t = \sum_{i=1}^p \varphi_i y_{t-i} + \sum_{k=0}^r \beta_k x_{t-k} + \varepsilon_t\]</div>
+<p>Where <span class="math notranslate nohighlight">\(x_{t-k}\)</span> are the external factors like weather, occupancy, other heat sources etc. at time <span class="math notranslate nohighlight">\(t - k\)</span>. The maximum order <span class="math notranslate nohighlight">\(r\)</span> to which previous values of exogenous variables are included in the equation may be equal to <span class="math notranslate nohighlight">\(p\)</span>, or different.</p>
+<p>Training an AR or ARX model is straightforward: one simply has to generate a lagged copy of the series <span class="math notranslate nohighlight">\(\{y_t\}\)</span>, and include this copy in the explanatory variables of an OLR model.</p>
+<figure class="align-center" id="timeseriesintro2">
+<a class="reference internal image-reference" href="_images/timeseriesintro1.png"><img alt="_images/timeseriesintro1.png" src="_images/timeseriesintro1.png" style="width: 400px;" />
+</a>
+</figure>
+<p>In this example, lagged copies of <span class="math notranslate nohighlight">\(y\)</span> are created up to an order <span class="math notranslate nohighlight">\(p=2\)</span>. The new series are model inputs of a linear regression model. Other variables <span class="math notranslate nohighlight">\(x\)</span> may be added, even with lagged copies. However, the first two data points are no longer usable for training as they are missing some explanatory variables.</p>
+<p>This extension of the OLR model is sometimes called the <a class="reference external" href="https://online.stat.psu.edu/stat501/lesson/t/t.2/t.2.3-testing-and-remedial-measures-autocorrelation#paragraph--748">Cochrane-Orcutt procedure</a>. It does not guarantee solving autocorrelation issues: the ACF should still be checked after training.</p>
 </section>
-<section id="software">
-<h2>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h2>
-<p>This book is written and maintained with <a class="reference external" href="https://jupyterbook.org/en/stable/intro.html">jupyter-book</a>.</p>
-<p>Tutorials use either <a class="reference external" href="https://www.pymc.io/welcome.html">PyMC</a> or <a class="reference external" href="https://mc-stan.org/">Stan</a> as a probabilistic programming library. Both have pros and cons.</p>
-<p>From the perspective of a non-statistician, PyMC is probably easier to get started with, but Stan feels more flexible and has a much better documentation. I present examples with both and leave the reader to find their preference.</p>
+<section id="moving-average-models-ma-arma-armax">
+<h3>Moving average models: MA, ARMA, ARMAX<a class="headerlink" href="#moving-average-models-ma-arma-armax" title="Link to this heading">#</a></h3>
+<p>A Moving Average model of order <span class="math notranslate nohighlight">\(q\)</span>, <strong>MA(q)</strong>, states that each term of the series <span class="math notranslate nohighlight">\(y_t\)</span> depends on previous values of the error <span class="math notranslate nohighlight">\(\varepsilon_t= \hat{y}_t-y_t\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-ts-ma">
+<span class="eqno">(30)<a class="headerlink" href="#equation-ts-ma" title="Link to this equation">#</a></span>\[y_t = \sum_{j=1}^q \theta_j \varepsilon_{t-j} + \varepsilon_t\]</div>
+<p>The combination of autoregressive and moving average terms yields the <strong>ARMA(p,q)</strong> model:</p>
+<div class="math notranslate nohighlight" id="equation-ts-arma">
+<span class="eqno">(31)<a class="headerlink" href="#equation-ts-arma" title="Link to this equation">#</a></span>\[y_t = \sum_{i=1}^p \varphi_i y_{t-i} + \sum_{j=1}^q \theta_j \varepsilon_{t-j} + \varepsilon_t\]</div>
+<p>Or the <strong>ARMAX(p,q)</strong> model, if exogenous variables are to be included as well:</p>
+<div class="math notranslate nohighlight" id="equation-ts-armax">
+<span class="eqno">(32)<a class="headerlink" href="#equation-ts-armax" title="Link to this equation">#</a></span>\[y_t = \sum_{i=1}^p \varphi_i y_{t-i} + \sum_{j=1}^q \theta_j \varepsilon_{t-j} + \sum_{k=0}^r \beta_k x_{t-k} + \varepsilon_t\]</div>
+<p>Unlike an ARX model, any time-series model including a MA component may not be trained as simply as an OLR model, because residuals must be calculated iteratively. Implementations of these models are available in most programming languages.</p>
+<p>In a given situation, the choice between an ARX or ARMAX model is not trivial. In practice, one should start with the lowest order, and train models of increasing orders p and q until the ACF criterion is satisfied. In case high autocorrelations have been identified at higher lag values (for instance, with daily data, a lag-7 autocorrelation suggests a weekly pattern not captured by the model), these orders may be included even if lower orders are not.</p>
 </section>
-<section id="about">
-<h2>About<a class="headerlink" href="#about" title="Link to this heading">#</a></h2>
-<p>I am <a class="reference external" href="https://srouchier.github.io/">Simon Rouchier</a>, lecturer at the <a class="reference external" href="https://www.univ-smb.fr/">Université Savoie Mont Blanc</a>, Chambéry, France.</p>
-<p>This website is the beta version of a future book. It possibly still has some typos and inconsistencies: I welcome all feedback by <a class="reference external" href="https://srouchier.github.io/">email</a> or through the book’s <a class="reference external" href="https://github.com/srouchier/buildingenergygeeks">Github repo</a>.</p>
-<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Ce(tte) œuvre est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.</p>
 </section>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
+<section id="prediction-uncertainty">
+<h2>Prediction uncertainty<a class="headerlink" href="#prediction-uncertainty" title="Link to this heading">#</a></h2>
+<p>Let us suppose that a time series model is trained on a finite dataset <span class="math notranslate nohighlight">\(\{y_t, t\in 1 \dots T\}\)</span>, and we now wish to forecast values <span class="math notranslate nohighlight">\(\hat{y}_{T+h}\)</span> up to a certain prediction horizon <span class="math notranslate nohighlight">\(h\)</span>. This is referred to as multi-step ahead prediction. This is required for instance in a M&amp;V workflow, to predict energy use during the reporting period.</p>
+<p>The models presented here predict <span class="math notranslate nohighlight">\(\hat{y}_t\)</span> from previous measurements <span class="math notranslate nohighlight">\(y_{t-i}\)</span> which are no longer available. A multi-step ahead forecast is:</p>
+<div class="math notranslate nohighlight" id="equation-ts-armax-predict">
+<span class="eqno">(33)<a class="headerlink" href="#equation-ts-armax-predict" title="Link to this equation">#</a></span>\[p(y_{T+h} | y_{1:T}) = N(\hat{y}_{T+h}, \sigma_h)\]</div>
+<p>where the training dataset stops at the time index <span class="math notranslate nohighlight">\(T\)</span>, and <span class="math notranslate nohighlight">\(h\)</span> is the number of steps into the test dataset where the mean <span class="math notranslate nohighlight">\(\hat{y}_{t+h}\)</span> and uncertainty <span class="math notranslate nohighlight">\(\sigma_h\)</span> of the prediction are calculated.</p>
+<p>The <strong>prediction mean</strong> <span class="math notranslate nohighlight">\(\hat{y}_{T+h}\)</span> is obtained from Eq. <a class="reference internal" href="#equation-ts-armax">(32)</a> (or any of the previous models). As the prediction horizon <span class="math notranslate nohighlight">\(h\)</span> increases and measurements are no longer available, the observed terms <span class="math notranslate nohighlight">\(y_{T+h-i}\)</span> are gradually replaced by previous forecast means <span class="math notranslate nohighlight">\(\hat{y}\)</span>, and the error terms <span class="math notranslate nohighlight">\(\varepsilon_{T+h-i}\)</span> are set to zero.</p>
+<p>However, in order to account for the <strong>forecasting uncertainty</strong>, increasing with the horizon <span class="math notranslate nohighlight">\(h\)</span>, multiple step ahead predictions of ARMA models have an increased variance:</p>
+<div class="math notranslate nohighlight" id="equation-ts-armax-predict2">
+<span class="eqno">(34)<a class="headerlink" href="#equation-ts-armax-predict2" title="Link to this equation">#</a></span>\[\sigma_h^2 = \sigma^2 \sum_{i=0}^{h-1} \psi_i^2\]</div>
+<p>where <span class="math notranslate nohighlight">\(\psi_i\)</span> are the coefficients of the MA(<span class="math notranslate nohighlight">\(\infty\)</span>) representation of the ARMA(p,q) process <span id="id2">[<a class="reference internal" href="references.html#id22" title="Robert H Shumway, David S Stoffer, and David S Stoffer. Time series analysis and its applications. Volume 3. Springer, 2000.">Shumway <em>et al.</em>, 2000</a>]</span>. Eq. <a class="reference internal" href="#equation-ts-arma">(31)</a> can be formulated as a MA(<span class="math notranslate nohighlight">\(\infty\)</span>) process, with coefficients <span class="math notranslate nohighlight">\(\psi\)</span> as functions of the ARMA coefficients <span class="math notranslate nohighlight">\(\phi\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-ts-armax-predict3">
+<span class="eqno">(35)<a class="headerlink" href="#equation-ts-armax-predict3" title="Link to this equation">#</a></span>\[y_t = \varepsilon_t + \sum_{i=1}^\infty \psi_i \varepsilon_{t-i} \]</div>
+<div class="math notranslate nohighlight" id="equation-ts-armax-predict4">
+<span class="eqno">(36)<a class="headerlink" href="#equation-ts-armax-predict4" title="Link to this equation">#</a></span>\[\psi_i = \sum_{j=1}^p \phi_j \psi_{i-j} +\theta_i\]</div>
+<p>In the generic case, the <span class="math notranslate nohighlight">\(\psi\)</span> coefficients are calculated iteratively, as one new value is required for each new forecast. In the particular case of MA(q) models, the forecast uncertainty is simple to formulate because each <span class="math notranslate nohighlight">\(\psi_i\)</span> is equal to a <span class="math notranslate nohighlight">\(\theta_i\)</span> coefficient. In the particular case of the ARMA(1,1) model, there is a specific formulation of <span class="math notranslate nohighlight">\(\sigma_h\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-ts-armax-predict5">
+<span class="eqno">(37)<a class="headerlink" href="#equation-ts-armax-predict5" title="Link to this equation">#</a></span>\[\sigma_h^2 = \sigma^2 \left[1 + \frac{\left(\phi+\theta\right)\left(1-\phi^{2(h-1)}\right)}{1-\phi^2}\right]\]</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -500,12 +522,21 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="changepoint.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Energy signature</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="background.html"
+       href="data.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Motivation for probabilistic modelling</p>
+        <p class="prev-next-title">Data</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -526,9 +557,12 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-of-the-book">Content of the book</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software">Software</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about">About</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Time series models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#autoregressive-models-ar-arx">Autoregressive models: AR, ARX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-average-models-ma-arma-armax">Moving average models: MA, ARMA, ARMAX</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-uncertainty">Prediction uncertainty</a></li>
 </ul>
   </nav></div>
 

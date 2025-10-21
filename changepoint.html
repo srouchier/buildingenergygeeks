@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'changepoint';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data" href="data.html" />
+    <link rel="next" title="Time series models" href="timeseries_intro.html" />
     <link rel="prev" title="Linear regression (Stan)" href="linearregression_stan.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -192,6 +192,10 @@
 <li class="toctree-l1"><a class="reference internal" href="linearregression.html">Linear regression (PyMC)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="linearregression_stan.html">Linear regression (Stan)</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Energy signature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Time series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="timeseries_intro.html">Time series models</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -514,7 +518,7 @@ document.write(`
 </section>
 <section id="model-specification">
 <h3>Model specification<a class="headerlink" href="#model-specification" title="Link to this heading">#</a></h3>
-<p>After looking at the data, we can suggest using a change-point model which will include the effects of heating and cooling separately, like we defined in Equation <a class="reference internal" href="#equation-cp1">(24)</a>above.</p>
+<p>After looking at the data, we can suggest using a change-point model which will include the effects of heating and cooling separately, like we defined in Equation <a class="reference internal" href="#equation-cp1">(24)</a> above.</p>
 <p>The complete Stan code for the energy signature model is written into a separate file, loaded by CmdStanPy:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -561,7 +565,8 @@ document.write(`
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The model itself is below. First, it declares the prior distribution of each parameter as a normal distribution, with a mean and standard deviation taken from the declared data. Then, the observational model is the energy signature equation <a class="reference internal" href="#equation-cp1">(24)</a>.</p>
+<p>The model itself is below. First, it declares the prior distribution of each parameter as a normal distribution, with a mean and standard deviation taken from the declared data. It includes the declaration of prior distributions, because these variables have been declared as data passed to the Stan model.</p>
+<p>Then, the observational model is the energy signature equation <a class="reference internal" href="#equation-cp1">(24)</a>.</p>
 <div class="highlight-stan notranslate"><div class="highlight"><pre><span></span><span class="kn">model</span> <span class="p">{</span>
   <span class="c1">// Assigning prior distributions on some parameters</span>
   <span class="n">alpha</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="n">alpha_prior</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="n">alpha_prior</span><span class="p">[</span><span class="mf">2</span><span class="p">]);</span>
@@ -808,15 +813,7 @@ Processing complete, no problems detected.
 </table>
 </div></div></div>
 </div>
-</section>
-<section id="posterior-predictions">
-<h3>Posterior predictions<a class="headerlink" href="#posterior-predictions" title="Link to this heading">#</a></h3>
-<p>Our main goal here is to compare the energy use measured during the reporting period <span class="math notranslate nohighlight">\(y_\mathit{repo}\)</span> with the predictions of the model trained on the baseline period. Since it is a probabilistic model, its outcome is actually a probability distribution <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{repo}|x_\mathit{repo}, x_\mathit{base}, y_\mathit{base}\right)\)</span>, based on the observed values of the model inputs <span class="math notranslate nohighlight">\(x\)</span> during the baseline and reporting periods, and on the observed energy use during the baseline period <span class="math notranslate nohighlight">\(y_\mathit{base}\)</span>.</p>
-<p>This posterior predictive distribution <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{repo}|...\right)\)</span> is already directly available, because a value of <span class="math notranslate nohighlight">\(\hat{y}_\mathit{repo}\)</span> (for each time step) was directly calculated by the Stan model for each sample <span class="math notranslate nohighlight">\(\theta^{(m)}\)</span> (see <a class="reference external" href="https://mc-stan.org/docs/2_26/stan-users-guide/posterior-prediction-chapter.html">Stan user’s guide</a> for more details).</p>
-<p>\begin{equation}
-p\left(y_\mathit{repo}|…\right) \approx \frac{1}{M} \sum_{m=1}^M p\left(y_\mathit{repo}|x_\mathit{repo},\theta^{(m)}\right)
-\end{equation}</p>
-<p>First, let us look at the posterior predictive distribution during the baseline period, in order to validate the model compared to its training data:</p>
+<p>Since all convergence diagnostics are fine, we can save results into an ArviZ InferenceData object which will facilitate further analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The sampler output is saved into an xarray</span>
@@ -840,6 +837,19 @@ p\left(y_\mathit{repo}|…\right) \approx \frac{1}{M} \sum_{m=1}^M p\left(y_\mat
 </div>
 </div>
 </div>
+</section>
+<section id="posterior-predictions">
+<h3>Posterior predictions<a class="headerlink" href="#posterior-predictions" title="Link to this heading">#</a></h3>
+<p>Our main goal here is to compare the energy use measured during the reporting period <span class="math notranslate nohighlight">\(y_\mathit{repo}\)</span> with the predictions of the model trained on the baseline period. Since it is a probabilistic model, its outcome is actually a probability distribution <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{repo}|x_\mathit{repo}, x_\mathit{base}, y_\mathit{base}\right)\)</span>, based on the observed values of the model inputs <span class="math notranslate nohighlight">\(x\)</span> during the baseline and reporting periods, and on the observed energy use during the baseline period <span class="math notranslate nohighlight">\(y_\mathit{base}\)</span>.</p>
+<p>This posterior predictive distribution <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{repo}|...\right)\)</span> is already directly available, because a value of <span class="math notranslate nohighlight">\(\hat{y}_\mathit{repo}\)</span> (for each time step) was directly calculated by the Stan model for each sample <span class="math notranslate nohighlight">\(\theta^{(m)}\)</span> (see <a class="reference external" href="https://mc-stan.org/docs/2_26/stan-users-guide/posterior-prediction-chapter.html">Stan user’s guide</a> for more details).</p>
+<div class="math notranslate nohighlight" id="equation-cppost">
+<span class="eqno">(26)<a class="headerlink" href="#equation-cppost" title="Link to this equation">#</a></span>\[p\left(\hat{y}_\mathit{repo}|...\right) \approx \frac{1}{M} \sum_{m=1}^M p\left(\hat{y}_\mathit{repo}|x_\mathit{repo},\theta^{(m)}\right)\]</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">generated</span> <span class="pre">quantities</span></code> block of the Stan code, we defined two posterior predictive quantities:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">y_hat</span></code> are predictions by the trained model within the baseline period. All samples of <code class="docutils literal notranslate"><span class="pre">y_hat</span></code> form the posterior predictive distribution within the training set: <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{base}|x_\mathit{base}, y_\mathit{base}\right)\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y_hat_post</span></code> are predictions over the “post” dataset. All samples form the posterior predictive distribution of the reporting period: <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{repo}|x_\mathit{repo}, x_\mathit{base}, y_\mathit{base}\right)\)</span></p></li>
+</ul>
+<p>The following block displays both, compared to their respective dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_hat</span> <span class="o">=</span> <span class="n">idata</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s2">&quot;y_hat&quot;</span><span class="p">]</span>
@@ -869,7 +879,8 @@ p\left(y_\mathit{repo}|…\right) \approx \frac{1}{M} \sum_{m=1}^M p\left(y_\mat
 <img alt="_images/73f720d6dc586fc37d685adc3674871ab267bda4b5910e7478ec41d092ff20f6.png" src="_images/73f720d6dc586fc37d685adc3674871ab267bda4b5910e7478ec41d092ff20f6.png" />
 </div>
 </div>
-<p>Savings</p>
+<p>The left plot confirms a good fit between the training data and the predictions from the trained model. Most data points lie within the prediction intervals.</p>
+<p>The right plot shows that the actual consumption during the reporting period is lower than predictions, which suggests that energy savings were made. The sum of the differences between predictions and consumption during this period are the total savings. They were formulated within the <code class="docutils literal notranslate"><span class="pre">generated</span> <span class="pre">quantities</span></code> of the Stan code, and we can therefore directly display their posterior distribution:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># in kW.day</span>
@@ -973,11 +984,11 @@ p\left(y_\mathit{repo}|…\right) \approx \frac{1}{M} \sum_{m=1}^M p\left(y_\mat
       </div>
     </a>
     <a class="right-next"
-       href="data.html"
+       href="timeseries_intro.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data</p>
+        <p class="prev-next-title">Time series models</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

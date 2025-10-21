@@ -193,6 +193,10 @@
 <li class="toctree-l1"><a class="reference internal" href="linearregression_stan.html">Linear regression (Stan)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changepoint.html">Energy signature</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Time series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="timeseries_intro.html">Time series models</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
@@ -512,7 +516,7 @@ document.write(`
 <section id="residual-analysis">
 <h4>Residual analysis<a class="headerlink" href="#residual-analysis" title="Link to this heading">#</a></h4>
 <p>Residual analysis is the process of checking the validity of modelling hypotheses. For instance, if the specification of the observational model states that errors are independent, identically distributed with zero mean and constant variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>, then this hypothesis should be checked. One way to do it are the autocorrelation function (ACF) of one-step-ahead prediction residuals, or their cross-correlation function (CCF) with explanatory variables. Residual analysis is often confined to time series models, but is applicable as long as data are time indexed, even if the model does not formulate a dependency between consecutive observations.</p>
-<p>The ACF of prediction residuals should have near-zero values for all lags above 1, to indicate the mutual independence of errors. If, for instance, the ACF has a significant non-zero value at lag 24 for a hourly prediction model, there is a chance that a daily occurring phenomenon has not been properly encoded in the model. A visual inspection of the ACF graph is a good diagnosis tool. On a more quantitative note, the Durbin-Watson statistic is used to detect autocorrelation in the residuals at lag 1, and the Ljung–Box test assesses autocorrelation up to a specified number of lags. The latter will be used below in the discussion of results.</p>
+<p>The ACF of prediction residuals should have near-zero values for all lags above 1, to indicate the mutual independence of errors. If, for instance, the ACF has a significant non-zero value at lag 24 for a hourly prediction model, there is a chance that a daily occurring phenomenon has not been properly encoded in the model. A visual inspection of the ACF graph is a good diagnosis tool. On a more quantitative note, the Durbin-Watson statistic is used to detect autocorrelation in the residuals at lag 1, and the Ljung–Box test assesses autocorrelation up to a specified number of lags.</p>
 </section>
 <section id="scoring-rules">
 <h4>Scoring rules<a class="headerlink" href="#scoring-rules" title="Link to this heading">#</a></h4>
