@@ -1,0 +1,38 @@
+Traceback (most recent call last):
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 154, in wrapped
+    asyncio.get_running_loop()
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 158, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/nbclient/client.py", line 1005, in async_execute_cell
+    exec_reply = await self.task_poll_for_reply
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/nbclient/client.py", line 806, in _async_poll_for_reply
+    error_on_timeout_execute_reply = await self._async_handle_timeout(timeout, cell)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/simon/anaconda3/envs/bayes_env/lib/python3.11/site-packages/nbclient/client.py", line 856, in _async_handle_timeout
+    raise CellTimeoutError.error_from_timeout_and_cell(
+nbclient.exceptions.CellTimeoutError: A cell timed out while it was being executed, after 30 seconds.
+The message was: Cell execution timed out.
+Here is a preview of the cell contents:
+-------------------
+['def objective(x):', '    # Reshaping the parameter vector x into the three variables of the forward algorithm', '    a1 = np.reshape(x[:K*(K-1)], (K,K-1))   # Matrix a without the right column', '    a2 = (1-a1.sum(axis=1))[:,np.newaxis]   # Right column of matrix a', '    a = np.concatenate([a1, a2],axis=1)']
+...
+['a1 = np.reshape(res.x[:K*(K-1)], (K,K-1))', 'a2 = (1-a1.sum(axis=1))[:,np.newaxis]', 'a = np.concatenate([a1, a2],axis=1)', 'mu = res.x[K*(K-1):K*(K-1)+K]', 'sig = res.x[K*(K-1)+K:]']
+-------------------
+

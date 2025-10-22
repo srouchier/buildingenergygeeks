@@ -13,6 +13,10 @@ This website promotes the use of Bayesian inference and prediction for building 
 * [x] Background
 * [x] Simple regression
 * [ ] Time series: in progress
+    * [x] Introduction to time series
+    * [ ] ARMAX
+    * [ ] Correlated energy signature
+    * [ ] Hidden Markov models
 * [ ] State-space models
 * [ ] Gaussian process
 

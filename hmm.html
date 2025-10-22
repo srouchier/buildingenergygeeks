@@ -1,0 +1,841 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hidden Markov models &#8212; Building energy probabilistic modelling</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'hmm';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data" href="data.html" />
+    <link rel="prev" title="Autocorrelated energy signature" href="autocorrelated.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Building energy probabilistic modelling - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Building energy probabilistic modelling - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Building energy probabilistic modelling
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="background.html">Motivation for probabilistic modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling.html">Simplified building energy modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">A Bayesian data analysis workflow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simple regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="linearregression.html">Linear regression (PyMC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linearregression_stan.html">Linear regression (Stan)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changepoint.html">Energy signature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Time series</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="timeseries_intro.html">Time series models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="armax.html">ARMAX models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autocorrelated.html">Autocorrelated energy signature</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Hidden Markov models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/srouchier/buildingenergygeeks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/srouchier/buildingenergygeeks/issues/new?title=Issue%20on%20page%20%2Fhmm.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/hmm.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hidden Markov models</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#principles">Principles</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-forward-algorithm">The forward algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-viterbi-algorithm">The Viterbi algorithm</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorial">Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-time-series-models">Composite time series models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-switching-models">Markov switching models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hidden-markov-energy-signature">Hidden Markov energy signature</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hidden-markov-models">
+<h1>Hidden Markov models<a class="headerlink" href="#hidden-markov-models" title="Link to this heading">#</a></h1>
+<section id="principles">
+<h2>Principles<a class="headerlink" href="#principles" title="Link to this heading">#</a></h2>
+<p>In a hidden Markov model (HMM), the sequence of <span class="math notranslate nohighlight">\(T\)</span> output variables <span class="math notranslate nohighlight">\({y_t}\)</span> is generated by a parallel sequence of latent categorical state variables <span class="math notranslate nohighlight">\(z_t \in \left\{ 1,\cdots , K\right\}\)</span>. These hidden states are a Markov chain, so that <span class="math notranslate nohighlight">\(z_t\)</span> is conditionally independent of other variables given <span class="math notranslate nohighlight">\(z_{t-1}\)</span>.</p>
+<figure class="align-center" id="tikzhmm">
+<a class="reference internal image-reference" href="_images/tikz_hmm.png"><img alt="_images/tikz_hmm.png" src="_images/tikz_hmm.png" style="width: 250px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Hidden Markov model. Grey nodes denote the observed output sequence; white nodes denote the hidden states. Hidden states are conditioned on each other, while each observation is only conditioned on the current state</span><a class="headerlink" href="#tikzhmm" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The primary use of HMMs in building energy simulation is for identifying and modelling occupancy <span id="id1">[<a class="reference internal" href="references.html#id24" title="Luis M Candanedo, Véronique Feldheim, and Dominique Deramaix. A methodology based on hidden markov models for occupancy detection and a case study in a low energy residential building. Energy and Buildings, 148:327–341, 2017.">Candanedo <em>et al.</em>, 2017</a>]</span>. The hidden variable <span class="math notranslate nohighlight">\(z_t\)</span> may denote a binary state of occupancy or a finite number of occupants; the observed output <span class="math notranslate nohighlight">\(y_t\)</span> may denote any measurement impacted by occupancy: environmental sensors, smart meters, cameras, infrared sensors… There is a vast literature on occupancy detection and estimation from different types of data and methods. The reader is referred to the review of Chen et al <span id="id2">[<a class="reference internal" href="references.html#id23" title="Zhenghua Chen, Chaoyang Jiang, and Lihua Xie. Building occupancy estimation and detection: a review. Energy and Buildings, 169:260–270, 2018.">Chen <em>et al.</em>, 2018</a>]</span> for a more comprehensive insight.</p>
+<p>A HMM is defined by:</p>
+<ul class="simple">
+<li><p>A sequence of hidden states <span class="math notranslate nohighlight">\(\left\{z_t\right\} \in \mathbb{N}^T\)</span>, each of which can take a finite number of values: <span class="math notranslate nohighlight">\(z_t \in \left[1,...,K\right]\)</span></p></li>
+<li><p>An observed variable <span class="math notranslate nohighlight">\(\left\{y_t\right\} \in \mathbb{R}^T\)</span></p></li>
+<li><p>An initial probability <span class="math notranslate nohighlight">\(\pi_0\)</span> which is the likelihood of the state at time <span class="math notranslate nohighlight">\(t=0\)</span>. <span class="math notranslate nohighlight">\(\pi_0\)</span> is a <span class="math notranslate nohighlight">\(K\)</span>-simplex, i.e. a <span class="math notranslate nohighlight">\(K\)</span>-vector which components sum to 1.</p></li>
+<li><p>A <span class="math notranslate nohighlight">\(K\times K\)</span> one-step transition probability matrix <span class="math notranslate nohighlight">\(\mathbf{A}(t) = \left(a_{ij}(t)\right)\)</span> so that</p></li>
+</ul>
+<div class="math notranslate nohighlight" id="equation-hmm1">
+<span class="eqno">(38)<a class="headerlink" href="#equation-hmm1" title="Link to this equation">#</a></span>\[a_{ij}(t)=p\left(z_t=j |z_{t-1}=i\right)\]</div>
+<p>is the probability at time <span class="math notranslate nohighlight">\(t\)</span> for the hidden variable to switch from state <span class="math notranslate nohighlight">\(i\)</span> to state <span class="math notranslate nohighlight">\(j\)</span>. Like <span class="math notranslate nohighlight">\(\pi_0\)</span>, each row of <span class="math notranslate nohighlight">\(\mathbf{A}(t)\)</span> must sum to 1.</p>
+<ul class="simple">
+<li><p>Emission probabilities <span class="math notranslate nohighlight">\(b_{i}(y_t) = p(y_t | z_t=i)\)</span>, i.e. the probability distribution of the output variable given each possible state.</p></li>
+</ul>
+<p>The transition probabilities <span class="math notranslate nohighlight">\(\left(a_{ij}(t)\right)\)</span> are shown here as functions of time because they can be formulated as parametric expressions of external observed variables, such as the time of the day or weather variables. The Markov chain is then called <em>inhomogeneous</em>. Inhomogeneous transition probability matrices can capture occupancy properties at different time instances and thus encode occupancy dynamics: there can a higher probability of people entering the building at a certain time of the day, or if the outdoor temperature is high, etc.</p>
+<p><strong>Training</strong> an HMM means finding the set of parameters <span class="math notranslate nohighlight">\(\theta\)</span> which best explain the observations. This can be done by in least two ways: the first option is to compute the likelihood function with the forward algorithm, explained below, and to perform its direct numerical maximization. The second option is the Baum-Welch algorithm, a special case of the expectation-maximization (EM) algorithm: it alternates between a forward-backward algorithm for the expectation step, and an updating phase for the maximization step.</p>
+<p>A trained HMM can then be used to predict states and future values of the outcome variable. The estimation of the most likely state sequence given the observations is called <strong>decoding</strong>.</p>
+<div class="math notranslate nohighlight" id="equation-hmm2">
+<span class="eqno">(39)<a class="headerlink" href="#equation-hmm2" title="Link to this equation">#</a></span>\[z^*_{0:T} = \mathrm{arg max}_z \; p(z_{0:T} | y_{0:T})\]</div>
+<p>and can be done by the Viterbi algorithm described below.</p>
+<section id="the-forward-algorithm">
+<h3>The forward algorithm<a class="headerlink" href="#the-forward-algorithm" title="Link to this heading">#</a></h3>
+<p>The forward algorithm computes the likelihood function <span class="math notranslate nohighlight">\(p(y_{1:T}|\theta)\)</span> of a hidden Markov model, given the values of its parameters <span class="math notranslate nohighlight">\(\theta\)</span>. These parameters come from the parametric expressions of <span class="math notranslate nohighlight">\(\pi_0\)</span>, <span class="math notranslate nohighlight">\(a_{ij}(t)\)</span> and <span class="math notranslate nohighlight">\(b_{i}\)</span>.</p>
+<p>The algorithm works by calculating the components of a <span class="math notranslate nohighlight">\([T \times K]\)</span> matrix <span class="math notranslate nohighlight">\(\alpha\)</span> of <em>forward variables</em> defined by:</p>
+<div class="math notranslate nohighlight" id="equation-hmm3">
+<span class="eqno">(40)<a class="headerlink" href="#equation-hmm3" title="Link to this equation">#</a></span>\[\alpha_{ij} = p(y_{0:i},z_i=j)\]</div>
+<p>The forward variable <span class="math notranslate nohighlight">\(\alpha_{ij}\)</span> is the joint probability of observations up to time <span class="math notranslate nohighlight">\(i\)</span>, and of the current hidden variable <span class="math notranslate nohighlight">\(z_i\)</span> being in state <span class="math notranslate nohighlight">\(j\)</span>. The <span class="math notranslate nohighlight">\(\alpha\)</span> matrix is filled row by row, and the total likelihood of the data is the sum of its last row.</p>
+<figure class="align-center" id="algoforward">
+<a class="reference internal image-reference" href="_images/algo_forward.png"><img alt="_images/algo_forward.png" src="_images/algo_forward.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Forward algorithm for computing the likelihood of the data <span class="math notranslate nohighlight">\(y_{1:T}\)</span> given the parameters of a HMM</span><a class="headerlink" href="#algoforward" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="the-viterbi-algorithm">
+<h3>The Viterbi algorithm<a class="headerlink" href="#the-viterbi-algorithm" title="Link to this heading">#</a></h3>
+<p>Supposing a trained HMM with known parameters in the initial probability <span class="math notranslate nohighlight">\(\pi_0\)</span>, transition matrix <span class="math notranslate nohighlight">\(\mathbf{A}(t)\)</span> and emission probabilities <span class="math notranslate nohighlight">\(\mathrm{b}(y)\)</span>; the Viterbi algorithm finds the best sequence of hidden states, so that their probability conditioned on the data <span class="math notranslate nohighlight">\(y_{0:T}\)</span> is at a maximum:</p>
+<div class="math notranslate nohighlight" id="equation-hmm4">
+<span class="eqno">(41)<a class="headerlink" href="#equation-hmm4" title="Link to this equation">#</a></span>\[z^*_{0:T} = \mathrm{arg max}_z \; p(z_{0:T} | y_{0:T})\]</div>
+<p>This process is called global decoding, and one of the possible inferences from HMMs.</p>
+<p>The Viterbi algorithm looks similar to the backward algorithm, with an additional backtracking phase. It produces two <span class="math notranslate nohighlight">\([T \times K]\)</span> matrices <span class="math notranslate nohighlight">\(\delta\)</span> and <span class="math notranslate nohighlight">\(\psi\)</span> and fills them row by row in a forward phase. Then, a backtracking phase computes <span class="math notranslate nohighlight">\(z^*_{0:T}\)</span> from the <span class="math notranslate nohighlight">\(\psi\)</span> matrix. The algorithm is described with more detail <a class="reference external" href="https://medium.com/&#64;Ayra_Lux/hidden-markov-models-part-2-the-decoding-problem-c628ba474e69">here</a>.</p>
+<figure class="align-center" id="algoviterbi">
+<a class="reference internal image-reference" href="_images/algo_viterbi.png"><img alt="_images/algo_viterbi.png" src="_images/algo_viterbi.png" style="width: 600px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text">The Viterbi algorithm finds the best sequence of hidden states <span class="math notranslate nohighlight">\(z_{0:T}\)</span> given observations <span class="math notranslate nohighlight">\(y_{0:T}\)</span></span><a class="headerlink" href="#algoviterbi" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="tutorial">
+<h2>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading">#</a></h2>
+<p>Hidden Markov models are also covered <a class="reference external" href="https://mc-stan.org/docs/stan-users-guide/hmms.html">in the Stan user’s guide</a>.</p>
+<p>We will use the same data as <a class="reference internal" href="armax.html"><span class="std std-doc">the ARMAX example</span></a>: Building 1298 from the ASHRAE Kaggle competition, specifically meter 0 (electricity). This tutorial implements a simple homogeneous HMM written in Python and <strong>doesn’t use Stan</strong> for once. The point is to show how to code the forward algorithm and the Viterbi algorithm from scratch.</p>
+<p>Let us start by importing some libraries, reading the data file and selecting which variable will be the dependent variable of our model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># importing the three main libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># importing parts of scipy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">logsumexp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+
+<span class="c1"># Reading the data file</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/building_1298.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;ffill&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Selecting a training subset</span>
+<span class="n">training_start</span> <span class="o">=</span> <span class="s1">&#39;2016-01-01&#39;</span>
+<span class="n">training_end</span> <span class="o">=</span> <span class="s1">&#39;2016-01-31&#39;</span>
+<span class="n">df_train</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">training_start</span><span class="p">))</span> <span class="o">|</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">training_end</span><span class="p">))])</span>
+
+<span class="c1"># choosing meter 0 as dependent variable</span>
+<span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;m0&#39;</span><span class="p">]</span>
+<span class="c1"># removing some outliers</span>
+<span class="n">df_train</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;m0&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;m0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="c1"># normalizing y between 0 and 1</span>
+<span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_train</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_21837/660712787.py:14: FutureWarning: DataFrame.fillna with &#39;method&#39; is deprecated and will raise in a future version. Use obj.ffill() or obj.bfill() instead.
+  df.fillna(method=&#39;ffill&#39;, inplace=True)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f07a105ea50&gt;]
+</pre></div>
+</div>
+<img alt="_images/f2cd870499c4660bd87cb2fbc328f1801c32a5ad8c4aeb52f99cc4a8a14458c3.png" src="_images/f2cd870499c4660bd87cb2fbc328f1801c32a5ad8c4aeb52f99cc4a8a14458c3.png" />
+</div>
+</div>
+<p>The forward algorithm described above is written here. At any of the <span class="math notranslate nohighlight">\(N\)</span> time steps, the Markov chain can take one of <span class="math notranslate nohighlight">\(K\)</span> states. We assume that the emission probabilities are Normal with means <span class="math notranslate nohighlight">\(\mu_i\)</span> and standard deviations <span class="math notranslate nohighlight">\(\sigma_i\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-hmm11">
+<span class="eqno">(42)<a class="headerlink" href="#equation-hmm11" title="Link to this equation">#</a></span>\[b_i(y_t) = p(y_t|z_t=i) = N(\mu_i, \sigma_i)\]</div>
+<p>The parameters of the forward algorithm are the transition matrix <span class="math notranslate nohighlight">\(a\)</span>, and the parameters of the emission probabilities <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculates the likelihood from parameters a, mu and sig</span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        y: dependent variable [N]</span>
+<span class="sd">        a: transition matrix [KxK]</span>
+<span class="sd">        mu: emission means [K]</span>
+<span class="sd">        sig: emission standard deviations [K]</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        The total log-likelihood</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">logalpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">K</span><span class="p">))</span> <span class="c1"># log of the forward variable defined above</span>
+    <span class="c1"># Initialisation</span>
+    <span class="n">pi0</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>  <span class="c1"># initial probabilities. Supposed known here.</span>
+    <span class="n">logalpha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pi0</span><span class="p">)</span> <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sig</span><span class="p">)</span>
+    <span class="c1"># Recursion</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+            <span class="n">logalpha</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">logalpha</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a</span><span class="p">[:,</span><span class="n">j</span><span class="p">])</span> <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">],</span>
+                            <span class="n">loc</span><span class="o">=</span><span class="n">mu</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">sig</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="p">)</span>
+    <span class="c1"># Termination</span>
+    <span class="k">return</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">logalpha</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The next block uses this forward algorithm to train the HMM. Just like in the ARMAX example, we only use a one-month subset of the whole training dataset.</p>
+<p>Training is done by the scipy.minimize() function. Before using it, we need to define an objective function to minimize. This function will take a single array <span class="math notranslate nohighlight">\(x\)</span> as argument and return the value we aim to minimize, which is the negative log likelihood from the forward algorithm.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Reshaping the parameter vector x into the three variables of the forward algorithm</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="p">(</span><span class="n">K</span><span class="p">,</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># Matrix a without the right column</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a1</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>   <span class="c1"># Right column of matrix a</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span><span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">K</span><span class="p">]</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">K</span><span class="p">:]</span>
+    <span class="c1"># Returns the minus log likelihood</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">forward</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">a</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+
+<span class="c1"># Initial parameter values to be passed to scipy.minimize()</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">2</span>                           <span class="c1"># number of possible states</span>
+<span class="n">a_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.9</span><span class="p">],[</span><span class="mf">0.1</span><span class="p">]])</span>
+<span class="n">mu_init</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]</span>     <span class="c1"># emission means</span>
+<span class="n">sig_init</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>    <span class="c1"># emission standard deviations</span>
+
+<span class="c1"># Parameters are assembled into a single array x with given bounds</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span> <span class="p">[</span><span class="n">a_init</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">mu_init</span><span class="p">,</span> <span class="n">sig_init</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="o">*</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)])</span>
+
+<span class="c1"># Training</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
+
+<span class="c1"># Variables are recovered from the fitted x array</span>
+<span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[:</span><span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="p">(</span><span class="n">K</span><span class="p">,</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">a2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a1</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span><span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">K</span><span class="p">]</span>
+<span class="n">sig</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">K</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_21837/3848433432.py:15: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  logalpha[0] = np.log(pi0) + norm.logpdf(y[0], loc=mu, scale=sig)
+/tmp/ipykernel_21837/3848433432.py:19: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  logalpha[t,j] = logsumexp(logalpha[t-1,:] + np.log(a[:,j]) + norm.logpdf(y[t],
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that the parameters of the HMM have been estimated, we can decode it, i.e. estimating the most likely state sequence. This is done by the Viterbi algorithm below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>  <span class="c1"># hidden state to be determined</span>
+<span class="n">best_logp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>  <span class="c1"># delta in the description above</span>
+<span class="n">back_ptr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>  <span class="c1"># psi in the description above</span>
+
+<span class="c1"># Initialisation</span>
+<span class="n">best_logp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sig</span><span class="p">)</span>
+
+<span class="c1"># Recursion</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">logp</span> <span class="o">=</span> <span class="n">best_logp</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a</span><span class="p">[:,</span> <span class="n">k</span><span class="p">])</span> <span class="o">+</span> <span class="n">norm</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">mu</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">sig</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">best_logp</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">logp</span><span class="p">)</span>
+        <span class="n">back_ptr</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logp</span><span class="p">)</span>
+        
+<span class="c1"># Backtracking</span>
+<span class="n">z</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">best_logp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="n">z</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">back_ptr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_17715/3753217930.py:9: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  best_logp[0] = norm.logpdf(y[0], loc=mu, scale=sig)
+/tmp/ipykernel_17715/3753217930.py:14: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  logp = best_logp[t - 1] + np.log(a[:, k]) + norm.logpdf(y[t], loc=mu[k], scale=sig[k])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can finish by inferring the predicted output from the estimated states and parameters of the HMM.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_star_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">y_star_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">y_star_mean</span><span class="p">[</span><span class="n">z</span> <span class="o">==</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">y_star_std</span><span class="p">[</span><span class="n">z</span> <span class="o">==</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sig</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+<span class="n">y_star</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">y_star_mean</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">y_star_std</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_train</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_train</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y_star_mean</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">df_train</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y_star_mean</span><span class="o">-</span><span class="mf">1.96</span><span class="o">*</span><span class="n">y_star_std</span><span class="p">,</span> <span class="n">y_star_mean</span><span class="o">+</span><span class="mf">1.96</span><span class="o">*</span><span class="n">y_star_std</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PolyCollection at 0x7f66463244d0&gt;
+</pre></div>
+</div>
+<img alt="_images/3247c62a6e35cfcb5dc2db157c14bb80f9dff21810f8805f95f199ad6b21a69a.png" src="_images/3247c62a6e35cfcb5dc2db157c14bb80f9dff21810f8805f95f199ad6b21a69a.png" />
+</div>
+</div>
+</section>
+<section id="composite-time-series-models">
+<h2>Composite time series models<a class="headerlink" href="#composite-time-series-models" title="Link to this heading">#</a></h2>
+<section id="markov-switching-models">
+<h3>Markov switching models<a class="headerlink" href="#markov-switching-models" title="Link to this heading">#</a></h3>
+<p>Following the definitions of autoregressive models and hidden Markov models, a natural extension is a combination of both: a time-series model where the observed variable <span class="math notranslate nohighlight">\(y_t\)</span> is explained by a hidden state <span class="math notranslate nohighlight">\(x_t\)</span> and by a regression of its own previous value <span class="math notranslate nohighlight">\(y_{t-1}\)</span>. These models are called autoregressive hidden Markov models (AR-HMM) <span id="id3">[<a class="reference internal" href="references.html#id25" title="Kevin Patrick Murphy. Dynamic bayesian networks: representation, inference and learning. University of California, Berkeley Berkeley, CA, 2002.">Murphy, 2002</a>]</span> or Markov switching models (MSM) <span id="id4">[<a class="reference internal" href="references.html#id26" title="Sebastian Wolf, Jan Kloppenborg Møller, Magnus Alexander Bitsch, John Krogstie, and Henrik Madsen. A markov-switching model for building occupant activity estimation. Energy and Buildings, 183:672–683, 2019.">Wolf <em>et al.</em>, 2019</a>]</span>.</p>
+<figure class="align-center" id="tikzmsm">
+<a class="reference internal image-reference" href="_images/tikz_msm.png"><img alt="_images/tikz_msm.png" src="_images/tikz_msm.png" style="width: 250px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 23 </span><span class="caption-text">Markov switching model</span><a class="headerlink" href="#tikzmsm" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Similar to an HMM, an MSM is defined by a matrix of transition probabilities <span class="math notranslate nohighlight">\(\left(a_{ij}(t)\right) = p\left(z_t=j |z_{t-1}=i\right)\)</span> whose terms can be conditioned on explanatory variables (time, day, weather…) and by emission probabilities. Rather than being only conditioned on <span class="math notranslate nohighlight">\(x_t\)</span>, the emission probability can be a function of previous observations. This is an example of AR(1) process:</p>
+<div class="math notranslate nohighlight" id="equation-msm1">
+<span class="eqno">(43)<a class="headerlink" href="#equation-msm1" title="Link to this equation">#</a></span>\[p(y_t | z_t=j) = \alpha_j + \phi_j y_{t-1} + w_{t,j}\]</div>
+<p>where the intercept <span class="math notranslate nohighlight">\(\alpha_j\)</span>, slope <span class="math notranslate nohighlight">\(\phi_j\)</span> and noise <span class="math notranslate nohighlight">\(w_{t,j}\)</span> depend on the state <span class="math notranslate nohighlight">\(z_t\)</span>, and may have as many different values as the number of possible states. In a more complicated example, one could implement a whole ARMAX model into the observation probability of a Markov switching model.</p>
+<p>An MSM can be trained with the same Baum-Welch algorithm and decoded with the same Viterbi algorithm as an HMM. The only difference is in the expression of the emission probabilities, which do not change the structure of the algorithms because <span class="math notranslate nohighlight">\(y_t\)</span> is conditionally independent on <span class="math notranslate nohighlight">\(x_{t-1}\)</span> given <span class="math notranslate nohighlight">\(x_t\)</span> and <span class="math notranslate nohighlight">\(y_{t-1}\)</span>.</p>
+</section>
+<section id="hidden-markov-energy-signature">
+<h3>Hidden Markov energy signature<a class="headerlink" href="#hidden-markov-energy-signature" title="Link to this heading">#</a></h3>
+<p>Another extension of the HMM structure was <a class="reference external" href="https://doi.org/10.3390/en15103534">proposed by the author</a> <span id="id5">[<a class="reference internal" href="references.html#id27" title="Simon Rouchier. Bayesian workflow and hidden markov energy-signature model for measurement and verification. Energies, 15(10):3534, 2022.">Rouchier, 2022</a>]</span> and called hidden Markov energy signature model. It is a HMM where the emission probability functions are energy signature (ES) models (see chapter &#64;ref(bayesianmv)):</p>
+<ul class="simple">
+<li><p>The energy use <span class="math notranslate nohighlight">\(y_t\)</span> of a building at time <span class="math notranslate nohighlight">\(t\)</span> follows a different ES model for each possible occupancy state <span class="math notranslate nohighlight">\(z_t \in \left[1,...,K\right]\)</span>. This is how we allow the parameters of the ES model <span class="math notranslate nohighlight">\(\left\{E_0, T_1, T_2, H_1, H_2, \sigma\right\}\)</span> to depend on the occupancy.</p></li>
+</ul>
+<div class="math notranslate nohighlight" id="equation-msm2">
+<span class="eqno">(44)<a class="headerlink" href="#equation-msm2" title="Link to this equation">#</a></span>\[b_{i}(y_t) = p(y_t|\theta, T_a, z_t=i) = N\left[E_{0,i} + H_{1,i}\left(T_{1,i}-T_a\right)^+ + H_{2,i}\left(T_a-T_{2,i}\right)^+, \sigma_i \right]\]</div>
+<ul class="simple">
+<li><p>The occupancy state at each time <span class="math notranslate nohighlight">\(t\)</span> is unknown, and described by a hidden Markov chain. We define a transition probability matrix for each hour of the day <span class="math notranslate nohighlight">\(h\)</span> and day of the week <span class="math notranslate nohighlight">\(d\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight" id="equation-msm3">
+<span class="eqno">(45)<a class="headerlink" href="#equation-msm3" title="Link to this equation">#</a></span>\[a_{ij}(h,d)=p\left(z_{h,d}=j |z_{h-1,d}=i\right)\]</div>
+<p>This formulation can be described as follows: at every hour <span class="math notranslate nohighlight">\(h\)</span> and day <span class="math notranslate nohighlight">\(d\)</span>, the building has a probability <span class="math notranslate nohighlight">\(a_{ij}(h,d)\)</span> to switch from the occupancy state <span class="math notranslate nohighlight">\(i\)</span> to state <span class="math notranslate nohighlight">\(j\)</span>. Then, if the building is in the occupancy state <span class="math notranslate nohighlight">\(i\)</span>, then its energy use follows one of <span class="math notranslate nohighlight">\(K\)</span> possible ES models <span class="math notranslate nohighlight">\(b_i(y_t)\)</span>.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="autocorrelated.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Autocorrelated energy signature</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#principles">Principles</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-forward-algorithm">The forward algorithm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-viterbi-algorithm">The Viterbi algorithm</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorial">Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composite-time-series-models">Composite time series models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-switching-models">Markov switching models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hidden-markov-energy-signature">Hidden Markov energy signature</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Simon Rouchier
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
