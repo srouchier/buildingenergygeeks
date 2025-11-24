@@ -1,3 +1,4 @@
+(timeseries_intro)=
 # Time series models
 
 ## Motivation
@@ -54,10 +55,10 @@ Where $x_{t-k}$ are the external factors like weather, occupancy, other heat sou
 
 Training an AR or ARX model is straightforward: one simply has to generate a lagged copy of the series $\{y_t\}$, and include this copy in the explanatory variables of an OLR model.
 
-```{figure} /figures/timeseriesintro1.png
+```{figure} /figures/timeseriesintro2.png
 ---
 name: timeseriesintro2
-width: 400px
+width: 200px
 align: center
 ---
 
@@ -116,7 +117,7 @@ However, in order to account for the **forecasting uncertainty**, increasing wit
 \sigma_h^2 = \sigma^2 \sum_{i=0}^{h-1} \psi_i^2
 ```
 
-where $\psi_i$ are the coefficients of the MA($\infty$) representation of the ARMA(p,q) process {cite:p}`shumway2000time`. Eq. {eq}`ts_arma` can be formulated as a MA($\infty$) process, with coefficients $\psi$ as functions of the ARMA coefficients $\phi$ and $\theta$:
+where $\psi_i$ are the coefficients of the MA($\infty$) representation of the ARMA(p,q) process {cite:p}`shumway2000time`. Eq. {eq}`ts_arma` can be formulated as a MA($\infty$) process, with coefficients $\psi$ as functions of the ARMA coefficients $\varphi$ and $\theta$:
 
 ```{math}
 :label: ts_armax_predict3
@@ -125,12 +126,14 @@ y_t = \varepsilon_t + \sum_{i=1}^\infty \psi_i \varepsilon_{t-i}
 
 ```{math}
 :label: ts_armax_predict4
-\psi_i = \sum_{j=1}^p \phi_j \psi_{i-j} +\theta_i
+\psi_i = \sum_{j=1}^p \varphi_j \psi_{i-j} +\theta_i
 ```
+
+and $\psi_0=1$.
 
 In the generic case, the $\psi$ coefficients are calculated iteratively, as one new value is required for each new forecast. In the particular case of MA(q) models, the forecast uncertainty is simple to formulate because each $\psi_i$ is equal to a $\theta_i$ coefficient. In the particular case of the ARMA(1,1) model, there is a specific formulation of $\sigma_h$:
 
 ```{math}
 :label: ts_armax_predict5
-\sigma_h^2 = \sigma^2 \left[1 + \frac{\left(\phi+\theta\right)\left(1-\phi^{2(h-1)}\right)}{1-\phi^2}\right]
+\sigma_h^2 = \sigma^2 \left[1 + \frac{\left(\varphi+\theta\right)\left(1-\varphi^{2(h-1)}\right)}{1-\varphi^2}\right]
 ```

@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'timeseries_intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data" href="data.html" />
+    <link rel="next" title="ARMAX models" href="armax.html" />
     <link rel="prev" title="Energy signature" href="changepoint.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -196,6 +196,9 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Time series</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Time series models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="armax.html">ARMAX models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autocorrelated.html">Autocorrelated energy signature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hmm.html">Hidden Markov models</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -415,7 +418,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="time-series-models">
-<h1>Time series models<a class="headerlink" href="#time-series-models" title="Link to this heading">#</a></h1>
+<span id="timeseries-intro"></span><h1>Time series models<a class="headerlink" href="#time-series-models" title="Link to this heading">#</a></h1>
 <section id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
 <p>Ordinary linear regression (OLR) is based on an assumption of temporal independence: each observation of energy use <span class="math notranslate nohighlight">\(y_t\)</span> is only explained by current explanatory variables <span class="math notranslate nohighlight">\(x_t\)</span> (weather, occupancy). Consecutive values <span class="math notranslate nohighlight">\(y_t,y_{t-1}, y_{t-2}, \dots\)</span> are independent given these input conditions.</p>
@@ -449,7 +452,7 @@ document.write(`
 <p>Where <span class="math notranslate nohighlight">\(x_{t-k}\)</span> are the external factors like weather, occupancy, other heat sources etc. at time <span class="math notranslate nohighlight">\(t - k\)</span>. The maximum order <span class="math notranslate nohighlight">\(r\)</span> to which previous values of exogenous variables are included in the equation may be equal to <span class="math notranslate nohighlight">\(p\)</span>, or different.</p>
 <p>Training an AR or ARX model is straightforward: one simply has to generate a lagged copy of the series <span class="math notranslate nohighlight">\(\{y_t\}\)</span>, and include this copy in the explanatory variables of an OLR model.</p>
 <figure class="align-center" id="timeseriesintro2">
-<a class="reference internal image-reference" href="_images/timeseriesintro1.png"><img alt="_images/timeseriesintro1.png" src="_images/timeseriesintro1.png" style="width: 400px;" />
+<a class="reference internal image-reference" href="_images/timeseriesintro2.png"><img alt="_images/timeseriesintro2.png" src="_images/timeseriesintro2.png" style="width: 200px;" />
 </a>
 </figure>
 <p>In this example, lagged copies of <span class="math notranslate nohighlight">\(y\)</span> are created up to an order <span class="math notranslate nohighlight">\(p=2\)</span>. The new series are model inputs of a linear regression model. Other variables <span class="math notranslate nohighlight">\(x\)</span> may be added, even with lagged copies. However, the first two data points are no longer usable for training as they are missing some explanatory variables.</p>
@@ -481,14 +484,15 @@ document.write(`
 <p>However, in order to account for the <strong>forecasting uncertainty</strong>, increasing with the horizon <span class="math notranslate nohighlight">\(h\)</span>, multiple step ahead predictions of ARMA models have an increased variance:</p>
 <div class="math notranslate nohighlight" id="equation-ts-armax-predict2">
 <span class="eqno">(34)<a class="headerlink" href="#equation-ts-armax-predict2" title="Link to this equation">#</a></span>\[\sigma_h^2 = \sigma^2 \sum_{i=0}^{h-1} \psi_i^2\]</div>
-<p>where <span class="math notranslate nohighlight">\(\psi_i\)</span> are the coefficients of the MA(<span class="math notranslate nohighlight">\(\infty\)</span>) representation of the ARMA(p,q) process <span id="id2">[<a class="reference internal" href="references.html#id22" title="Robert H Shumway, David S Stoffer, and David S Stoffer. Time series analysis and its applications. Volume 3. Springer, 2000.">Shumway <em>et al.</em>, 2000</a>]</span>. Eq. <a class="reference internal" href="#equation-ts-arma">(31)</a> can be formulated as a MA(<span class="math notranslate nohighlight">\(\infty\)</span>) process, with coefficients <span class="math notranslate nohighlight">\(\psi\)</span> as functions of the ARMA coefficients <span class="math notranslate nohighlight">\(\phi\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<p>where <span class="math notranslate nohighlight">\(\psi_i\)</span> are the coefficients of the MA(<span class="math notranslate nohighlight">\(\infty\)</span>) representation of the ARMA(p,q) process <span id="id2">[<a class="reference internal" href="references.html#id22" title="Robert H Shumway, David S Stoffer, and David S Stoffer. Time series analysis and its applications. Volume 3. Springer, 2000.">Shumway <em>et al.</em>, 2000</a>]</span>. Eq. <a class="reference internal" href="#equation-ts-arma">(31)</a> can be formulated as a MA(<span class="math notranslate nohighlight">\(\infty\)</span>) process, with coefficients <span class="math notranslate nohighlight">\(\psi\)</span> as functions of the ARMA coefficients <span class="math notranslate nohighlight">\(\varphi\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-ts-armax-predict3">
 <span class="eqno">(35)<a class="headerlink" href="#equation-ts-armax-predict3" title="Link to this equation">#</a></span>\[y_t = \varepsilon_t + \sum_{i=1}^\infty \psi_i \varepsilon_{t-i} \]</div>
 <div class="math notranslate nohighlight" id="equation-ts-armax-predict4">
-<span class="eqno">(36)<a class="headerlink" href="#equation-ts-armax-predict4" title="Link to this equation">#</a></span>\[\psi_i = \sum_{j=1}^p \phi_j \psi_{i-j} +\theta_i\]</div>
+<span class="eqno">(36)<a class="headerlink" href="#equation-ts-armax-predict4" title="Link to this equation">#</a></span>\[\psi_i = \sum_{j=1}^p \varphi_j \psi_{i-j} +\theta_i\]</div>
+<p>and <span class="math notranslate nohighlight">\(\psi_0=1\)</span>.</p>
 <p>In the generic case, the <span class="math notranslate nohighlight">\(\psi\)</span> coefficients are calculated iteratively, as one new value is required for each new forecast. In the particular case of MA(q) models, the forecast uncertainty is simple to formulate because each <span class="math notranslate nohighlight">\(\psi_i\)</span> is equal to a <span class="math notranslate nohighlight">\(\theta_i\)</span> coefficient. In the particular case of the ARMA(1,1) model, there is a specific formulation of <span class="math notranslate nohighlight">\(\sigma_h\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-ts-armax-predict5">
-<span class="eqno">(37)<a class="headerlink" href="#equation-ts-armax-predict5" title="Link to this equation">#</a></span>\[\sigma_h^2 = \sigma^2 \left[1 + \frac{\left(\phi+\theta\right)\left(1-\phi^{2(h-1)}\right)}{1-\phi^2}\right]\]</div>
+<span class="eqno">(37)<a class="headerlink" href="#equation-ts-armax-predict5" title="Link to this equation">#</a></span>\[\sigma_h^2 = \sigma^2 \left[1 + \frac{\left(\varphi+\theta\right)\left(1-\varphi^{2(h-1)}\right)}{1-\varphi^2}\right]\]</div>
 </section>
 </section>
 
@@ -532,11 +536,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="data.html"
+       href="armax.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data</p>
+        <p class="prev-next-title">ARMAX models</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

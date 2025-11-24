@@ -376,7 +376,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -392,6 +394,16 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression">Linear regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-analysis">Posterior analysis</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -403,6 +415,15 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="armax-models">
 <h1>ARMAX models<a class="headerlink" href="#armax-models" title="Link to this heading">#</a></h1>
+<p>This tutorial demonstrates ARX and ARMAX models described in <a class="reference internal" href="timeseries_intro.html#timeseries-intro"><span class="std std-ref">the previous page</span></a>.</p>
+<p>We want to see if the preditions of an ordinary linear regression model are improved by expanding it with an AR(p) model. This is what we call the ARX(p) formulation:</p>
+<div class="math notranslate nohighlight" id="equation-armax-01">
+<span class="eqno">(38)<a class="headerlink" href="#equation-armax-01" title="Link to this equation">#</a></span>\[y_t = \sum_{i=1}^p \varphi_i y_{t-i} + \sum_{k=0}^r \beta_k x_{t-k} + \varepsilon_t\]</div>
+<p><a class="reference internal" href="timeseries_intro.html"><span class="std std-doc">Autoregressive models</span></a> (AR) are based on the idea that the current value of the series, <span class="math notranslate nohighlight">\(y_t\)</span>, can be explained as a function of <span class="math notranslate nohighlight">\(p\)</span> past values, <span class="math notranslate nohighlight">\(y_{t−1}\)</span>, <span class="math notranslate nohighlight">\(y_{t−2}\)</span>, …, <span class="math notranslate nohighlight">\(y_{t−p}\)</span>. They are essentially linear regression models which take <em>lagged</em> copies of the dependent variable as explanatory variables. Other variables can be added, leading to the so-called ARX model (AR model with eXplanatory variables).</p>
+<p>This example has one explanatory variable <span class="math notranslate nohighlight">\(x\)</span> which lagged values may also be used up to a certain lag <span class="math notranslate nohighlight">\(r\)</span>. Further expanding this model with a MA(q) term yields the ARMAX(p,q) fomulation:</p>
+<div class="math notranslate nohighlight" id="equation-armax-02">
+<span class="eqno">(39)<a class="headerlink" href="#equation-armax-02" title="Link to this equation">#</a></span>\[y_t = \sum_{i=1}^p \varphi_i y_{t-i} + \sum_{j=1}^q \theta_j \varepsilon_{t-j} + \sum_{k=0}^r \beta_k x_{t-k} + \varepsilon_t\]</div>
+<p>The target of this exercise is to find whether the ARMAX expansion improves the prediction metrics of an ordinary linear model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -415,6 +436,9 @@ document.write(`
 </div>
 </div>
 </div>
+<section id="data">
+<h2>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
+<p>The data comprises the heating power, indoor and outdoor air temperatures of a single-family house, with a 2 hour time step between measurements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/armaxdata.csv&#39;</span><span class="p">)</span>
@@ -491,27 +515,591 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A plot of the dependent variable vs. each of the explanatory variables</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Ti&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Te&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;consumption&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Ti-Te&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Ti&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Te&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Heating power (W)&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Ti-Te (C)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Ti-Te&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Ti-Te (C)&#39;)
 </pre></div>
 </div>
-<img alt="_images/7823832f05a3d2a58b9e54f3e60277e115339f9107400c6d39a84ac384fbc297.png" src="_images/7823832f05a3d2a58b9e54f3e60277e115339f9107400c6d39a84ac384fbc297.png" />
+<img alt="_images/1b52c534f6301fea4cf0d55becd134687fb9e8c319383fbd0ddaa2217b9b8b39.png" src="_images/1b52c534f6301fea4cf0d55becd134687fb9e8c319383fbd0ddaa2217b9b8b39.png" />
 </div>
 </div>
-<p>There is clearly not a simple linear relationship between heating power and indoor-outdoor temperature difference, because of the building’s inertia.</p>
-<p><a class="reference internal" href="timeseries_intro.html"><span class="std std-doc">Autoregressive models</span></a> (AR) are based on the idea that the current value of the series, <span class="math notranslate nohighlight">\(y_t\)</span>, can be explained as a function of <span class="math notranslate nohighlight">\(p\)</span> past values, <span class="math notranslate nohighlight">\(y_{t−1}\)</span>, <span class="math notranslate nohighlight">\(y_{t−2}\)</span>, …, <span class="math notranslate nohighlight">\(y_{t−p}\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[y_{t−1} = \beta_0 + \beta_1 y_{t−1} + \beta_2 y_{t−2} + ... + \beta_p y_{t−p} + \varepsilon_t\]</div>
-<p>They are essentially linear regression models which take <em>lagged</em> copies of the dependent variable as explanatory variables. Other variables can be added, leading to the so-called ARX model (AR model with eXplanatory variables).</p>
-<p>We wish to predict the heating power <span class="math notranslate nohighlight">\(P\)</span> from its own previous values and other measurements. First, we augment the dataset with lagged versions of all its columns.</p>
+<p>We may expect a linear relationship between the heating power <span class="math notranslate nohighlight">\(y\)</span> and the indoor-outdoor temperature difference <span class="math notranslate nohighlight">\(x=T_i-T_e\)</span>. However, because of the building’s thermal inertia exceeding the time step size, it is likely that each current value <span class="math notranslate nohighlight">\(y_t\)</span> depends on previous instances <span class="math notranslate nohighlight">\(y_{t-1}\)</span> and <span class="math notranslate nohighlight">\(x_{t-1}\)</span>.</p>
+<p>Let us use about two thirds of the dataset for model training, and the last third to watch the energy use forecasted by fitted models:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">N_train</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="n">N</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Ti&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Te&#39;</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:</span><span class="n">N_train</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;P&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="linear-regression">
+<h2>Linear regression<a class="headerlink" href="#linear-regression" title="Link to this heading">#</a></h2>
+<p>We have Stan models of an ordinary linear regression model, and of ARX and ARMAX model of any orders (p,q,r):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linreg</span> <span class="o">=</span> <span class="n">CmdStanModel</span><span class="p">(</span><span class="n">stan_file</span><span class="o">=</span><span class="s1">&#39;models/linearregression.stan&#39;</span><span class="p">)</span>
+<span class="n">arx</span> <span class="o">=</span> <span class="n">CmdStanModel</span><span class="p">(</span><span class="n">stan_file</span><span class="o">=</span><span class="s1">&#39;models/arx.stan&#39;</span><span class="p">)</span>
+<span class="n">armax</span> <span class="o">=</span> <span class="n">CmdStanModel</span><span class="p">(</span><span class="n">stan_file</span><span class="o">=</span><span class="s1">&#39;models/armax.stan&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us start by fitting an ordinary linear regression model which we will use later for model comparison reference:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data declaration for the linear regression model</span>
+<span class="n">linreg_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="n">N_train</span><span class="p">,</span>
+    <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="n">N_train</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Fitting the LR model</span>
+<span class="n">fit_linreg</span> <span class="o">=</span> <span class="n">linreg</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">linreg_data</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:12 - cmdstanpy - INFO - CmdStan start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:12 - cmdstanpy - INFO - Chain [1] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:12 - cmdstanpy - INFO - Chain [2] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:12 - cmdstanpy - INFO - Chain [3] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:12 - cmdstanpy - INFO - Chain [4] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:12 - cmdstanpy - INFO - Chain [1] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:12 - cmdstanpy - INFO - Chain [4] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:12 - cmdstanpy - INFO - Chain [3] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:12 - cmdstanpy - INFO - Chain [2] done processing
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, the choice of ARMAX orders (p,q,r) is not trivial. There is no universal rule telling us how many previous time steps will make the energy forecasts more robust. The general recommendation is to fit several models of increasing complexity, until out model comparison metrics tell us to stop. Let us fit a few models, which is fast once the initial model has been compiled.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arx1_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;N_train&quot;</span><span class="p">:</span> <span class="n">N_train</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span>
+    <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="p">,</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">fit_arx1</span> <span class="o">=</span> <span class="n">arx</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">arx1_data</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">arx2_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;N_train&quot;</span><span class="p">:</span> <span class="n">N_train</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span>
+    <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="p">,</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">fit_arx2</span> <span class="o">=</span> <span class="n">arx</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">arx2_data</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">arx3_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;N_train&quot;</span><span class="p">:</span> <span class="n">N_train</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span>
+    <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="p">,</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">fit_arx3</span> <span class="o">=</span> <span class="n">arx</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">arx3_data</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:13 - cmdstanpy - INFO - CmdStan start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:13 - cmdstanpy - INFO - Chain [1] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:13 - cmdstanpy - INFO - Chain [3] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:13 - cmdstanpy - INFO - Chain [2] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:13 - cmdstanpy - INFO - Chain [4] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:19 - cmdstanpy - INFO - Chain [3] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:21 - cmdstanpy - INFO - Chain [1] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:23 - cmdstanpy - INFO - Chain [2] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:23 - cmdstanpy - INFO - Chain [4] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:24 - cmdstanpy - INFO - CmdStan start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:24 - cmdstanpy - INFO - Chain [1] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:24 - cmdstanpy - INFO - Chain [2] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:24 - cmdstanpy - INFO - Chain [3] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:24 - cmdstanpy - INFO - Chain [4] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:43 - cmdstanpy - INFO - Chain [1] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:43 - cmdstanpy - ERROR - Chain [1] error: terminated by signal 2 Unknown error -2
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:43 - cmdstanpy - INFO - Chain [4] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:43 - cmdstanpy - ERROR - Chain [4] error: terminated by signal 2 Unknown error -2
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:43 - cmdstanpy - INFO - Chain [3] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:43 - cmdstanpy - ERROR - Chain [3] error: terminated by signal 2 Unknown error -2
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:43 - cmdstanpy - INFO - Chain [2] done processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:03:43 - cmdstanpy - ERROR - Chain [2] error: terminated by signal 2 Unknown error -2
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">23</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">fit_arx1</span> <span class="o">=</span> <span class="n">arx</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">arx1_data</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">arx2_data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span>     <span class="s2">&quot;N_train&quot;</span><span class="p">:</span> <span class="n">N_train</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>     <span class="mi">20</span>     <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="p">}</span>
+<span class="ne">---&gt; </span><span class="mi">23</span> <span class="n">fit_arx2</span> <span class="o">=</span> <span class="n">arx</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">arx2_data</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="n">arx3_data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span>     <span class="s2">&quot;N_train&quot;</span><span class="p">:</span> <span class="n">N_train</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>     <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>     <span class="mi">32</span>     <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span> <span class="p">}</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="n">fit_arx3</span> <span class="o">=</span> <span class="n">arx</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">arx3_data</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nn">File ~/anaconda3/envs/bayes_env/lib/python3.11/site-packages/cmdstanpy/model.py:1086,</span> in <span class="ni">CmdStanModel.sample</span><span class="nt">(self, data, chains, parallel_chains, threads_per_chain, seed, chain_ids, inits, iter_warmup, iter_sampling, save_warmup, thin, max_treedepth, metric, step_size, adapt_engaged, adapt_delta, adapt_init_phase, adapt_metric_window, adapt_step_size, fixed_param, output_dir, sig_figs, save_latent_dynamics, save_profile, show_progress, show_console, refresh, time_fmt, timeout, force_one_process_per_chain)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1075</span>     <span class="n">progress_hook</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_sampler_progress_hook</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1076</span>         <span class="n">chain_ids</span><span class="o">=</span><span class="n">chain_ids</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1077</span>         <span class="n">total</span><span class="o">=</span><span class="n">iter_total</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1078</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1079</span> <span class="n">runset</span> <span class="o">=</span> <span class="n">RunSet</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1080</span>     <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1081</span>     <span class="n">chains</span><span class="o">=</span><span class="n">chains</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>   <span class="mi">1084</span>     <span class="n">one_process_per_chain</span><span class="o">=</span><span class="n">one_process_per_chain</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1085</span> <span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1086</span> <span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">parallel_procs</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1087</span>     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">runset</span><span class="o">.</span><span class="n">num_procs</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1088</span>         <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1089</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_run_cmdstan</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1090</span>             <span class="n">runset</span><span class="o">=</span><span class="n">runset</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>   <span class="mi">1095</span>             <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1096</span>         <span class="p">)</span>
+
+<span class="nn">File ~/anaconda3/envs/bayes_env/lib/python3.11/concurrent/futures/_base.py:647,</span> in <span class="ni">Executor.__exit__</span><span class="nt">(self, exc_type, exc_val, exc_tb)</span>
+<span class="g g-Whitespace">    </span><span class="mi">646</span> <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">647</span>     <span class="bp">self</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">648</span>     <span class="k">return</span> <span class="kc">False</span>
+
+<span class="nn">File ~/anaconda3/envs/bayes_env/lib/python3.11/concurrent/futures/thread.py:235,</span> in <span class="ni">ThreadPoolExecutor.shutdown</span><span class="nt">(self, wait, cancel_futures)</span>
+<span class="g g-Whitespace">    </span><span class="mi">233</span> <span class="k">if</span> <span class="n">wait</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">234</span>     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_threads</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">235</span>         <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="nn">File ~/anaconda3/envs/bayes_env/lib/python3.11/threading.py:1119,</span> in <span class="ni">Thread.join</span><span class="nt">(self, timeout)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1116</span>     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;cannot join current thread&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1118</span> <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1119</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_wait_for_tstate_lock</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1120</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1121</span>     <span class="c1"># the behavior of a negative timeout isn&#39;t documented, but</span>
+<span class="g g-Whitespace">   </span><span class="mi">1122</span>     <span class="c1"># historically .join(timeout=x) for x&lt;0 has acted as if timeout=0</span>
+<span class="g g-Whitespace">   </span><span class="mi">1123</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_wait_for_tstate_lock</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">timeout</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+<span class="nn">File ~/anaconda3/envs/bayes_env/lib/python3.11/threading.py:1139,</span> in <span class="ni">Thread._wait_for_tstate_lock</span><span class="nt">(self, block, timeout)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1136</span>     <span class="k">return</span>
+<span class="g g-Whitespace">   </span><span class="mi">1138</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1139</span>     <span class="k">if</span> <span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1140</span>         <span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1141</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="p">()</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us add an ARMAX model to the pool:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">armax_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;N_train&quot;</span><span class="p">:</span> <span class="n">N_train</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span>
+    <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;Q&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="p">,</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">fit_armax</span> <span class="o">=</span> <span class="n">armax</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">armax_data</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>15:44:52 - cmdstanpy - INFO - CmdStan start processing
+15:44:52 - cmdstanpy - INFO - Chain [1] start processing
+15:44:52 - cmdstanpy - INFO - Chain [2] start processing
+15:44:52 - cmdstanpy - INFO - Chain [3] start processing
+15:44:52 - cmdstanpy - INFO - Chain [4] start processing
+15:45:00 - cmdstanpy - INFO - Chain [2] done processing
+15:45:01 - cmdstanpy - INFO - Chain [4] done processing
+15:45:02 - cmdstanpy - INFO - Chain [3] done processing
+15:45:05 - cmdstanpy - INFO - Chain [1] done processing
+15:45:06 - cmdstanpy - WARNING - Some chains may have failed to converge.
+	Chain 1 had 25 divergent transitions (2.5%)
+	Chain 2 had 15 divergent transitions (1.5%)
+	Chain 3 had 21 divergent transitions (2.1%)
+	Chain 4 had 25 divergent transitions (2.5%)
+	Use the &quot;diagnose()&quot; method on the CmdStanMCMC object to see further information.
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now compare all these models in order to only select one for posterior analysis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idata_linreg</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">from_cmdstanpy</span><span class="p">(</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">fit_linreg</span><span class="p">,</span>
+    <span class="n">posterior_predictive</span><span class="o">=</span><span class="s2">&quot;y_hat&quot;</span><span class="p">,</span>
+    <span class="n">log_likelihood</span><span class="o">=</span><span class="s2">&quot;log_lik&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">idata_arx1</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">from_cmdstanpy</span><span class="p">(</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">fit_arx1</span><span class="p">,</span>
+    <span class="n">posterior_predictive</span><span class="o">=</span><span class="s2">&quot;y_hat&quot;</span><span class="p">,</span>
+    <span class="n">log_likelihood</span><span class="o">=</span><span class="s2">&quot;log_lik&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">idata_arx2</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">from_cmdstanpy</span><span class="p">(</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">fit_arx2</span><span class="p">,</span>
+    <span class="n">posterior_predictive</span><span class="o">=</span><span class="s2">&quot;y_hat&quot;</span><span class="p">,</span>
+    <span class="n">log_likelihood</span><span class="o">=</span><span class="s2">&quot;log_lik&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">idata_arx3</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">from_cmdstanpy</span><span class="p">(</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">fit_arx3</span><span class="p">,</span>
+    <span class="n">posterior_predictive</span><span class="o">=</span><span class="s2">&quot;y_hat&quot;</span><span class="p">,</span>
+    <span class="n">log_likelihood</span><span class="o">=</span><span class="s2">&quot;log_lik&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">idata_armax</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">from_cmdstanpy</span><span class="p">(</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">fit_armax</span><span class="p">,</span>
+    <span class="n">posterior_predictive</span><span class="o">=</span><span class="s2">&quot;y_hat&quot;</span><span class="p">,</span>
+    <span class="n">log_likelihood</span><span class="o">=</span><span class="s2">&quot;log_lik&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">df_comp_loo</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">compare</span><span class="p">({</span><span class="s2">&quot;linreg&quot;</span><span class="p">:</span> <span class="n">idata_linreg</span><span class="p">,</span> <span class="s2">&quot;arx1&quot;</span><span class="p">:</span> <span class="n">idata_arx1</span><span class="p">,</span> <span class="s2">&quot;arx2&quot;</span><span class="p">:</span> <span class="n">idata_arx2</span><span class="p">,</span> <span class="s2">&quot;arx3&quot;</span><span class="p">:</span> <span class="n">idata_arx3</span><span class="p">,</span> <span class="s2">&quot;arxmax&quot;</span><span class="p">:</span> <span class="n">idata_armax</span><span class="p">},</span> <span class="n">ic</span><span class="o">=</span><span class="s2">&quot;loo&quot;</span><span class="p">)</span>
+<span class="n">df_comp_loo</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/simon/anaconda3/envs/poem/lib/python3.13/site-packages/arviz/stats/stats.py:797: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(
+/home/simon/anaconda3/envs/poem/lib/python3.13/site-packages/arviz/stats/stats.py:797: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(
+/home/simon/anaconda3/envs/poem/lib/python3.13/site-packages/arviz/stats/stats.py:797: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(
+/home/simon/anaconda3/envs/poem/lib/python3.13/site-packages/arviz/stats/stats.py:797: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rank</th>
+      <th>elpd_loo</th>
+      <th>p_loo</th>
+      <th>elpd_diff</th>
+      <th>weight</th>
+      <th>se</th>
+      <th>dse</th>
+      <th>warning</th>
+      <th>scale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>arx2</th>
+      <td>0</td>
+      <td>-103.534114</td>
+      <td>4.980695</td>
+      <td>0.000000</td>
+      <td>5.827595e-01</td>
+      <td>7.252202</td>
+      <td>0.000000</td>
+      <td>True</td>
+      <td>log</td>
+    </tr>
+    <tr>
+      <th>arx3</th>
+      <td>1</td>
+      <td>-104.446855</td>
+      <td>6.252116</td>
+      <td>0.912740</td>
+      <td>1.817915e-01</td>
+      <td>7.687551</td>
+      <td>1.615268</td>
+      <td>True</td>
+      <td>log</td>
+    </tr>
+    <tr>
+      <th>arx1</th>
+      <td>2</td>
+      <td>-107.110802</td>
+      <td>4.250339</td>
+      <td>3.576687</td>
+      <td>2.354490e-01</td>
+      <td>5.613847</td>
+      <td>4.558081</td>
+      <td>True</td>
+      <td>log</td>
+    </tr>
+    <tr>
+      <th>arxmax</th>
+      <td>3</td>
+      <td>-108.153245</td>
+      <td>5.237927</td>
+      <td>4.619130</td>
+      <td>0.000000e+00</td>
+      <td>5.810074</td>
+      <td>4.729025</td>
+      <td>True</td>
+      <td>log</td>
+    </tr>
+    <tr>
+      <th>linreg</th>
+      <td>4</td>
+      <td>-151.157840</td>
+      <td>1.949509</td>
+      <td>47.623726</td>
+      <td>1.818323e-12</td>
+      <td>1.936835</td>
+      <td>7.346632</td>
+      <td>False</td>
+      <td>log</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>It looks like the best model according to the LOO criterion is the second ARX model we defined, using <span class="math notranslate nohighlight">\(p=2\)</span> and <span class="math notranslate nohighlight">\(r=1\)</span>. The other ARX and ARMAX models come close, but all are a significany improvement from the linear regression in terms of elpd.</p>
+</section>
+<section id="posterior-analysis">
+<h2>Posterior analysis<a class="headerlink" href="#posterior-analysis" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fs</span> <span class="o">=</span> <span class="n">fit_arx2</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">95</span><span class="p">))</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="s1">&#39;phi[1]&#39;</span><span class="p">,</span> <span class="s1">&#39;phi[2]&#39;</span><span class="p">,</span> <span class="s1">&#39;beta[1,1]&#39;</span><span class="p">,</span> <span class="s1">&#39;beta[1,2]&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Mean</th>
+      <th>MCSE</th>
+      <th>StdDev</th>
+      <th>MAD</th>
+      <th>5%</th>
+      <th>50%</th>
+      <th>95%</th>
+      <th>ESS_bulk</th>
+      <th>ESS_tail</th>
+      <th>R_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>alpha</th>
+      <td>-37.01880</td>
+      <td>1.279530</td>
+      <td>50.806800</td>
+      <td>47.161300</td>
+      <td>-119.308000</td>
+      <td>-37.056200</td>
+      <td>45.158600</td>
+      <td>1588.03</td>
+      <td>1651.50</td>
+      <td>1.00360</td>
+    </tr>
+    <tr>
+      <th>phi[1]</th>
+      <td>1.06844</td>
+      <td>0.008127</td>
+      <td>0.270147</td>
+      <td>0.260783</td>
+      <td>0.635120</td>
+      <td>1.075230</td>
+      <td>1.502060</td>
+      <td>1142.15</td>
+      <td>1352.32</td>
+      <td>1.00240</td>
+    </tr>
+    <tr>
+      <th>phi[2]</th>
+      <td>-0.22264</td>
+      <td>0.007381</td>
+      <td>0.232516</td>
+      <td>0.221834</td>
+      <td>-0.605214</td>
+      <td>-0.222533</td>
+      <td>0.153142</td>
+      <td>1011.44</td>
+      <td>1294.14</td>
+      <td>1.00307</td>
+    </tr>
+    <tr>
+      <th>beta[1,1]</th>
+      <td>5.10442</td>
+      <td>0.106529</td>
+      <td>4.046760</td>
+      <td>3.971950</td>
+      <td>-1.518390</td>
+      <td>5.073980</td>
+      <td>11.806100</td>
+      <td>1481.94</td>
+      <td>1694.58</td>
+      <td>1.00039</td>
+    </tr>
+    <tr>
+      <th>beta[1,2]</th>
+      <td>7.94855</td>
+      <td>0.190385</td>
+      <td>6.648700</td>
+      <td>6.475770</td>
+      <td>-2.877170</td>
+      <td>7.971520</td>
+      <td>18.815100</td>
+      <td>1254.40</td>
+      <td>1252.51</td>
+      <td>1.00195</td>
+    </tr>
+    <tr>
+      <th>sigma</th>
+      <td>30.19700</td>
+      <td>0.164610</td>
+      <td>6.113270</td>
+      <td>5.526760</td>
+      <td>21.857400</td>
+      <td>29.292100</td>
+      <td>41.193200</td>
+      <td>1471.95</td>
+      <td>1610.48</td>
+      <td>1.00265</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_hat</span> <span class="o">=</span> <span class="n">idata_arx2</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s2">&quot;y_hat&quot;</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]),</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">)),</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;posterior mean&quot;</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_hdi</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]),</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;consumption&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fdfbfb65bd0&gt;
+</pre></div>
+</div>
+<img alt="_images/e7e7b33f66ec76461b5ffa8d1f4391884ae5f67555b38e26ff5a36538dedaa6b.png" src="_images/e7e7b33f66ec76461b5ffa8d1f4391884ae5f67555b38e26ff5a36538dedaa6b.png" />
+</div>
+</div>
+<p>We can see the posterior high density intervals increase drastically after the end of the training period.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -568,6 +1156,23 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression">Linear regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-analysis">Posterior analysis</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
