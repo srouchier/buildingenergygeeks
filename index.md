@@ -8,7 +8,13 @@
 
 This website promotes the use of Bayesian inference and prediction for building energy use. It includes some background on the Bayesian data analysis workflow, and tutorials with common building energy models.
 
-**September 2025**: This website is being migrated from bookdown (R) to jupyter-book (Python). I just finished re-writing the Background part (sept. 16th) and am starting update on the tutorials. Stay tuned!
+**Latest update: November 25th 2025**: this website is being migrated from bookdown (R) to jupyter-book (Python). Here is the current checklist of remaining chapters:
+
+* [x] Background
+* [x] Simple regression
+* [x] Time series
+* [ ] State-space models
+* [ ] Gaussian process
 
 ## Motivation
 
@@ -42,11 +48,13 @@ The book **does not** cover:
 * Machine learning. Even when the target of a particular problem is prediction rather than inference of physical properties, our statistical models will always have some degree of physical interpretability.
 * Classification. Most of the methods shown are variations of regression problems, as our models will almost always have quantitative responses. There are however strong links with classification problems, especially when it comes to identifying occupant presence and behaviour.
 
-## Programming languages
+## Software
 
 This book is written and maintained with [jupyter-book](https://jupyterbook.org/en/stable/intro.html).
 
-This section will be updated later into a list of packages used in the tutorials.
+Tutorials use either [PyMC](https://www.pymc.io/welcome.html) or [Stan](https://mc-stan.org/) as a probabilistic programming library. Both have pros and cons.
+
+From the perspective of a non-statistician, PyMC is probably easier to get started with, but Stan feels more flexible and has a much better documentation. I present examples with both and leave the reader to find their preference.
 
 ## About
 

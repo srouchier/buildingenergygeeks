@@ -14,7 +14,7 @@ copyright: "2025"
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: auto
+  execute_notebooks: 'off'
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -42,8 +42,8 @@ html:
   use_issues_button: true
   use_repository_button: true
 
-parse:
-myst_enable_extensions:
+#parse:
+#  myst_enable_extensions:
   # don't forget to list any other extensions you want enabled,
   # including those that are enabled by default!
-  - amsmath
+#    - amsmath

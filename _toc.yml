@@ -8,7 +8,16 @@ parts:
     - file: workflow.md
   - caption: Simple regression
     chapters:
-    - file: b01_linearregression.ipynb
+    - file: linearregression.ipynb
+    - file: linearregression_stan.ipynb
+    - file: changepoint.ipynb
+  - caption: Time series
+    chapters:
+    - file: timeseries_intro.md
+    - file: armax.ipynb
+    - file: autocorrelated.ipynb
+    - file: hmm.ipynb
   - caption: References
     chapters:
+    - file: data.md
     - file: references.md

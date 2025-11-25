@@ -59,6 +59,7 @@ This is also called the prior predictive distribution. Computing this distributi
 
 At this point of the workflow, no observed data was used in the model definition. In fact, probabilistic modelling could stop here: a model structure has been assumed, parameter probabilities have been chosen, and the prior predictive distribution can be computed for any prediction horizon. This is equivalent to predicting with an untrained model, while propagating the parameter uncertainty expressed by their prior $p(\theta)$.
 
+(workflow_step2)=
 ### Step 2: learning
 
 The target of Bayesian inference is to make probability statements about $\theta$ given $y$. Once the full probability model has been specified (Eq. {eq}`model01`), conditioning on the known value of the data $y$ using Bayes' rule yields the posterior density:
@@ -109,7 +110,7 @@ with $\rho_l$ the lag-$l$ autocorrelation of a function $f$ over the history of 
 
 The diagnostic tools introduced in this section provide a principled workflow for reliable Bayesian inferences. They are readily available in most Bayesian computation libraries. Based on the recent improvements to the $\hat{R}$ statistic {cite:p}`vehtari2021rank`, it is recommended to use the samples only if $\hat{R} < 1.01$ and $\text{ESS} > 400$.
 
-
+(workflow_step3)=
 ### Step 3: model checking and evaluation
 
 The third step of Bayesian data analysis as formulated by {cite:p}`gelman2013bayesian` is to evaluate the fit of the model and the implications of the resulting posterior distribution. This is done by drawing simulated values from the trained model and comparing them to the observed data.
@@ -130,7 +131,7 @@ The posterior predictive distribution is the distribution of the observable $\ti
 p\left(\tilde{y}|y\right) = \int p\left(\tilde{y}|\theta\right) p\left(\theta | y\right) \mathrm{d}\theta
 ```
 
-This definition is very similar to the prior predictive distribution given in Eq. \ref{eq:priorpredictive}, except that the prior $p(\theta)$ has been replaced by the posterior $p(\theta|y)$. Similarly, it is simple to compute if the posterior has been approximated by an MCMC procedure: a finite number of parameter vectors $\theta^{(s)}$ is drawn from the posterior distribution, and each of them is used to compute a model output $\tilde{y}^{(s)}$:
+This definition is very similar to the prior predictive distribution, except that the prior $p(\theta)$ has been replaced by the posterior $p(\theta|y)$. Similarly, it is simple to compute if the posterior has been approximated by an MCMC procedure: a finite number of parameter vectors $\theta^{(s)}$ is drawn from the posterior distribution, and each of them is used to compute a model output $\tilde{y}^{(s)}$:
 
 ```{math}
 :label: ysample1
@@ -160,7 +161,7 @@ Much like in a traditional model fitting and validation workflow, proper model c
 
 Residual analysis is the process of checking the validity of modelling hypotheses. For instance, if the specification of the observational model states that errors are independent, identically distributed with zero mean and constant variance $\sigma^2$, then this hypothesis should be checked. One way to do it are the autocorrelation function (ACF) of one-step-ahead prediction residuals, or their cross-correlation function (CCF) with explanatory variables. Residual analysis is often confined to time series models, but is applicable as long as data are time indexed, even if the model does not formulate a dependency between consecutive observations.
 
-The ACF of prediction residuals should have near-zero values for all lags above 1, to indicate the mutual independence of errors. If, for instance, the ACF has a significant non-zero value at lag 24 for a hourly prediction model, there is a chance that a daily occurring phenomenon has not been properly encoded in the model. A visual inspection of the ACF graph is a good diagnosis tool. On a more quantitative note, the Durbin-Watson statistic is used to detect autocorrelation in the residuals at lag 1, and the Ljung–Box test assesses autocorrelation up to a specified number of lags. The latter will be used below in the discussion of results.
+The ACF of prediction residuals should have near-zero values for all lags above 1, to indicate the mutual independence of errors. If, for instance, the ACF has a significant non-zero value at lag 24 for a hourly prediction model, there is a chance that a daily occurring phenomenon has not been properly encoded in the model. A visual inspection of the ACF graph is a good diagnosis tool. On a more quantitative note, the Durbin-Watson statistic is used to detect autocorrelation in the residuals at lag 1, and the Ljung–Box test assesses autocorrelation up to a specified number of lags.
 
 #### Scoring rules
 
