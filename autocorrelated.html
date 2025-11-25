@@ -57,6 +57,8 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'autocorrelated';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -374,7 +376,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -390,6 +394,24 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-average-models">Moving average models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling-and-training">Modelling and training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specification">Model specification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fitting">Model fitting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-predictions">Posterior predictions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residuals">Residuals</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -401,7 +423,680 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="autocorrelated-energy-signature">
 <h1>Autocorrelated energy signature<a class="headerlink" href="#autocorrelated-energy-signature" title="Link to this heading">#</a></h1>
-<p>bayesmv/14-optCautocorr</p>
+<p>In <a class="reference internal" href="changepoint.html#energysignature"><span class="std std-ref">an earlier tutorial</span></a>, we fitted a change-point model, function of outdoor air temperature, on the daily energy use data of a commercial building. It gave us an estimate of energy savings following an energy conservation measure, with uncertainty. However we saw that the autocorrelation of the model’s prediction residuals was too high to trust this inference.</p>
+<p>If a fitted model has autocorrelated residuals, then we have two options :</p>
+<ul class="simple">
+<li><p>If possible, improve the model itself with a better description of the building and its occupancy;</p></li>
+<li><p>If is it not possible to improve the model any further, because the data are insufficient to learn additional parameters, and autocorrelation remains, then we can somehow “include it” in the model.</p></li>
+</ul>
+<p>The second option means that we will not “fix” the model, but let it aknowledge that it is missing something. Making reliable predictions will come at the cost of increased uncertainty.</p>
+<section id="moving-average-models">
+<h2>Moving average models<a class="headerlink" href="#moving-average-models" title="Link to this heading">#</a></h2>
+<p>The original change-point model looked like:</p>
+<div class="math notranslate nohighlight" id="equation-acp1">
+<span class="eqno">(40)<a class="headerlink" href="#equation-acp1" title="Link to this equation">#</a></span>\[y_t = f(x_t) + \varepsilon_t \]</div>
+<p>where <span class="math notranslate nohighlight">\(y_t\)</span> are observed dependent data (energy use) and <span class="math notranslate nohighlight">\(f\)</span> can be any function of some explanatory variables <span class="math notranslate nohighlight">\(x_t\)</span> (outdoor temperature, occupancy, solar irradiance, etc.): linear, change-point, or other.</p>
+<p>However, if we found after model fitting that residuals were correlated, then <a class="reference internal" href="#equation-acp1">(40)</a> no longer holds. Instead, the previous tutorial found a significant correlation between the consecutive errors <span class="math notranslate nohighlight">\(y_t - f(x_t)\)</span> of the model:</p>
+<div class="math notranslate nohighlight" id="equation-acp2">
+<span class="eqno">(41)<a class="headerlink" href="#equation-acp2" title="Link to this equation">#</a></span>\[y_t - f(x_t) = \theta_1 \varepsilon_{t-1} + \mathrm{normal}(0,\sigma^2) \]</div>
+<p>where <span class="math notranslate nohighlight">\(\theta_1\)</span> is the lag-1 autocorrelation and the slope of the trend we saw on the last figure of <a class="reference internal" href="changepoint.html#energysignature"><span class="std std-ref">the change-point tutorial</span></a>.</p>
+<p>The observational model is therefore:</p>
+<div class="math notranslate nohighlight" id="equation-acp3">
+<span class="eqno">(42)<a class="headerlink" href="#equation-acp3" title="Link to this equation">#</a></span>\[y_t = f(x_t) + \theta_1 \varepsilon_{t-1} + \varepsilon_t\]</div>
+<p>The last term of this equation are the errors of this new model, which we hope is are now independent no longer autocorrelated: <span class="math notranslate nohighlight">\(\varepsilon_t\sim N(0,\sigma^2)\)</span>.</p>
+<p>In a more general form of this equation, we can even assume that residuals are correlated with their own previous values up to a higher lag <span class="math notranslate nohighlight">\(Q\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-acp4">
+<span class="eqno">(43)<a class="headerlink" href="#equation-acp4" title="Link to this equation">#</a></span>\[y_t = f(x_t) + \theta_1 \varepsilon_{t-1} + \dots + \theta_Q \varepsilon_{t-Q} + \varepsilon_t\]</div>
+<p>This is the formulation of a Moving Average (MA) model of order <span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(\mathrm{MA}(Q)\)</span>. It uses previous errors as predictors for future outcomes. Compared to the original model <span class="math notranslate nohighlight">\(f(x_t)\)</span>, this model has additional parameters <span class="math notranslate nohighlight">\(\left(\theta_1,...,\theta_Q\right)\)</span>. The Stan documentation has <a class="reference external" href="https://mc-stan.org/docs/stan-users-guide/moving-average-models.html">a page on MA models</a>, which we used as starting point for this tutorial.</p>
+</section>
+<section id="data">
+<h2>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
+<p>This first block is just the same code as the beginning of <a class="reference internal" href="changepoint.html#energysignature"><span class="std std-ref">the change-point tutorial</span></a>, rewritten here as is.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">arviz</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">az</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cmdstanpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">CmdStanModel</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load_and_resample_data</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]),</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">32</span><span class="p">)</span><span class="o">/</span><span class="mf">1.8</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;dayofweek&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">dayofweek</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;weekend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;dayofweek&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;dayofweek&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">load_and_resample_data</span><span class="p">(</span><span class="s1">&#39;data/building6pre.csv&#39;</span><span class="p">)</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">load_and_resample_data</span><span class="p">(</span><span class="s1">&#39;data/building6during.csv&#39;</span><span class="p">)</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">load_and_resample_data</span><span class="p">(</span><span class="s1">&#39;data/building6post.csv&#39;</span><span class="p">)</span>
+
+<span class="n">df_train</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df1</span><span class="p">[</span><span class="s1">&#39;weekend&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">]</span>
+<span class="n">df_test</span> <span class="o">=</span> <span class="n">df3</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df3</span><span class="p">[</span><span class="s1">&#39;weekend&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training data&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Forecast data&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fa1eccdc250&gt;
+</pre></div>
+</div>
+<img alt="_images/5a0bad4b47219f17068feacc10cea0a5611e680309e49bff0862cb895dc71b84.png" src="_images/5a0bad4b47219f17068feacc10cea0a5611e680309e49bff0862cb895dc71b84.png" />
+</div>
+</div>
+</section>
+<section id="modelling-and-training">
+<h2>Modelling and training<a class="headerlink" href="#modelling-and-training" title="Link to this heading">#</a></h2>
+<section id="model-specification">
+<h3>Model specification<a class="headerlink" href="#model-specification" title="Link to this heading">#</a></h3>
+<p>We will use the same change-point model, only modified to include a regression term for the previous error <span class="math notranslate nohighlight">\(\varepsilon_{n-1}\)</span>. This makes it a first order moving average model, <span class="math notranslate nohighlight">\(\mathrm{MA}(1)\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-acp5">
+<span class="eqno">(44)<a class="headerlink" href="#equation-acp5" title="Link to this equation">#</a></span>\[y_n = \alpha + \beta_{h}(\tau_{h}-x_n)^+ + \beta_{c}(x_n-\tau_{c})^+ + \theta_1 \varepsilon_{n-1} + \varepsilon_n\]</div>
+<div class="math notranslate nohighlight" id="equation-acp6">
+<span class="eqno">(45)<a class="headerlink" href="#equation-acp6" title="Link to this equation">#</a></span>\[\varepsilon_n \sim \mathrm{normal}\left(0, \sigma\right) \]</div>
+<p>The Stan code for this model is in a separate file <code class="docutils literal notranslate"><span class="pre">changepoint_101_ma1.stan</span></code>, and is more complicated than the original.</p>
+<p>Firstly, there is a new block called <code class="docutils literal notranslate"><span class="pre">transformed</span> <span class="pre">parameters</span></code>, between <code class="docutils literal notranslate"><span class="pre">parameters</span></code> and <code class="docutils literal notranslate"><span class="pre">model</span></code>, which calculates the main terms of <a class="reference internal" href="#equation-acp5">(44)</a> so that the model itself is written concisely.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">f_post</span></code> are the values of the change-point function itself, respectively during the pre and post periods.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epsilon</span></code> are the residuals according to <a class="reference internal" href="#equation-acp6">(45)</a>, calculated one after another.</p></li>
+</ul>
+<div class="highlight-stan notranslate"><div class="highlight"><pre><span></span><span class="kn">transformed parameters</span> <span class="p">{</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="n">f</span><span class="p">;</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> <span class="n">epsilon</span><span class="p">;</span>
+  <span class="kt">vector</span><span class="p">[</span><span class="n">N_post</span><span class="p">]</span> <span class="n">f_post</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">beta1</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">tau1</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="mf">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta2</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">tau2</span><span class="p">,</span> <span class="mf">0</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">epsilon</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">f</span><span class="p">[</span><span class="mf">1</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="k">in</span> <span class="mf">2</span><span class="o">:</span><span class="n">N</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">epsilon</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">theta</span><span class="o">*</span><span class="n">epsilon</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mf">1</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="k">in</span> <span class="mf">1</span><span class="o">:</span><span class="n">N_post</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">f_post</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">beta1</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">tau1</span><span class="o">-</span><span class="n">x_post</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="mf">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta2</span> <span class="o">*</span> <span class="nb">fmax</span><span class="p">(</span><span class="n">x_post</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">tau2</span><span class="p">,</span> <span class="mf">0</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then, the <code class="docutils literal notranslate"><span class="pre">model</span></code> reproduces <a class="reference internal" href="#equation-acp5">(44)</a>. Its formulation is quite tidy, since we defined each term in the previous block.</p>
+<div class="highlight-stan notranslate"><div class="highlight"><pre><span></span><span class="kn">model</span> <span class="p">{</span>
+  <span class="c1">// Priors not displayed</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="k">in</span> <span class="mf">2</span><span class="o">:</span><span class="n">N</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">~</span><span class="w"> </span><span class="nb">normal</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta</span><span class="o">*</span><span class="n">epsilon</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mf">1</span><span class="p">],</span> <span class="n">sigma</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The block starts with the definition of some priors, which me omitted here although they belong in the model. Priors are important in a Bayesian workflow, and they are often the first way to regularise a model if convergence is difficult.</p>
+<p>Finally, the <code class="docutils literal notranslate"><span class="pre">generated</span> <span class="pre">quantities</span></code> block is used again to generate predictions of energy use and savings with each iteration.</p>
+<div class="highlight-stan notranslate"><div class="highlight"><pre><span></span><span class="kn">generated quantities</span> <span class="p">{</span>
+  <span class="n">y_hat</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">normal_rng</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="n">sigma</span><span class="p">);</span>
+  <span class="n">log_lik</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">normal_lpdf</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="p">|</span> <span class="n">f</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="n">sigma</span><span class="p">)</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="k">in</span> <span class="mf">2</span><span class="o">:</span><span class="n">N</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">y_hat</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">normal_rng</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta</span><span class="o">*</span><span class="n">epsilon</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mf">1</span><span class="p">],</span> <span class="n">sigma</span><span class="p">);</span>
+    <span class="n">log_lik</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">normal_lpdf</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="p">|</span> <span class="n">f</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">theta</span><span class="o">*</span><span class="n">epsilon</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mf">1</span><span class="p">],</span> <span class="n">sigma</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Forecasts with increased uncertainty due to the autocorrelation</span>
+  <span class="n">y_hat_post</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">normal_rng</span><span class="p">(</span><span class="n">f_post</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="n">sigma</span><span class="p">);</span>
+  <span class="n">savings</span> <span class="o">+=</span> <span class="n">y_hat_post</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_post</span><span class="p">[</span><span class="mf">1</span><span class="p">];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="k">in</span> <span class="mf">2</span><span class="o">:</span><span class="n">N_post</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">y_hat_post</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">normal_rng</span><span class="p">(</span><span class="n">f_post</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">sigma</span> <span class="o">*</span> <span class="nb">sqrt</span><span class="p">(</span><span class="mf">1</span><span class="o">+</span><span class="n">theta</span><span class="o">^</span><span class="mf">2</span><span class="p">));</span>
+    <span class="n">savings</span> <span class="o">+=</span> <span class="n">y_hat_post</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_post</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The predictions of energy use during the baseline (pre) period <span class="math notranslate nohighlight">\(\tilde{y}\)</span> account for previous residuals. However, a keen eye may have noticed a difference in the predictions of the post period <span class="math notranslate nohighlight">\(\tilde{y}_\mathit{post}\)</span>. Indeed, we do not know the value of residuals <em>after</em> the fitting period, since they are the difference between model predictions and the consumption of a hypothetical building <em>if it were identical to the pre-ECM building but in the post-ECM conditions</em>.</p>
+<p>Therefore, <a class="reference external" href="https://otexts.com/fpp2/arima-forecasting.html">the muti-step prediction intervals of ARIMA models</a> (which MA models are a subclass of) must account for an increased uncertainty <span class="math notranslate nohighlight">\(\hat{\sigma}_h\)</span> formulated after the MA regression coefficients <span class="math notranslate nohighlight">\(\theta_i\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-acp7">
+<span class="eqno">(46)<a class="headerlink" href="#equation-acp7" title="Link to this equation">#</a></span>\[\tilde{y}_\mathit{post} \sim \mathrm{normal}\left(f(x_\mathit{post}), \sigma_h^2 \right)\]</div>
+<div class="math notranslate nohighlight" id="equation-acp8">
+<span class="eqno">(47)<a class="headerlink" href="#equation-acp8" title="Link to this equation">#</a></span>\[\hat{\sigma}_h = \hat{\sigma}^2 \left[1+\sum_{i=1}^{h-1}\hat{\theta}_i^2\right] \]</div>
+<p>We only have one <span class="math notranslate nohighlight">\(\theta_1\)</span> coefficient in this <span class="math notranslate nohighlight">\(\mathrm{MA}(1)\)</span> model, but <a class="reference internal" href="#equation-acp7">(46)</a> applies to a <span class="math notranslate nohighlight">\(\mathrm{MA}(Q)\)</span> model where we may want to include regression coefficients with several past errors.</p>
+</section>
+<section id="model-fitting">
+<h3>Model fitting<a class="headerlink" href="#model-fitting" title="Link to this heading">#</a></h3>
+<p>The model is called by CmdStanPy</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">CmdStanModel</span><span class="p">(</span><span class="n">stan_file</span><span class="o">=</span><span class="s1">&#39;models/changepoint_101_ma1.stan&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The model is called “changepoint_101_ma1” because it may have a slope on the low temperatures side (1), then a section of temperature-independent energy use (0), then a slope on the high temperatures side (1); then a MA(1) component is added to this change-point formulation.</p>
+<p>The next step is the same as usual: defining a list which maps data to the Stan model, and calling the <code class="docutils literal notranslate"><span class="pre">sample()</span></code> command to fit the model.</p>
+<div class="cell tag_scroll-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_train</span><span class="p">),</span>
+    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;N_post&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_test</span><span class="p">),</span>
+    <span class="s2">&quot;x_post&quot;</span><span class="p">:</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;y_post&quot;</span><span class="p">:</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;alpha_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="c1"># baseline consumption at intermediate temperatures</span>
+    <span class="s2">&quot;beta1_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="c1"># low temperature slope</span>
+    <span class="s2">&quot;beta2_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="c1"># high temperature slope</span>
+    <span class="s2">&quot;tau1_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="c1"># low temperature break point</span>
+    <span class="s2">&quot;tau2_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="c1"># high temperature break point</span>
+    <span class="s2">&quot;theta_prior&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">fit</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">model_data</span><span class="p">,</span> <span class="n">iter_warmup</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">iter_sampling</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_console</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>08:05:24 - cmdstanpy - INFO - CmdStan start processing
+08:05:24 - cmdstanpy - INFO - Chain [1] start processing
+08:05:24 - cmdstanpy - INFO - Chain [2] start processing
+08:05:24 - cmdstanpy - INFO - Chain [3] start processing
+08:05:24 - cmdstanpy - INFO - Chain [4] start processing
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>08:06:46 - cmdstanpy - INFO - Chain [1] done processing
+08:07:07 - cmdstanpy - INFO - Chain [3] done processing
+08:07:11 - cmdstanpy - INFO - Chain [4] done processing
+08:07:32 - cmdstanpy - INFO - Chain [2] done processing
+08:07:32 - cmdstanpy - WARNING - Non-fatal error during sampling:
+Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+	Exception: normal_lpdf: Location parameter is -inf, but must be finite! (in &#39;changepoint_101_ma1.stan&#39;, line 54, column 4 to column 52)
+Consider re-running with show_console=True if the above output is unclear!
+</pre></div>
+</div>
+</div>
+</div>
+<p>We notice that convergence may be more difficult due to the added <span class="math notranslate nohighlight">\(\theta\)</span> parameter: the model knows that something “more uncertain” is happening and some local optima may disturb the traces.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fs</span> <span class="o">=</span> <span class="n">fit</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">95</span><span class="p">))</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="s1">&#39;beta1&#39;</span><span class="p">,</span> <span class="s1">&#39;beta2&#39;</span><span class="p">,</span> <span class="s1">&#39;tau1&#39;</span><span class="p">,</span> <span class="s1">&#39;tau2&#39;</span><span class="p">,</span> <span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;lp__&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Mean</th>
+      <th>MCSE</th>
+      <th>StdDev</th>
+      <th>5%</th>
+      <th>50%</th>
+      <th>95%</th>
+      <th>N_Eff</th>
+      <th>N_Eff/s</th>
+      <th>R_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>alpha</th>
+      <td>34.765000</td>
+      <td>0.005269</td>
+      <td>0.574424</td>
+      <td>33.799200</td>
+      <td>34.781000</td>
+      <td>35.704400</td>
+      <td>11883.40</td>
+      <td>51.3388</td>
+      <td>0.999927</td>
+    </tr>
+    <tr>
+      <th>beta1</th>
+      <td>1.402640</td>
+      <td>0.001427</td>
+      <td>0.134991</td>
+      <td>1.183310</td>
+      <td>1.401270</td>
+      <td>1.625720</td>
+      <td>8944.90</td>
+      <td>38.6437</td>
+      <td>0.999919</td>
+    </tr>
+    <tr>
+      <th>beta2</th>
+      <td>1.116530</td>
+      <td>0.001686</td>
+      <td>0.143756</td>
+      <td>0.903974</td>
+      <td>1.101730</td>
+      <td>1.374110</td>
+      <td>7269.31</td>
+      <td>31.4048</td>
+      <td>1.000250</td>
+    </tr>
+    <tr>
+      <th>tau1</th>
+      <td>6.250180</td>
+      <td>0.009425</td>
+      <td>0.849409</td>
+      <td>5.057040</td>
+      <td>6.128490</td>
+      <td>7.733550</td>
+      <td>8121.70</td>
+      <td>35.0873</td>
+      <td>1.000060</td>
+    </tr>
+    <tr>
+      <th>tau2</th>
+      <td>15.292700</td>
+      <td>0.013805</td>
+      <td>1.187910</td>
+      <td>13.503700</td>
+      <td>15.161300</td>
+      <td>17.333000</td>
+      <td>7404.52</td>
+      <td>31.9890</td>
+      <td>1.000140</td>
+    </tr>
+    <tr>
+      <th>theta</th>
+      <td>0.589476</td>
+      <td>0.000366</td>
+      <td>0.038167</td>
+      <td>0.525283</td>
+      <td>0.590165</td>
+      <td>0.650739</td>
+      <td>10883.30</td>
+      <td>47.0181</td>
+      <td>0.999916</td>
+    </tr>
+    <tr>
+      <th>sigma</th>
+      <td>3.250800</td>
+      <td>0.001374</td>
+      <td>0.147119</td>
+      <td>3.021500</td>
+      <td>3.243450</td>
+      <td>3.503290</td>
+      <td>11464.50</td>
+      <td>49.5289</td>
+      <td>0.999976</td>
+    </tr>
+    <tr>
+      <th>lp__</th>
+      <td>-434.306000</td>
+      <td>0.023227</td>
+      <td>1.836660</td>
+      <td>-437.819000</td>
+      <td>-433.975000</td>
+      <td>-431.949000</td>
+      <td>6252.67</td>
+      <td>27.0128</td>
+      <td>1.000140</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Remember that we need to validate our <a class="reference internal" href="workflow.html#workflow-step2"><span class="std std-ref">inference diagnostics</span></a> criteria! All traces must match, <code class="docutils literal notranslate"><span class="pre">n_eff</span></code> should be in the thousands and <code class="docutils literal notranslate"><span class="pre">Rhat</span></code> exactly 1 for all parameters.</p>
+<p>Since all convergence diagnostics are fine, we can save results into an ArviZ InferenceData object which will facilitate further analysis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idata</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">from_cmdstanpy</span><span class="p">(</span>
+    <span class="n">posterior</span> <span class="o">=</span> <span class="n">fit</span><span class="p">,</span>
+    <span class="n">posterior_predictive</span><span class="o">=</span><span class="s2">&quot;y_hat&quot;</span><span class="p">,</span>
+    <span class="n">observed_data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">},</span>
+    <span class="n">constant_data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">df1</span><span class="p">[[</span><span class="s1">&#39;OAT&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">},</span>
+    <span class="n">log_likelihood</span><span class="o">=</span><span class="s2">&quot;log_lik&quot;</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;y_hat&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;observations&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;log_lik&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;observations&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;observations&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;y_hat_post&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;forecast&quot;</span><span class="p">]</span>
+        <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="posterior-predictions">
+<h2>Posterior predictions<a class="headerlink" href="#posterior-predictions" title="Link to this heading">#</a></h2>
+<p>In the <code class="docutils literal notranslate"><span class="pre">generated</span> <span class="pre">quantities</span></code> block of the Stan code, we defined two posterior predictive quantities:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">y_hat</span></code> are predictions by the trained model within the baseline period. All samples of <code class="docutils literal notranslate"><span class="pre">y_hat</span></code> form the posterior predictive distribution within the training set: <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{base}|x_\mathit{base}, y_\mathit{base}\right)\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y_hat_post</span></code> are predictions over the “post” dataset. All samples form the posterior predictive distribution of the reporting period: <span class="math notranslate nohighlight">\(p\left(\hat{y}_\mathit{repo}|x_\mathit{repo}, x_\mathit{base}, y_\mathit{base}\right)\)</span></p></li>
+</ul>
+<p>The following block displays both, compared to their respective dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_hat</span> <span class="o">=</span> <span class="n">idata</span><span class="o">.</span><span class="n">posterior_predictive</span><span class="p">[</span><span class="s2">&quot;y_hat&quot;</span><span class="p">]</span>
+<span class="n">y_hat_post</span> <span class="o">=</span> <span class="n">idata</span><span class="o">.</span><span class="n">posterior</span><span class="p">[</span><span class="s2">&quot;y_hat_post&quot;</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">)),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;posterior mean&quot;</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_hdi</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Outdoor air temperature&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">y_hat_post</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">)),</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">)</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_hdi</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;OAT&#39;</span><span class="p">],</span> <span class="n">y_hat_post</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Outdoor air temperature&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Building 6 kW&#39;)
+</pre></div>
+</div>
+<img alt="_images/0139268887b913c51c6ce4d1264c53c2825c8a0bd287def5b25d47ed64db6f32.png" src="_images/0139268887b913c51c6ce4d1264c53c2825c8a0bd287def5b25d47ed64db6f32.png" />
+</div>
+</div>
+<p>The left plot confirms a good fit between the training data and the predictions from the trained model. Most data points lie within the prediction intervals.</p>
+<p>The right plot shows that the actual consumption during the reporting period is lower than predictions, which suggests that energy savings were made. The sum of the differences between predictions and consumption during this period are the total savings. They were formulated within the <code class="docutils literal notranslate"><span class="pre">generated</span> <span class="pre">quantities</span></code> of the Stan code, and we can therefore directly display their posterior distribution:</p>
+<p>Let us now display the main result of the M&amp;V workflow: estimated savings:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">idata</span><span class="p">,</span> <span class="n">var_names</span><span class="o">=</span><span class="s1">&#39;savings&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;savings&#39;}&gt;
+</pre></div>
+</div>
+<img alt="_images/0743afc17773c0232699d317711122c030de6ea710a4089026731d7aa8ae7fc4.png" src="_images/0743afc17773c0232699d317711122c030de6ea710a4089026731d7aa8ae7fc4.png" />
+</div>
+</div>
+<p>Compared to the results of the previous tutorial, the mean estimated savings are similar, but the uncertainty is slightly larger.</p>
+<section id="residuals">
+<h3>Residuals<a class="headerlink" href="#residuals" title="Link to this heading">#</a></h3>
+<p>The whole point of this tutorial, compared to the previous one, is to reduce the autocorrelation of the prediction residuals, which would be a sign of a biased models and unreliable inferences. Have we succeded?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">resid</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;Building 6 kW&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_hat</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="s2">&quot;draw&quot;</span><span class="p">))</span>
+<span class="n">az</span><span class="o">.</span><span class="n">plot_autocorr</span><span class="p">(</span><span class="n">resid</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">max_lag</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;x\n0&#39;}&gt;
+</pre></div>
+</div>
+<img alt="_images/282a7350b57573648ca2e1718ff0fabfc83e51c0a4bea514cc163b00620d96af.png" src="_images/282a7350b57573648ca2e1718ff0fabfc83e51c0a4bea514cc163b00620d96af.png" />
+</div>
+</div>
+<p>Every vertical line of this graph shows the correlation coefficient between the values of a series and its own values with a certain lag.</p>
+<p>The lag-1 ACF has been significantly reduced. The cause for the correlation between consecutive residuals has not been solved, but the model now “knows” that something unexplained is causing it: predictions were made more uncertain as a way to aknowledge it. The estimated savings uncertainty can be considered more reliable.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -458,6 +1153,31 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-average-models">Moving average models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelling-and-training">Modelling and training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specification">Model specification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-fitting">Model fitting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-predictions">Posterior predictions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residuals">Residuals</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

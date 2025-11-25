@@ -8,15 +8,11 @@
 
 This website promotes the use of Bayesian inference and prediction for building energy use. It includes some background on the Bayesian data analysis workflow, and tutorials with common building energy models.
 
-**Latest update: October 22th 2025**: this website is being migrated from bookdown (R) to jupyter-book (Python). Here is the current checklist of remaining chapters:
+**Latest update: November 25th 2025**: this website is being migrated from bookdown (R) to jupyter-book (Python). Here is the current checklist of remaining chapters:
 
 * [x] Background
 * [x] Simple regression
-* [ ] Time series: in progress
-    * [x] Introduction to time series
-    * [ ] ARMAX
-    * [ ] Correlated energy signature
-    * [x] Hidden Markov models
+* [x] Time series
 * [ ] State-space models
 * [ ] Gaussian process
 

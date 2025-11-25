@@ -419,7 +419,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="energy-signature">
-<span id="changepoint"></span><h1>Energy signature<a class="headerlink" href="#energy-signature" title="Link to this heading">#</a></h1>
+<span id="energysignature"></span><h1>Energy signature<a class="headerlink" href="#energy-signature" title="Link to this heading">#</a></h1>
 <section id="a-bayesian-workflow-for-m-v">
 <h2>A Bayesian workflow for M&amp;V<a class="headerlink" href="#a-bayesian-workflow-for-m-v" title="Link to this heading">#</a></h2>
 <p>This tutorial applies the principles of Bayesian data analysis to a Measurement and Verification (M&amp;V) problem. In a nutshell, M&amp;V aims at reliably assessing the energy savings that were actually gained from energy conservation measures (ECM). One of the main M&amp;V workflows, formalised by the IPMVP, is the “reporting period basis”, or “avoided consumption” method:</p>
@@ -512,10 +512,10 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7ff6fbb7f290&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fe4d2a93b60&gt;
 </pre></div>
 </div>
-<img alt="_images/5a0bad4b47219f17068feacc10cea0a5611e680309e49bff0862cb895dc71b84.png" src="_images/5a0bad4b47219f17068feacc10cea0a5611e680309e49bff0862cb895dc71b84.png" />
+<img alt="_images/0ae96cba7a4bfcce3aaeb335cc0fd83f42406a7d4b61479780d5c99ed508e03d.png" src="_images/0ae96cba7a4bfcce3aaeb335cc0fd83f42406a7d4b61479780d5c99ed508e03d.png" />
 </div>
 </div>
 </section>
@@ -526,6 +526,14 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">CmdStanModel</span><span class="p">(</span><span class="n">stan_file</span><span class="o">=</span><span class="s1">&#39;models/changepoint_101.stan&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>09:54:02 - cmdstanpy - INFO - compiling stan file /tmp/tmprpop4u76/tmpa9rc_q37.stan to exe file /media/simon/donnees/Boulot/tutos et sites/buildingenergygeeks/models/changepoint_101
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10:00:40 - cmdstanpy - INFO - compiled model executable: /media/simon/donnees/Boulot/tutos et sites/buildingenergygeeks/models/changepoint_101
 </pre></div>
 </div>
 </div>
@@ -632,31 +640,15 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:35:32 - cmdstanpy - INFO - CmdStan start processing
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:35:32 - cmdstanpy - INFO - Chain [1] start processing
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:35:32 - cmdstanpy - INFO - Chain [2] start processing
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:35:32 - cmdstanpy - INFO - Chain [3] start processing
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:35:32 - cmdstanpy - INFO - Chain [4] start processing
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:35:42 - cmdstanpy - INFO - Chain [4] done processing
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:35:43 - cmdstanpy - INFO - Chain [3] done processing
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:35:44 - cmdstanpy - INFO - Chain [2] done processing
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>14:35:44 - cmdstanpy - INFO - Chain [1] done processing
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10:00:40 - cmdstanpy - INFO - CmdStan start processing
+10:00:40 - cmdstanpy - INFO - Chain [1] start processing
+10:00:40 - cmdstanpy - INFO - Chain [2] start processing
+10:00:40 - cmdstanpy - INFO - Chain [3] start processing
+10:00:40 - cmdstanpy - INFO - Chain [4] start processing
+10:00:52 - cmdstanpy - INFO - Chain [1] done processing
+10:00:54 - cmdstanpy - INFO - Chain [4] done processing
+10:00:54 - cmdstanpy - INFO - Chain [3] done processing
+10:00:56 - cmdstanpy - INFO - Chain [2] done processing
 </pre></div>
 </div>
 </div>
@@ -669,9 +661,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing csv files: /tmp/tmp66t7qwgj/changepoint_101nz76z_wq/changepoint_101-20251124143532_1.csv, /tmp/tmp66t7qwgj/changepoint_101nz76z_wq/changepoint_101-20251124143532_2.csv, /tmp/tmp66t7qwgj/changepoint_101nz76z_wq/changepoint_101-20251124143532_3.csv, /tmp/tmp66t7qwgj/changepoint_101nz76z_wq/changepoint_101-20251124143532_4.csv
-
-Checking sampler transitions treedepth.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Checking sampler transitions treedepth.
 Treedepth satisfactory for all transitions.
 
 Checking sampler transitions for divergences.
@@ -680,9 +670,9 @@ No divergent transitions found.
 Checking E-BFMI - sampler transitions HMC potential energy.
 E-BFMI satisfactory.
 
-Effective sample size satisfactory.
+Rank-normalized split effective sample size satisfactory for all parameters.
 
-Split R-hat values satisfactory all parameters.
+Rank-normalized split R-hat values satisfactory for all parameters.
 
 Processing complete, no problems detected.
 </pre></div>
@@ -719,98 +709,106 @@ Processing complete, no problems detected.
       <th>Mean</th>
       <th>MCSE</th>
       <th>StdDev</th>
+      <th>MAD</th>
       <th>5%</th>
       <th>50%</th>
       <th>95%</th>
-      <th>N_Eff</th>
-      <th>N_Eff/s</th>
+      <th>ESS_bulk</th>
+      <th>ESS_tail</th>
       <th>R_hat</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>alpha</th>
-      <td>34.51280</td>
-      <td>0.018775</td>
-      <td>0.557514</td>
-      <td>33.63720</td>
-      <td>34.54600</td>
-      <td>35.31780</td>
-      <td>881.785</td>
-      <td>38.2205</td>
-      <td>1.00651</td>
+      <td>34.53650</td>
+      <td>0.011301</td>
+      <td>0.491664</td>
+      <td>0.476137</td>
+      <td>33.706700</td>
+      <td>34.55990</td>
+      <td>35.29330</td>
+      <td>1992.97</td>
+      <td>1810.27</td>
+      <td>1.000390</td>
     </tr>
     <tr>
       <th>beta1</th>
-      <td>1.38647</td>
-      <td>0.002612</td>
-      <td>0.115486</td>
-      <td>1.20115</td>
-      <td>1.38721</td>
-      <td>1.57730</td>
-      <td>1955.260</td>
-      <td>84.7496</td>
-      <td>1.00023</td>
+      <td>1.38307</td>
+      <td>0.002249</td>
+      <td>0.113015</td>
+      <td>0.112633</td>
+      <td>1.197940</td>
+      <td>1.38221</td>
+      <td>1.56993</td>
+      <td>2523.00</td>
+      <td>2563.90</td>
+      <td>1.002240</td>
     </tr>
     <tr>
       <th>beta2</th>
-      <td>1.19469</td>
-      <td>0.002741</td>
-      <td>0.129379</td>
-      <td>0.98883</td>
-      <td>1.19053</td>
-      <td>1.41734</td>
-      <td>2228.240</td>
-      <td>96.5817</td>
-      <td>1.00044</td>
+      <td>1.19319</td>
+      <td>0.002822</td>
+      <td>0.128784</td>
+      <td>0.128193</td>
+      <td>0.987596</td>
+      <td>1.18844</td>
+      <td>1.41407</td>
+      <td>2125.05</td>
+      <td>2196.14</td>
+      <td>1.000900</td>
     </tr>
     <tr>
       <th>tau1</th>
-      <td>6.59101</td>
-      <td>0.029243</td>
-      <td>0.845480</td>
-      <td>5.44253</td>
-      <td>6.51377</td>
-      <td>8.00543</td>
-      <td>835.924</td>
-      <td>36.2327</td>
-      <td>1.00464</td>
+      <td>6.58969</td>
+      <td>0.019484</td>
+      <td>0.774214</td>
+      <td>0.762909</td>
+      <td>5.458700</td>
+      <td>6.53799</td>
+      <td>7.95173</td>
+      <td>1713.55</td>
+      <td>1949.51</td>
+      <td>1.001010</td>
     </tr>
     <tr>
       <th>tau2</th>
-      <td>15.56770</td>
-      <td>0.027937</td>
-      <td>1.016180</td>
-      <td>13.82700</td>
-      <td>15.65240</td>
-      <td>17.04090</td>
-      <td>1323.080</td>
-      <td>57.3480</td>
-      <td>1.00254</td>
+      <td>15.59330</td>
+      <td>0.023449</td>
+      <td>0.958623</td>
+      <td>0.956944</td>
+      <td>13.957300</td>
+      <td>15.64830</td>
+      <td>17.05940</td>
+      <td>1716.51</td>
+      <td>2244.32</td>
+      <td>1.000610</td>
     </tr>
     <tr>
       <th>sigma</th>
-      <td>4.03250</td>
-      <td>0.002983</td>
-      <td>0.183249</td>
-      <td>3.74184</td>
-      <td>4.02446</td>
-      <td>4.34980</td>
-      <td>3774.990</td>
-      <td>163.6250</td>
-      <td>1.00025</td>
+      <td>4.02920</td>
+      <td>0.003017</td>
+      <td>0.180645</td>
+      <td>0.179157</td>
+      <td>3.735960</td>
+      <td>4.02018</td>
+      <td>4.34370</td>
+      <td>3660.74</td>
+      <td>2451.36</td>
+      <td>0.999873</td>
     </tr>
     <tr>
       <th>lp__</th>
-      <td>-490.97100</td>
-      <td>0.055634</td>
-      <td>1.855710</td>
-      <td>-494.40400</td>
-      <td>-490.54900</td>
-      <td>-488.70200</td>
-      <td>1112.610</td>
-      <td>48.2253</td>
-      <td>1.00244</td>
+      <td>-490.92400</td>
+      <td>0.042934</td>
+      <td>1.751260</td>
+      <td>1.608620</td>
+      <td>-494.172000</td>
+      <td>-490.57800</td>
+      <td>-488.70400</td>
+      <td>1682.00</td>
+      <td>2611.63</td>
+      <td>1.000350</td>
     </tr>
   </tbody>
 </table>
@@ -879,7 +877,7 @@ Processing complete, no problems detected.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Building 6 kW&#39;)
 </pre></div>
 </div>
-<img alt="_images/ada7c1ada08f54972b8d7d22c9721a67491e5f3b6d0c3bf05fd4416c8063748c.png" src="_images/ada7c1ada08f54972b8d7d22c9721a67491e5f3b6d0c3bf05fd4416c8063748c.png" />
+<img alt="_images/7e3f4ae702aee18a96b13d4f6df7523f8c71f0a42eb334ed3bb12dcfaddc7d06.png" src="_images/7e3f4ae702aee18a96b13d4f6df7523f8c71f0a42eb334ed3bb12dcfaddc7d06.png" />
 </div>
 </div>
 <p>The left plot confirms a good fit between the training data and the predictions from the trained model. Most data points lie within the prediction intervals.</p>
@@ -895,7 +893,7 @@ Processing complete, no problems detected.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;savings&#39;}&gt;
 </pre></div>
 </div>
-<img alt="_images/808adbb822438cd5870f8540ab951d5791bbfa8d68713e357bc308fc60f4dd3a.png" src="_images/808adbb822438cd5870f8540ab951d5791bbfa8d68713e357bc308fc60f4dd3a.png" />
+<img alt="_images/d978c7f6d5936d0fe5a5fce01cd2b1ab72d99611e17419fcb82809ad14222541.png" src="_images/d978c7f6d5936d0fe5a5fce01cd2b1ab72d99611e17419fcb82809ad14222541.png" />
 </div>
 </div>
 <p>An important validation step is to check for autocorrelation in the residuals of the fitted model, on the baseline data that was used for fitting. Autocorrelation is often a sign of insufficient model complexity, or that the form of the model error term has not been appropriately chosen. In case of strong remaining autocorrelation, inferences should be drawn with caution.</p>
@@ -911,7 +909,7 @@ Processing complete, no problems detected.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;x\n0&#39;}&gt;
 </pre></div>
 </div>
-<img alt="_images/0923bc3c04165195967d9a7a0de83c033bad13d2513ce38dc1a7bc898bfd4882.png" src="_images/0923bc3c04165195967d9a7a0de83c033bad13d2513ce38dc1a7bc898bfd4882.png" />
+<img alt="_images/30ac0eb1d8cf76066bdf1e209c04702518c38eb4da339984c946083d4e534e9a.png" src="_images/30ac0eb1d8cf76066bdf1e209c04702518c38eb4da339984c946083d4e534e9a.png" />
 </div>
 </div>
 <p>Every vertical line of this graph shows the correlation coefficient between the values of a series and its own values with a certain lag.</p>
@@ -930,10 +928,10 @@ Processing complete, no problems detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff6fbd8d3d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fe4d2101a90&gt;
 </pre></div>
 </div>
-<img alt="_images/8801362436c4836f399dd1a8bf7e45954bfee83f28393a2d2901cb561ac7f8c7.png" src="_images/8801362436c4836f399dd1a8bf7e45954bfee83f28393a2d2901cb561ac7f8c7.png" />
+<img alt="_images/97eb749272c7271419ad5f380c1dee8ef7536b9e3de92448e97743a43c944a4b.png" src="_images/97eb749272c7271419ad5f380c1dee8ef7536b9e3de92448e97743a43c944a4b.png" />
 </div>
 </div>
 <p>The autocorrelation graph suggests that our model doesn’t predict the variability of the data properly. We should therefore be very cautious when interpreting its inferences. This includes the uncertainty of the savings estimates.</p>
