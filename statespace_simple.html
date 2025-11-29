@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>A simple RC model (Python) &#8212; Building energy probabilistic modelling</title>
+    <title>A simple RC model &#8212; Building energy probabilistic modelling</title>
   
   
   
@@ -203,7 +203,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">State-space models</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="statespace_intro.html">Principle of SSMs</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">A simple RC model (Python)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">A simple RC model</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -394,7 +394,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>A simple RC model (Python)</h1>
+    <h1>A simple RC model</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -427,8 +427,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="a-simple-rc-model-python">
-<span id="statespace-simple"></span><h1>A simple RC model (Python)<a class="headerlink" href="#a-simple-rc-model-python" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="a-simple-rc-model">
+<span id="statespace-simple"></span><h1>A simple RC model<a class="headerlink" href="#a-simple-rc-model" title="Link to this heading">#</a></h1>
 <p>As a practical example of linear state-space models, the simplified resistor-capacitor (RC) model structures are a popular choice for either parameter estimation or system identification. When written as a set of stochastic differential equations, they allow accounting for modelling approximations <span id="id1">[<a class="reference internal" href="references.html#id28" title="Henrik Madsen and Jan Holst. Estimation of continuous-time models for the heat dynamics of a building. Energy and buildings, 22(1):67–79, 1995.">Madsen and Holst, 1995</a>]</span> and offer a more reproducible parameter estimation than deterministic models that overlook modelling errors <span id="id2">[<a class="reference internal" href="references.html#id29" title="Simon Rouchier, Mickaël Rabouille, and Pierre Oberlé. Calibration of simplified building energy models for parameter estimation and forecasting: stochastic versus deterministic modelling. Building and Environment, 134:181–190, 2018.">Rouchier <em>et al.</em>, 2018</a>]</span>.</p>
 <p>This tutorial shows an RC model being used to estimate the heat resistance and capacitance of a test house. The model will be implemented twice: the first time in a deterministic formulation, without system uncertainty; the second time in a stochastic formulation, solved by the Kalman filter.</p>
 <section id="case-study">
