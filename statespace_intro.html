@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'statespace_intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data" href="data.html" />
+    <link rel="next" title="A simple RC model" href="statespace_simple.html" />
     <link rel="prev" title="Hidden Markov models" href="hmm.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -203,6 +203,8 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">State-space models</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Principle of SSMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statespace_simple.html">A simple RC model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysip.html">The pySIP library</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -475,27 +477,27 @@ document.write(`
 </figcaption>
 </figure>
 <p>Consider the example of a simple building represented by a 2-resistor, 2-capacitor model structure (2R2C) as shown here. The equations of this model are:</p>
-<div class="math notranslate nohighlight">
-\[C_i \, \mathrm{d} T_i = \dfrac{1}{R_i}\left(T_e-T_i\right)\mathrm{d}t + \Phi_h \, \mathrm{d}t + A_i \Phi_s \mathrm{d}t + \sigma_i \,\mathrm{d}\omega_i\]</div>
-<div class="math notranslate nohighlight">
-\[C_e \, \mathrm{d} T_e = \dfrac{1}{R_i}\left(T_i-T_e\right)\mathrm{d}t + \frac{1}{R_o}\left(T_o-T_e\right)\mathrm{d}t + A_e \Phi_s \mathrm{d}t + \sigma_e \, \mathrm{d}\omega_e \]</div>
+<div class="math notranslate nohighlight" id="equation-statespace1">
+<span class="eqno">(58)<a class="headerlink" href="#equation-statespace1" title="Link to this equation">#</a></span>\[C_i \, \mathrm{d} T_i = \dfrac{1}{R_i}\left(T_e-T_i\right)\mathrm{d}t + \Phi_h \, \mathrm{d}t + A_i \Phi_s \mathrm{d}t + \sigma_i \,\mathrm{d}\omega_i\]</div>
+<div class="math notranslate nohighlight" id="equation-statespace2">
+<span class="eqno">(59)<a class="headerlink" href="#equation-statespace2" title="Link to this equation">#</a></span>\[C_e \, \mathrm{d} T_e = \dfrac{1}{R_i}\left(T_i-T_e\right)\mathrm{d}t + \frac{1}{R_o}\left(T_o-T_e\right)\mathrm{d}t + A_e \Phi_s \mathrm{d}t + \sigma_e \, \mathrm{d}\omega_e \]</div>
 <p>where <span class="math notranslate nohighlight">\(T_i\)</span>, <span class="math notranslate nohighlight">\(T_e\)</span> and <span class="math notranslate nohighlight">\(T_o\)</span> are the indoor, envelope and outdoor temperatures. The envelope temperature is associated with the thermal mass of the opaque surfaces, and does not represent a specific coordinate within the envelope. The model has two states <span class="math notranslate nohighlight">\(T_e\)</span> (unobserved) and <span class="math notranslate nohighlight">\(T_i\)</span> (observed); <span class="math notranslate nohighlight">\(\Phi_h\)</span> (W) is the indoor heating power; <span class="math notranslate nohighlight">\(\Phi_s\)</span> (W/m<span class="math notranslate nohighlight">\(^2\)</span>) is the global horizontal solar irradiance. <span class="math notranslate nohighlight">\(R_i\)</span> (K/W) is the thermal resistance between the indoor air temperature and the envelope, <span class="math notranslate nohighlight">\(R_e\)</span> the resistance between the envelope and the ambient air. <span class="math notranslate nohighlight">\(C_i\)</span> and <span class="math notranslate nohighlight">\(C_e\)</span> (J/K) are the heat capacitances of the interior and the envelope, respectively, and <span class="math notranslate nohighlight">\(A_i\)</span> and <span class="math notranslate nohighlight">\(A_e\)</span> (m<span class="math notranslate nohighlight">\(^2\)</span>) are their solar gain coefficients. <span class="math notranslate nohighlight">\(\{\omega_i\}\)</span> and <span class="math notranslate nohighlight">\(\{\omega_e\}\)</span> are standard Wiener processes and <span class="math notranslate nohighlight">\(\sigma_i^2\)</span> are <span class="math notranslate nohighlight">\(\sigma_e^2\)</span> are their variances. This process noise is a way to account for modelling approximations, unrecognized inputs or noise-corrupted input measurements.</p>
 <p>The state-space equations can be written in matrix form:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\mathrm{d} \begin{bmatrix} T_i \\ T_e \end{bmatrix} = \begin{pmatrix} -\frac{1}{R_i \, C_i} &amp; \frac{1}{R_i \, C_i} \\ \frac{1}{R_i \, C_e} &amp; -\frac{1}{R_i \, C_e}-\frac{1}{R_e \, C_e}\end{pmatrix} \begin{bmatrix} T_i \\ T_e \end{bmatrix}\, \mathrm{d}t + \begin{pmatrix} 0 &amp; \frac{1}{C_i} &amp; \frac{A_i}{C_i} \\ \frac{1}{R_e \, C_e} &amp; 0 &amp; \frac{A_e}{C_e} \end{pmatrix} \begin{bmatrix} T_o \\ \Phi_h \\ \Phi_s \end{bmatrix} \, \mathrm{d}t + \mathbf{\sigma} \, \mathrm{d}\omega\end{split}\]</div>
+<div class="math notranslate nohighlight" id="equation-statespace3">
+<span class="eqno">(60)<a class="headerlink" href="#equation-statespace3" title="Link to this equation">#</a></span>\[\begin{split}\mathrm{d} \begin{bmatrix} T_i \\ T_e \end{bmatrix} = \begin{pmatrix} -\frac{1}{R_i \, C_i} &amp; \frac{1}{R_i \, C_i} \\ \frac{1}{R_i \, C_e} &amp; -\frac{1}{R_i \, C_e}-\frac{1}{R_e \, C_e}\end{pmatrix} \begin{bmatrix} T_i \\ T_e \end{bmatrix}\, \mathrm{d}t + \begin{pmatrix} 0 &amp; \frac{1}{C_i} &amp; \frac{A_i}{C_i} \\ \frac{1}{R_e \, C_e} &amp; 0 &amp; \frac{A_e}{C_e} \end{pmatrix} \begin{bmatrix} T_o \\ \Phi_h \\ \Phi_s \end{bmatrix} \, \mathrm{d}t + \mathbf{\sigma} \, \mathrm{d}\omega\end{split}\]</div>
 <p>which is the dynamic model of the following stochastic state-space model, written in continuous-discrete form:</p>
-<div class="math notranslate nohighlight">
-\[\mathrm{d}\mathbf{x}(t) = \mathbf{A}_\mathit{rc} \, \mathbf{x}(t) \, \mathrm{d}t + \mathbf{B}_\mathit{rc} \, \mathbf{u}(t)\,\mathrm{d}t + \mathbf{\sigma}_\theta \mathrm{d}\omega\]</div>
-<div class="math notranslate nohighlight">
-\[\mathbf{y}_t = \mathbf{C}_\theta \, \mathbf{x}_t + \mathbf{v}_t\]</div>
+<div class="math notranslate nohighlight" id="equation-statespace4">
+<span class="eqno">(61)<a class="headerlink" href="#equation-statespace4" title="Link to this equation">#</a></span>\[\mathrm{d}\mathbf{x}(t) = \mathbf{A}_\mathit{rc} \, \mathbf{x}(t) \, \mathrm{d}t + \mathbf{B}_\mathit{rc} \, \mathbf{u}(t)\,\mathrm{d}t + \mathbf{\sigma}_\theta \mathrm{d}\omega\]</div>
+<div class="math notranslate nohighlight" id="equation-statespace5">
+<span class="eqno">(62)<a class="headerlink" href="#equation-statespace5" title="Link to this equation">#</a></span>\[\mathbf{y}_t = \mathbf{C}_\theta \, \mathbf{x}_t + \mathbf{v}_t\]</div>
 <p>The state vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> includes the temperatures <span class="math notranslate nohighlight">\(T_i\)</span> and <span class="math notranslate nohighlight">\(T_e\)</span> calculated by the model, and <span class="math notranslate nohighlight">\(\mathbf{u}=\left[T_o, \Phi_h, \Phi_s\right]\)</span> is the input vector including boundary conditions and excitations. The second equation is the observation equation. It indicates that the measured quantity <span class="math notranslate nohighlight">\(y_t\)</span> may be different from the output of the state equation. In our case, the observed temperature is only the first component of the state vector, and is encumbered with some measurement error <span class="math notranslate nohighlight">\(\mathbf{v}_t\)</span>. In this equation, time is noted as a subscript to indicate that observations come in a discrete sequence.</p>
-<p>This model must be discretized in order to specify its evolution between discrete time coordinates. Supposing a sample interval length <span class="math notranslate nohighlight">\(\Delta t\)</span> and assume that the inputs <span class="math notranslate nohighlight">\(\mathbf{u}(t)\)</span> are constant during each interval. Eq. &#64;ref(eq:statespace4) and &#64;ref(eq:statespace5) can be discretized into the system of Eq. &#64;ref(eq:lineardiscrete1) and &#64;ref(eq:lineardiscrete2) through the following discretization equations:</p>
+<p>This model must be discretized in order to specify its evolution between discrete time coordinates. Supposing a sample interval length <span class="math notranslate nohighlight">\(\Delta t\)</span> and assume that the inputs <span class="math notranslate nohighlight">\(\mathbf{u}(t)\)</span> are constant during each interval. Eq. <a class="reference internal" href="#equation-statespace4">(61)</a> and <a class="reference internal" href="#equation-statespace5">(62)</a> can be discretized into the system of Eq. <a class="reference internal" href="#equation-lineardiscrete1">(56)</a> and <a class="reference internal" href="#equation-lineardiscrete2">(57)</a> through the following discretization equations:</p>
 <div class="math notranslate nohighlight" id="equation-discretization1">
-<span class="eqno">(58)<a class="headerlink" href="#equation-discretization1" title="Link to this equation">#</a></span>\[\mathbf{A}_\theta = \mathrm{exp}\left( \mathbf{A}_\mathit{rc} \, \Delta t  \right) \]</div>
+<span class="eqno">(63)<a class="headerlink" href="#equation-discretization1" title="Link to this equation">#</a></span>\[\mathbf{A}_\theta = \mathrm{exp}\left( \mathbf{A}_\mathit{rc} \, \Delta t  \right) \]</div>
 <div class="math notranslate nohighlight" id="equation-discretization2">
-<span class="eqno">(59)<a class="headerlink" href="#equation-discretization2" title="Link to this equation">#</a></span>\[\mathbf{B}_\theta = \mathbf{A}_\mathit{rc}^{-1} \, \left(\mathbf{A}_\theta-\mathbf{I}\right) \, \mathbf{B}_\mathit{rc}\]</div>
+<span class="eqno">(64)<a class="headerlink" href="#equation-discretization2" title="Link to this equation">#</a></span>\[\mathbf{B}_\theta = \mathbf{A}_\mathit{rc}^{-1} \, \left(\mathbf{A}_\theta-\mathbf{I}\right) \, \mathbf{B}_\mathit{rc}\]</div>
 <div class="math notranslate nohighlight" id="equation-discretization4">
-<span class="eqno">(60)<a class="headerlink" href="#equation-discretization4" title="Link to this equation">#</a></span>\[\mathbf{Q} = \int_0^{\Delta t} \mathrm{exp}\left( \mathbf{A}_\mathit{rc} \, \Delta t  \right) \, \mathbf{\sigma}_\theta \, \mathrm{exp}\left( \mathbf{A}_\mathit{rc}^T \, \Delta t  \right) \mathrm{d}t\]</div>
+<span class="eqno">(65)<a class="headerlink" href="#equation-discretization4" title="Link to this equation">#</a></span>\[\mathbf{Q} = \int_0^{\Delta t} \mathrm{exp}\left( \mathbf{A}_\mathit{rc} \, \Delta t  \right) \, \mathbf{\sigma}_\theta \, \mathrm{exp}\left( \mathbf{A}_\mathit{rc}^T \, \Delta t  \right) \mathrm{d}t\]</div>
 <p>The Kalman filter is the typical method for computing the marginal distribution of each state <span class="math notranslate nohighlight">\(p(\mathbf{x}_t | \mathbf{y}_{1:t}, \theta)\)</span> and the likelihood function <span class="math notranslate nohighlight">\(p(\mathbf{y}_{1:t}| \theta)\)</span> from which <span class="math notranslate nohighlight">\(\theta\)</span> can be estimated.</p>
 </section>
 <section id="the-kalman-filter">
@@ -513,7 +515,7 @@ document.write(`
 <p><span class="caption-number">Fig. 25 </span><span class="caption-text">Schematic view of one iteration of the Kalman filter</span><a class="headerlink" href="#kalman" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>The Kalman filter algorithm is described here and illustrated by Fig. <a class="reference internal" href="#kalman"><span class="std std-ref">Schematic view of one iteration of the Kalman filter</span></a>:</p>
+<p>The Kalman filter algorithm is described here and illustrated by <a class="reference internal" href="#kalman"><span class="std std-numref">Fig. 25</span></a>:</p>
 <ul class="simple">
 <li><p>Set the initial states <span class="math notranslate nohighlight">\(\mathbf{x}_{0|0}\)</span> and their covariance <span class="math notranslate nohighlight">\(\mathbf{P}_{0|0}\)</span></p></li>
 <li><p>for <span class="math notranslate nohighlight">\(t=1...T\)</span>:</p>
@@ -554,9 +556,9 @@ document.write(`
 <h2>Non-linear state-space models<a class="headerlink" href="#non-linear-state-space-models" title="Link to this heading">#</a></h2>
 <p>State-space models are not necessarily linear or Gaussian. In a more generic situation, the system of equations &#64;ref(eq:ssm) can take the form:</p>
 <div class="math notranslate nohighlight" id="equation-nonlineardiscrete1">
-<span class="eqno">(61)<a class="headerlink" href="#equation-nonlineardiscrete1" title="Link to this equation">#</a></span>\[\mathbf{x}_t = F(\mathbf{x}_{t-1}, \mathbf{u}_t, \mathbf{w}_t) \]</div>
+<span class="eqno">(66)<a class="headerlink" href="#equation-nonlineardiscrete1" title="Link to this equation">#</a></span>\[\mathbf{x}_t = F(\mathbf{x}_{t-1}, \mathbf{u}_t, \mathbf{w}_t) \]</div>
 <div class="math notranslate nohighlight" id="equation-nonlineardiscrete2">
-<span class="eqno">(62)<a class="headerlink" href="#equation-nonlineardiscrete2" title="Link to this equation">#</a></span>\[\mathbf{y}_t = G(\mathbf{x}_t, \mathbf{u}_t, \mathbf{v}_t) \]</div>
+<span class="eqno">(67)<a class="headerlink" href="#equation-nonlineardiscrete2" title="Link to this equation">#</a></span>\[\mathbf{y}_t = G(\mathbf{x}_t, \mathbf{u}_t, \mathbf{v}_t) \]</div>
 <p>The most common extensions of the Kalman filter to non-linear systems are the extended Kalman filter (EKF) and unscented Kalman filter (UKF). The EKF approximates the non-linear and non-Gaussian measurement and dynamic models by linearization at the nominal solution. The unscented Kalman filter (UKF) approximates the propagation of densities through the non-linearities of measurement and noise processes using the unscented transform. They are both Gaussian approximations.</p>
 <p>Non-linearity in a building energy state-space model can arise in different situations:</p>
 <ul class="simple">
@@ -625,11 +627,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="data.html"
+       href="statespace_simple.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data</p>
+        <p class="prev-next-title">A simple RC model</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

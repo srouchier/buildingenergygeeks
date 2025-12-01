@@ -413,12 +413,11 @@ document.write(`
 <p>pySIP provides a framework for infering continuous time linear stochastic state-space models. For that purpose, it is possible to chose between a frequentist and a Bayesian workflow. Each workflow allows to estimate the parameters, assess the inference and model reliability, and perform model selection.</p>
 <p>This page is an example of how pySIP can be used, with the same data and model structure as the previous notebook on state-space models. The following code is provided as an example in the pySIP repository.</p>
 <p>We are considering the same experimental building, and the same measurement period, as in the previous notebook.</p>
-<figure class="align-default" id="id1">
-<img alt="_images/rcexample_armadillo.jpg" src="_images/rcexample_armadillo.jpg" />
+<figure class="align-center" id="rcexample-armadillo">
+<a class="reference internal image-reference" href="_images/rcexample_armadillo.jpg"><img alt="_images/rcexample_armadillo.jpg" src="_images/rcexample_armadillo.jpg" style="width: 400px;" />
+</a>
 <figcaption>
-<p><span class="caption-number">Fig. 31 </span><span class="caption-text">name: rcexample_armadillo
-width: 600px
-align: center</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 28 </span><span class="caption-text">Armadillo Box</span><a class="headerlink" href="#rcexample-armadillo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The building is monitored by a variety of sensors, but the present study only uses records of indoor temperature and prescribed heating power, in addition to weather data. The indoor temperature profiles used here have been averaged over several sensors distributed in the living space. An experimental sequence of four days was used in this study.</p>
@@ -511,13 +510,9 @@ x0_i     30.272107   0.934865  0.000000e+00  0.000001  0.000000e+00
 </div>
 <p>Note that the parameter names are different than on the previous notebook, but the estimation results are similar. The calculation is much faster than what we did with scipy’s <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> method, and also more reliable because of the choice of algorithm.</p>
 <p>Finally, we can compare the fitted model output with the data.</p>
-<figure class="align-default" id="id2">
-<img alt="_images/rcexample05.png" src="_images/rcexample05.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 32 </span><span class="caption-text">name: rcexample05
-width: 600px
-align: center</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
-</figcaption>
+<figure class="align-center" id="rcexample05">
+<a class="reference internal image-reference" href="_images/rcexample05.png"><img alt="_images/rcexample05.png" src="_images/rcexample05.png" style="width: 400px;" />
+</a>
 </figure>
 </section>
 

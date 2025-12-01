@@ -77,9 +77,11 @@ Second order RC model
 Consider the example of a simple building represented by a 2-resistor, 2-capacitor model structure (2R2C) as shown here. The equations of this model are:
 
 ```{math}
+:label: statespace1
 C_i \, \mathrm{d} T_i = \dfrac{1}{R_i}\left(T_e-T_i\right)\mathrm{d}t + \Phi_h \, \mathrm{d}t + A_i \Phi_s \mathrm{d}t + \sigma_i \,\mathrm{d}\omega_i
 ```
 ```{math}
+:label: statespace2
 C_e \, \mathrm{d} T_e = \dfrac{1}{R_i}\left(T_i-T_e\right)\mathrm{d}t + \frac{1}{R_o}\left(T_o-T_e\right)\mathrm{d}t + A_e \Phi_s \mathrm{d}t + \sigma_e \, \mathrm{d}\omega_e 
 ```
 
@@ -87,19 +89,22 @@ where $T_i$, $T_e$ and $T_o$ are the indoor, envelope and outdoor temperatures. 
 
 The state-space equations can be written in matrix form:
 ```{math}
+:label: statespace3
 \mathrm{d} \begin{bmatrix} T_i \\ T_e \end{bmatrix} = \begin{pmatrix} -\frac{1}{R_i \, C_i} & \frac{1}{R_i \, C_i} \\ \frac{1}{R_i \, C_e} & -\frac{1}{R_i \, C_e}-\frac{1}{R_e \, C_e}\end{pmatrix} \begin{bmatrix} T_i \\ T_e \end{bmatrix}\, \mathrm{d}t + \begin{pmatrix} 0 & \frac{1}{C_i} & \frac{A_i}{C_i} \\ \frac{1}{R_e \, C_e} & 0 & \frac{A_e}{C_e} \end{pmatrix} \begin{bmatrix} T_o \\ \Phi_h \\ \Phi_s \end{bmatrix} \, \mathrm{d}t + \mathbf{\sigma} \, \mathrm{d}\omega
 ```
 which is the dynamic model of the following stochastic state-space model, written in continuous-discrete form:
 ```{math}
+:label: statespace4
 \mathrm{d}\mathbf{x}(t) = \mathbf{A}_\mathit{rc} \, \mathbf{x}(t) \, \mathrm{d}t + \mathbf{B}_\mathit{rc} \, \mathbf{u}(t)\,\mathrm{d}t + \mathbf{\sigma}_\theta \mathrm{d}\omega
 ```
 ```{math}
+:label: statespace5
 \mathbf{y}_t = \mathbf{C}_\theta \, \mathbf{x}_t + \mathbf{v}_t
 ```
 
 The state vector $\mathbf{x}$ includes the temperatures $T_i$ and $T_e$ calculated by the model, and $\mathbf{u}=\left[T_o, \Phi_h, \Phi_s\right]$ is the input vector including boundary conditions and excitations. The second equation is the observation equation. It indicates that the measured quantity $y_t$ may be different from the output of the state equation. In our case, the observed temperature is only the first component of the state vector, and is encumbered with some measurement error $\mathbf{v}_t$. In this equation, time is noted as a subscript to indicate that observations come in a discrete sequence.
 
-This model must be discretized in order to specify its evolution between discrete time coordinates. Supposing a sample interval length $\Delta t$ and assume that the inputs $\mathbf{u}(t)$ are constant during each interval. Eq. \@ref(eq:statespace4) and \@ref(eq:statespace5) can be discretized into the system of Eq. \@ref(eq:lineardiscrete1) and \@ref(eq:lineardiscrete2) through the following discretization equations:
+This model must be discretized in order to specify its evolution between discrete time coordinates. Supposing a sample interval length $\Delta t$ and assume that the inputs $\mathbf{u}(t)$ are constant during each interval. Eq. {eq}`statespace4` and {eq}`statespace5` can be discretized into the system of Eq. {eq}`lineardiscrete1` and {eq}`lineardiscrete2` through the following discretization equations:
 
 ```{math}
 :label: discretization1
@@ -138,7 +143,7 @@ align: center
 Schematic view of one iteration of the Kalman filter
 ```
 
-The Kalman filter algorithm is described here and illustrated by Fig. {ref}`kalman`:
+The Kalman filter algorithm is described here and illustrated by {numref}`kalman`:
 
 
 * Set the initial states $\mathbf{x}_{0|0}$ and their covariance $\mathbf{P}_{0|0}$

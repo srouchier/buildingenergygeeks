@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'statespace_simple';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data" href="data.html" />
+    <link rel="next" title="The pySIP library" href="pysip.html" />
     <link rel="prev" title="Principle of SSMs" href="statespace_intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -204,6 +204,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="statespace_intro.html">Principle of SSMs</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">A simple RC model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysip.html">The pySIP library</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -456,7 +457,7 @@ document.write(`
 <h2>Modelling<a class="headerlink" href="#modelling" title="Link to this heading">#</a></h2>
 <section id="rc-model">
 <h3>RC model<a class="headerlink" href="#rc-model" title="Link to this heading">#</a></h3>
-<p>Consider the example of a simple building represented by a 2-resistor, 2-capacitor model structure (2R2C), described in Sec. <a class="reference internal" href="statespace_intro.html#linearssm"><span class="std std-ref">Linear state-space models</span></a>.</p>
+<p>Consider the example of a simple building represented by a 2-resistor, 2-capacitor model structure (2R2C), described <a class="reference internal" href="statespace_intro.html#linearssm"><span class="std std-ref">here</span></a>.</p>
 <figure class="align-center" id="rcmodel2">
 <a class="reference internal image-reference" href="_images/rcmodel.png"><img alt="_images/rcmodel.png" src="_images/rcmodel.png" style="width: 500px;" />
 </a>
@@ -466,29 +467,29 @@ document.write(`
 </figure>
 <p>The equations of this model are:</p>
 <div class="math notranslate nohighlight" id="equation-ssmexample1">
-<span class="eqno">(63)<a class="headerlink" href="#equation-ssmexample1" title="Link to this equation">#</a></span>\[C_i \, \mathrm{d} T_i = \dfrac{1}{R_i}\left(T_e-T_i\right)\mathrm{d}t + \Phi_h \, \mathrm{d}t + A_i \Phi_s \mathrm{d}t + \sigma_i \,\mathrm{d}\omega_i \]</div>
+<span class="eqno">(68)<a class="headerlink" href="#equation-ssmexample1" title="Link to this equation">#</a></span>\[C_i \, \mathrm{d} T_i = \dfrac{1}{R_i}\left(T_e-T_i\right)\mathrm{d}t + \Phi_h \, \mathrm{d}t + A_i \Phi_s \mathrm{d}t + \sigma_i \,\mathrm{d}\omega_i \]</div>
 <div class="math notranslate nohighlight" id="equation-ssmexample2">
-<span class="eqno">(64)<a class="headerlink" href="#equation-ssmexample2" title="Link to this equation">#</a></span>\[C_e \, \mathrm{d} T_e = \dfrac{1}{R_i}\left(T_i-T_e\right)\mathrm{d}t + \frac{1}{R_o}\left(T_o-T_e\right)\mathrm{d}t + A_e \Phi_s \mathrm{d}t + \sigma_e \, \mathrm{d}\omega_e\]</div>
+<span class="eqno">(69)<a class="headerlink" href="#equation-ssmexample2" title="Link to this equation">#</a></span>\[C_e \, \mathrm{d} T_e = \dfrac{1}{R_i}\left(T_i-T_e\right)\mathrm{d}t + \frac{1}{R_o}\left(T_o-T_e\right)\mathrm{d}t + A_e \Phi_s \mathrm{d}t + \sigma_e \, \mathrm{d}\omega_e\]</div>
 <p>where <span class="math notranslate nohighlight">\(T_i\)</span>, <span class="math notranslate nohighlight">\(T_e\)</span> and <span class="math notranslate nohighlight">\(T_o\)</span> are the indoor, envelope and outdoor temperatures. The envelope temperature is associated with the thermal mass of the opaque surfaces, and does not represent a specific coordinate within the envelope. The model has two states <span class="math notranslate nohighlight">\(T_e\)</span> (unobserved) and <span class="math notranslate nohighlight">\(T_i\)</span> (observed); <span class="math notranslate nohighlight">\(\Phi_h\)</span> (W) is the indoor heating power; <span class="math notranslate nohighlight">\(\Phi_s\)</span> (W/m<span class="math notranslate nohighlight">\(^2\)</span>) is the global horizontal solar irradiance. <span class="math notranslate nohighlight">\(R_i\)</span> (K/W) is the thermal resistance between the indoor air temperature and the envelope, <span class="math notranslate nohighlight">\(R_e\)</span> the resistance between the envelope and the ambient air. <span class="math notranslate nohighlight">\(C_i\)</span> and <span class="math notranslate nohighlight">\(C_e\)</span> (J/K) are the heat capacitances of the interior and the envelope, respectively, and <span class="math notranslate nohighlight">\(A_i\)</span> and <span class="math notranslate nohighlight">\(A_e\)</span> (m<span class="math notranslate nohighlight">\(^2\)</span>) are their solar gain coefficients. <span class="math notranslate nohighlight">\(\{\omega_i\}\)</span> and <span class="math notranslate nohighlight">\(\{\omega_e\}\)</span> are standard Wiener processes and <span class="math notranslate nohighlight">\(\sigma_i^2\)</span> are <span class="math notranslate nohighlight">\(\sigma_e^2\)</span> are their variances. This process noise is a way to account for modelling approximations, unrecognized inputs or noise-corrupted input measurements.</p>
 <p>Despite its simplicity, this model structure is able to reproduce the thermal behaviour of a simple unoccupied building. The equations can be written in matrix form:</p>
 <div class="math notranslate nohighlight" id="equation-ssmexample3">
-<span class="eqno">(65)<a class="headerlink" href="#equation-ssmexample3" title="Link to this equation">#</a></span>\[\begin{split}\mathrm{d} \begin{bmatrix} T_i \\ T_e \end{bmatrix} = \begin{pmatrix} -\frac{1}{R_i \, C_i} &amp; \frac{1}{R_i \, C_i} \\ \frac{1}{R_i \, C_e} &amp; -\frac{1}{R_i \, C_e}-\frac{1}{R_e \, C_e}\end{pmatrix} \begin{bmatrix} T_i \\ T_e \end{bmatrix}\, \mathrm{d}t + \begin{pmatrix} 0 &amp; \frac{1}{C_i} &amp; \frac{A_i}{C_i} \\ \frac{1}{R_o \, C_e} &amp; 0 &amp; \frac{A_e}{C_e} \end{pmatrix} \begin{bmatrix} T_o \\ \Phi_h \\ \Phi_s \end{bmatrix} \, \mathrm{d}t + \mathbf{\sigma} \, \mathrm{d}\omega\end{split}\]</div>
+<span class="eqno">(70)<a class="headerlink" href="#equation-ssmexample3" title="Link to this equation">#</a></span>\[\begin{split}\mathrm{d} \begin{bmatrix} T_i \\ T_e \end{bmatrix} = \begin{pmatrix} -\frac{1}{R_i \, C_i} &amp; \frac{1}{R_i \, C_i} \\ \frac{1}{R_i \, C_e} &amp; -\frac{1}{R_i \, C_e}-\frac{1}{R_e \, C_e}\end{pmatrix} \begin{bmatrix} T_i \\ T_e \end{bmatrix}\, \mathrm{d}t + \begin{pmatrix} 0 &amp; \frac{1}{C_i} &amp; \frac{A_i}{C_i} \\ \frac{1}{R_o \, C_e} &amp; 0 &amp; \frac{A_e}{C_e} \end{pmatrix} \begin{bmatrix} T_o \\ \Phi_h \\ \Phi_s \end{bmatrix} \, \mathrm{d}t + \mathbf{\sigma} \, \mathrm{d}\omega\end{split}\]</div>
 <p>which is the dynamic model of the following stochastic state-space model, written in continuous-discrete form:</p>
 <div class="math notranslate nohighlight" id="equation-ssmexample4">
-<span class="eqno">(66)<a class="headerlink" href="#equation-ssmexample4" title="Link to this equation">#</a></span>\[\mathrm{d}\mathbf{x}(t) = \mathbf{A}_\mathit{rc} \, \mathbf{x}(t) \, \mathrm{d}t + \mathbf{B}_\mathit{rc} \, \mathbf{u}(t)\,\mathrm{d}t + \mathbf{\sigma}_\theta \mathrm{d}\omega \]</div>
+<span class="eqno">(71)<a class="headerlink" href="#equation-ssmexample4" title="Link to this equation">#</a></span>\[\mathrm{d}\mathbf{x}(t) = \mathbf{A}_\mathit{rc} \, \mathbf{x}(t) \, \mathrm{d}t + \mathbf{B}_\mathit{rc} \, \mathbf{u}(t)\,\mathrm{d}t + \mathbf{\sigma}_\theta \mathrm{d}\omega \]</div>
 <div class="math notranslate nohighlight" id="equation-ssmexample5">
-<span class="eqno">(67)<a class="headerlink" href="#equation-ssmexample5" title="Link to this equation">#</a></span>\[\mathbf{y}_t = \mathbf{C}_\theta \, \mathbf{x}_t + \mathbf{v}_t\]</div>
+<span class="eqno">(72)<a class="headerlink" href="#equation-ssmexample5" title="Link to this equation">#</a></span>\[\mathbf{y}_t = \mathbf{C}_\theta \, \mathbf{x}_t + \mathbf{v}_t\]</div>
 <p>The state vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> includes the temperatures <span class="math notranslate nohighlight">\(T_i\)</span> and <span class="math notranslate nohighlight">\(T_e\)</span> calculated by the model, and <span class="math notranslate nohighlight">\(\mathbf{u}=\left[T_o, \Phi_h, \Phi_s\right]\)</span> is the input vector including boundary conditions and excitations. The second equation is the observation equation. It indicates that the measured quantity <span class="math notranslate nohighlight">\(y_t\)</span> may be different from the output of the state equation. In our case, the observed temperature is only the first component of the state vector, and is encumbered with some measurement error <span class="math notranslate nohighlight">\(\mathbf{v}_t\)</span>. In this equation, time is noted as a subscript to indicate that observations come in a discrete sequence.</p>
 </section>
 </section>
 <section id="deterministic-formulation">
 <h2>Deterministic formulation<a class="headerlink" href="#deterministic-formulation" title="Link to this heading">#</a></h2>
 <p>We first consider the most simple implementation of the model: if the modelling errors <span class="math notranslate nohighlight">\(\{\omega_i\}\)</span> and <span class="math notranslate nohighlight">\(\{\omega_e\}\)</span> are neglected. This is what we call a deterministic formulation, as this hypothesis is equivalent to assuming that the model is absolutely correct in reproducing the behaviour of the house.</p>
-<p>Perhaps the easiest way to solve Eq. &#64;ref(eq:ssmexample3) for the temperatures is an explicit discretisation scheme: the indoor and envelope temperatures at time <span class="math notranslate nohighlight">\(t+1\)</span> are functions of all variables at time <span class="math notranslate nohighlight">\(t\)</span>:</p>
+<p>Perhaps the easiest way to solve Eq. <a class="reference internal" href="#equation-ssmexample3">(70)</a> for the temperatures is an explicit discretisation scheme: the indoor and envelope temperatures at time <span class="math notranslate nohighlight">\(t+1\)</span> are functions of all variables at time <span class="math notranslate nohighlight">\(t\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-ssmexample6">
-<span class="eqno">(68)<a class="headerlink" href="#equation-ssmexample6" title="Link to this equation">#</a></span>\[T_i^{(t+1)} = T_i^{(t)} + \frac{\mathrm{d}t}{C_i} \left( \dfrac{1}{R_i}\left(T_e-T_i\right) + \Phi_h + A_i \Phi_s \right)^{(t)} \]</div>
+<span class="eqno">(73)<a class="headerlink" href="#equation-ssmexample6" title="Link to this equation">#</a></span>\[T_i^{(t+1)} = T_i^{(t)} + \frac{\mathrm{d}t}{C_i} \left( \dfrac{1}{R_i}\left(T_e-T_i\right) + \Phi_h + A_i \Phi_s \right)^{(t)} \]</div>
 <div class="math notranslate nohighlight" id="equation-ssmexample7">
-<span class="eqno">(69)<a class="headerlink" href="#equation-ssmexample7" title="Link to this equation">#</a></span>\[T_e^{(t+1)} = T_e^{(t)} + \frac{\mathrm{d}t}{C_e} \left( \dfrac{1}{R_i}\left(T_i-T_e\right) + \frac{1}{R_o} \left(T_o-T_e\right) + A_e \Phi_s \Phi_s\right)^{(t)}\]</div>
+<span class="eqno">(74)<a class="headerlink" href="#equation-ssmexample7" title="Link to this equation">#</a></span>\[T_e^{(t+1)} = T_e^{(t)} + \frac{\mathrm{d}t}{C_e} \left( \dfrac{1}{R_i}\left(T_i-T_e\right) + \frac{1}{R_o} \left(T_o-T_e\right) + A_e \Phi_s \Phi_s\right)^{(t)}\]</div>
 <p>In Python, we define this model in a function that takes the inputs <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> as first argument, and the model parameters as other arguments. This syntax is necessary so that we can call Scipy’s <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> method later. The function returns the indoor temperature, to be compared with the measurements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -553,13 +554,9 @@ Ae -1.571828e+00       0.096530
 </div>
 </div>
 <p>The estimated parameters seem consistent with our expectations. We can compare the profile of measured indoor temperature with the output that the model predicts given the identified optimal parameters.</p>
-<figure class="align-default" id="id3">
-<img alt="_images/rcexample02.png" src="_images/rcexample02.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 28 </span><span class="caption-text">name: rcexample02
-width: 500px
-align: center</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
-</figcaption>
+<figure class="align-center" id="rcexample02">
+<a class="reference internal image-reference" href="_images/rcexample02.png"><img alt="_images/rcexample02.png" src="_images/rcexample02.png" style="width: 500px;" />
+</a>
 </figure>
 </section>
 <section id="stochastic-formulation">
@@ -568,7 +565,7 @@ align: center</span><a class="headerlink" href="#id3" title="Link to this image"
 <p>If a model does not fully describe the thermal behaviour of the building, and this discrepancy is not somehow explicitely accounted for, then the parameter estimates and predictions will be biased and unreliable. Stochastic state-space models are a way to account for modelling uncertainties and are now standard practice in the field of building energy performance assessment.</p>
 <section id="specification">
 <h3>Specification<a class="headerlink" href="#specification" title="Link to this heading">#</a></h3>
-<p>The basics of linear state space models has been explained in Sec. <a class="reference internal" href="statespace_intro.html#linearssm"><span class="std std-ref">Linear state-space models</span></a> and the principle of the Kalman filter in Sec. <a class="reference internal" href="statespace_intro.html#kalmanfilter"><span class="std std-ref">The Kalman filter</span></a>. In the following block, a class <code class="docutils literal notranslate"><span class="pre">RC</span></code> is defined which implements these equations for any RC model. Any new RC model can then be inherited from this class, by specifying its matrices <span class="math notranslate nohighlight">\(\mathbf{A}_\mathit{rc}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{A}_\mathit{rc}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_\mathit{rc}\)</span>, and the covariance matrices of the modelling and measurement errors <span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> (see eq. <a class="reference internal" href="#equation-ssmexample4">(66)</a> and <a class="reference internal" href="#equation-ssmexample5">(67)</a>).</p>
+<p>The basics of linear state space models has been explained <a class="reference internal" href="statespace_intro.html#linearssm"><span class="std std-ref">here</span></a> and the principle of the Kalman filter <a class="reference internal" href="statespace_intro.html#kalmanfilter"><span class="std std-ref">here</span></a>. In the following block, a class <code class="docutils literal notranslate"><span class="pre">RC</span></code> is defined which implements these equations for any RC model. Any new RC model can then be inherited from this class, by specifying its matrices <span class="math notranslate nohighlight">\(\mathbf{A}_\mathit{rc}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{A}_\mathit{rc}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_\mathit{rc}\)</span>, and the covariance matrices of the modelling and measurement errors <span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> (see eq. <a class="reference internal" href="#equation-ssmexample4">(71)</a> and <a class="reference internal" href="#equation-ssmexample5">(72)</a>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">expm</span>
@@ -2002,13 +1999,9 @@ xe0  2.989136e+01       0.619351
 </div>
 </div>
 </div>
-<figure class="align-default" id="id4">
-<img alt="_images/rcexample03.png" src="_images/rcexample03.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 29 </span><span class="caption-text">name: rcexample03
-width: 500px
-align: center</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
-</figcaption>
+<figure class="align-center" id="rcexample03">
+<a class="reference internal image-reference" href="_images/rcexample03.png"><img alt="_images/rcexample03.png" src="_images/rcexample03.png" style="width: 500px;" />
+</a>
 </figure>
 <p>The model fits the data well. The 95% confidence intervals are relatively narrow, indicating a good confidence in the prediction.</p>
 <p>Another important criterion on which to judge the fitted model is the autocorrelation function (ACF) of the one-step ahead prediction residuals. In order to view these residuals, the prediction function should be run with the Kalman updating switched on, so that the states it returns are one-step ahead predictions only.</p>
@@ -2048,13 +2041,9 @@ align: center</span><a class="headerlink" href="#id4" title="Link to this image"
 </div>
 </div>
 </div>
-<figure class="align-default" id="id5">
-<img alt="_images/rcexample04.png" src="_images/rcexample04.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 30 </span><span class="caption-text">name: rcexample04
-width: 500px
-align: center</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
-</figcaption>
+<figure class="align-center" id="rcexample04">
+<a class="reference internal image-reference" href="_images/rcexample04.png"><img alt="_images/rcexample04.png" src="_images/rcexample04.png" style="width: 500px;" />
+</a>
 </figure>
 <p>The residuals are low, except from one important peak at 24h lag. This suggests that an important influence occuring with a period of 24 hours has been insufficiently accounted for by the model.</p>
 </section>
@@ -2101,11 +2090,11 @@ align: center</span><a class="headerlink" href="#id5" title="Link to this image"
       </div>
     </a>
     <a class="right-next"
-       href="data.html"
+       href="pysip.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data</p>
+        <p class="prev-next-title">The pySIP library</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
