@@ -14,7 +14,8 @@ This website promotes the use of Bayesian inference and prediction for building 
 * [x] Simple regression
 * [x] Time series
 * [x] State-space models
-* [ ] Gaussian process
+* [ ] Gaussian process: in progress
+* [ ] Links to data files
 
 ## Motivation
 

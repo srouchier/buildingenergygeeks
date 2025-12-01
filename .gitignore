@@ -1,2 +1,4 @@
 _build/
 figures/
+_build/.doctrees/
+_build/html/
