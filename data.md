@@ -1,6 +1,6 @@
 # Data
 
-A summary of the data files used in the tutorials and where to find them. This section will be updated progressively.
+All data used in this book are accessible in the project's [repository](https://github.com/srouchier/buildingenergygeeks/tree/master/data).
 
 (building1298)=
 ## Building 1298
@@ -17,3 +17,29 @@ align: center
 ---
 Insight of Building 1298 meters: electricity, chilled water and steam, hourly time step, shown here on a subset of 4 months of data.
 ```
+
+The curated data can be downloaded [here](https://github.com/srouchier/buildingenergygeeks/blob/master/data/building_1298.csv)
+
+(armadillo)=
+## Armadillo box
+
+The Armadillo Box is a demonstration building of 42 m$^2$ floor area, designed for the 2010 European Solar Decathlon by the ENSAG-GAIA-INES team. The envelope is a light wood framed construction with integrated insulation. Heating and cooling is performed by a “3 in 1” heat pump, and photovoltaic solar panels provide recharge for electric vehicles.
+
+```{figure} /figures/rcexample_armadillo.jpg
+---
+name: rcexample_armadillo2
+width: 400px
+align: center
+---
+Armadillo Box
+```
+
+```{figure} /figures/rcexample01.png
+---
+name: rcexample012
+width: 450px
+align: center
+---
+```
+
+The house is used for the demonstration of state-space models. A curated data file can be downloaded [here](https://github.com/srouchier/buildingenergygeeks/blob/master/data/statespace.csv).

@@ -8,15 +8,6 @@
 
 This website promotes the use of Bayesian inference and prediction for building energy use. It includes some background on the Bayesian data analysis workflow, and tutorials with common building energy models.
 
-**Latest update: December 1st 2025**: this website is being migrated from bookdown (R) to jupyter-book (Python). Here is the current checklist of remaining chapters:
-
-* [x] Background
-* [x] Simple regression
-* [x] Time series
-* [x] State-space models
-* [ ] Gaussian processes: in progress
-* [ ] Links to data files
-
 ## Motivation
 
 Data science offers promising prospects for improving the energy efficiency of buildings. Thanks to the availability of smart meters and sensor networks, along with increasingly accessible algorithms for data processing and analysis, statistical models may be trained to predict the energy use of HVAC systems or the indoor conditions. These trained models and their predictions then lead to various inferences: assessing the real impact of energy conservation measures; identifying HVAC faults or physical properties of the envelope in order to provide incentive for retrofitting; minimizing energy consumption through model	predictive control; detecting and diagnosing faults; etc.
