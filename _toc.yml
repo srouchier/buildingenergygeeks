@@ -22,9 +22,11 @@ parts:
     - file: statespace_intro.md
     - file: statespace_simple.ipynb
     - file: pysip.ipynb
-  - caption: Gaussian process models
+  - caption: Gaussian Processes
     chapters:
     - file: gaussianprocess.md
+    - file: gp_forecast.ipynb
+    - file: gp_timeseries.ipynb
   - caption: References
     chapters:
     - file: data.md

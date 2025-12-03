@@ -1,66 +1,73 @@
 (gp_theory)=
-# Theory on GP models
+# Introduction to Gaussian Processes
 
-## Principle
+## Gaussian process regression
+
+### Definition
 
 In machine learning, Gaussian Process (GP) regression is a widely used tool for solving modelling problems {cite:p}`rasmussen2003gaussian`. The appeal of GP models comes from their flexibility and ease of encoding prior information into the model.
 
-A GP is a generalization of the Gaussian probability distribution to infinite dimensions. Instead of having a mean vector and a covariance matrix, the Gaussian process $f(\mathbf{x})$ is a random function in a d-dimensional input space, characterized by a mean function $\mu: \mathbb{R}^d \rightarrow \mathbb{R}$ and a covariance	function $\kappa: \mathbb{R}^{d\times d} \rightarrow \mathbb{R}$
+A GP is a generalization of the Gaussian probability distribution to infinite dimensions. Instead of having a mean vector and a covariance matrix, the Gaussian process $f(\mathbf{x})$ is a random function in a $d$-dimensional input space, characterized by a mean function $m: \mathbb{R}^d \rightarrow \mathbb{R}$ and a covariance	function (kernel) $\kappa: \mathbb{R}^{d\times d} \rightarrow \mathbb{R}$
 
 ```{math}
 :label: gpmodelgeneral
-f\left(\mathbf{x}\right) \sim \mathrm{GP}(\mu(\mathbf{x}),\,\kappa(\mathbf{x}, \mathbf{x}^\prime))
+f\left(\mathbf{x}\right) \sim \mathrm{GP}(m(\mathbf{x}),\,\kappa(\mathbf{x}, \mathbf{x}^\prime))
 ```
 
-The variable $\mathbf{x}$ is the input of the Gaussian process and not the state vector defined in the previous section. The notation of equation {eq}`gpmodelgeneral` implies that any finite collection of random variables $\{f(\mathbf{x}_i)\}^n_{i=1}$ has a multidimensional Gaussian distribution (Gaussian process prior)
+The variable $\mathbf{x}$ is the (possibly multi-dimensional) input of the Gaussian process.
+
+The notation of equation {eq}`gpmodelgeneral` implies that any finite collection of random variables $\{f(\mathbf{x}_i)\}^n_{i=1}$ has a multidimensional Gaussian distribution (Gaussian process prior)
 
 ```{math}
 :label: jointgp
-\left\{f(\mathbf{x}_1), f(\mathbf{x}_2), \ldots, f(\mathbf{x}_n)\right\} \sim
-		 \mathcal{N}(\mathbf{\mu}, \mathbf{K})
+\begin{bmatrix} f(x_1) \\ \vdots \\ f(x_n) \end{bmatrix} = \mathcal{N} \left(
+    \begin{bmatrix} m(x_1) \\ \vdots \\ m(x_n) \end{bmatrix} ,
+    \begin{bmatrix} \kappa(x_1,x_1) & \cdots & \kappa(x_1,x_n) \\
+    \vdots & \ddots & \vdots \\
+     \kappa(x_n,x_1) & \cdots & \kappa(x_n,x_n) \end{bmatrix}
+    \right)
 ```
 
-where $\mathbf{K}_{i,\,j} = \kappa(\mathbf{x}_i, \mathbf{x}_j)$ defines the covariance matrix and $\mathbf{\mu}_i = \mu(\mathbf{x}_i)$ the mean vector, for $i,j = 1,2,\ldots,n$.
+The mean function is often, without loss of generality, fixed to zero (e.g. $m(\mathbf{x}) = \mathbf{0}$) if no prior information is available; assumption regarding the mean behavior of the process can be encoded into the covariance function instead {cite:p}`solin2016stochastic`. Indeed, the choice of covariance function allows encoding any prior belief about the properties of the stochatic process $f(\mathbf{x})$, e.g. linearity, smoothness, periodicity, etc.
 
-The mean function is often, without loss of generality, fixed to zero (e.g. $\mu(\mathbf{x}) = \mathbf{0}$) if no prior information is available; assumption regarding the mean behavior of the process can be encoded into the covariance function instead {cite:p}`solin2016stochastic`. Indeed, the choice of covariance function allows encoding any prior belief about the properties of the stochatic process $f(\mathbf{x})$, e.g. linearity, smoothness, periodicity, etc. New covariance functions can be formulated by combining existing covariance functions. The sum $\kappa(\mathbf{x}, \mathbf{x}^\prime) = \kappa_1(\mathbf{x}, \mathbf{x}^\prime) + \kappa_2(\mathbf{x}, \mathbf{x}^\prime)$, or the product $\kappa(\mathbf{x}, \mathbf{x}^\prime) = \kappa_1(\mathbf{x}, \mathbf{x}^\prime) \times \kappa_2(\mathbf{x}, \mathbf{x}^\prime)$ of two covariance functions is a valid covariance function.
+New covariance functions can be formulated by combining existing covariance functions. The sum $\kappa(\mathbf{x}, \mathbf{x}^\prime) = \kappa_1(\mathbf{x}, \mathbf{x}^\prime) + \kappa_2(\mathbf{x}, \mathbf{x}^\prime)$, or the product $\kappa(\mathbf{x}, \mathbf{x}^\prime) = \kappa_1(\mathbf{x}, \mathbf{x}^\prime) \times \kappa_2(\mathbf{x}, \mathbf{x}^\prime)$ of two covariance functions is a valid covariance function.
 
-The Gaussian process regression is concerned by the problem of estimating the value of an unknown function $f(t)$ at arbitrary time instant $t$ (i.e. test point) based on a noisy training data $\mathcal{D} = \left\{t_k, y_k\right\}^n_{k=1}$
+### Prediction
+
+The Gaussian process regression is concerned by the problem of estimating the value of an unknown function $f(x)$ at a set of test points $\mathbf{x}^* = \left\{x_1^*, ..., x_m^* \right\}$, given measurements $\mathbf{y} = \left\{y_1,\,y_2,\,\ldots,\,y_n\right\}$ at observed input points $\mathbf{x} = \left\{x_1, ..., x_n \right\}$. The measurements can be noisy, such that:
 
 ```{math}
-f(t) \sim \mathrm{GP}(0, \kappa(t, t^\prime))
+:label: gpnoise
+y_k = f(x_k) + \varepsilon_k, \quad \varepsilon_k \sim \mathcal{N}\left(0, \sigma^2\right)
 ```
 
+The joint distribution between the output at the test points $f(\mathbf{x}^*)$ and the measurements $\mathbf{y}$ is Gaussian:
+
 ```{math}
-:label: gpmodel
-y_k = f(t_k) + v_k
+:label: jointgp2
+\begin{bmatrix} \mathbf{y} \\ f(\mathbf{x}^*) \end{bmatrix} = \mathcal{N} \left(
+    \begin{bmatrix} \mathbf{m} \\ \mathbf{m^*} \end{bmatrix} ,
+    \begin{bmatrix} \mathbf{\kappa(x,x)} + \sigma^2 \mathbf{I}  & \mathbf{\kappa(x^*,x)}^T \\
+    \mathbf{\kappa(x^*,x)} & \mathbf{\kappa(x^*,x^*)} \end{bmatrix}
+    \right)
 ```
 
-The joint distribution between the test point $f(t)$ and the training points $\left(f(t_1),\,f(t_2),\,\ldots,\,f(t_n)\right)$ is Gaussian with known statistics. Because the measurement model in equation {eq}`gpmodel` is linear and Gaussian, the joint distribution between the test point $f(t)$ and the measurements $\left(y_1,\,y_2,\,\ldots,\,y_n\right)$ is Gaussian with known statistics as well. From the property of the Gaussian distribution, the conditional distribution of $f(t)$ given the measurements has an analytical solution {cite:p}`sarkka2019applied`.
+and the conditional mean and covariance are given as {cite:p}`sarkka2019applied`:
+
 
 ```{math}
-:label: gpposterior
-p\left(f(t) \mid \mathbf{y}\right) =
-	p\left(\mathbb{E}[f(t)] \mid \mathbb{V}[f(t)]\right)
-```
-
-with mean and variance
-
-```{math}
-\mathbb{E}[f(t)] = \mathbf{k}^\text{T}\,\left(
-		\mathbf{K} + \sigma^2_\varepsilon\,\mathbf{I}\right)^{-1}\,\mathbf{y}
+\mathrm{E}\left[f(\mathbf{x}^*)|\mathbf{y}\right] = \mathbf{m^*} + \mathbf{\kappa(x^*,x)} \,\left(\mathbf{\kappa(x,x)} + \sigma^2 \mathbf{I} \right)^{-1}\,\left(\mathbf{y} - \mathbf{m}\right)
 ```
 
 ```{math}
 :label: gpposteriorstats
-\mathbb{V}[f(t)] = \kappa(t, t) - \mathbf{k}^\text{T}\,
-		\left(\mathbf{K} + \sigma^2_\varepsilon\,\mathbf{I}\right)^{-1}\,\mathbf{k}
+\mathrm{Cov}\left[f(\mathbf{x}^*)|\mathbf{y}\right] = \mathbf{\kappa(x^*,x^*)} -
+ \mathbf{\kappa(x^*,x)} \,\left(\mathbf{\kappa(x,x)} + \sigma^2 \mathbf{I} \right)^{-1}\,\mathbf{\kappa(x^*,x)}^T
 ```
-
-where $\mathbf{K}_{i,\,j} = \kappa(t_i, t_j)$, $\mathbf{k} = \kappa(t, \mathbf{t})$ and, $\mathbf{t}$ and $\mathbf{y}$ are the time and measurement vectors from the training data $\mathcal{D}$.
 
 The estimated function model represents dependencies between function values at different inputs through the correlation structure given by the covariance function. Thus, the function values at the observed points give information also of the unobserved points.
 
-## Gaussian Processes for prediction of energy use
+## Gaussian Processes as surrogate models: Bayesian calibration
 
 The first application of Gaussian Processes in building energy modelling is based on the developments of {cite:p}`kennedy2001bayesian` which they called *Bayesian calibration*. Bayesian model calibration refers to using a GP as a surrogate model to reproduce a reference model, then training a second GP as the discrepancy function between this model and observations, then evaluating the posterior distribution of calibration parameters. In this context GPs have static inputs and are not dynamic models.
 
@@ -79,7 +86,8 @@ GP learning scales poorly with the amount of data, which restricts its applicabi
 
 Models trained by this method are said to have very good prediction performance, since the GP predicts the inadequacy of the GB as a function of new inputs, not included in the physical model. However, the method may not be fit for the interpretation of physical parameters. Indeed, since the GB model is first trained independently from the GP, it is biased and its parameter estimates are not interpretable.
 
-## Gaussian Processes for time series data
+(gp_statespace)=
+## Gaussian Processes as state-space models
 
 Gaussian process are non-parametric models, which means that the latent function $f(t)$ is represented by an infinite-dimensional parameter space. Unlike parametric methods, the number of parameters is not fixed, but grows with the size of the dataset $\mathcal{D}$, which is an advantage and a limitation. Non-parametric models are memory-based, which means that they can represent more complex mapping as the data set grows but in order to make predictions they have to "remember" the full dataset {cite:p}`frigola2015bayesian`.
 

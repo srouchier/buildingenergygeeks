@@ -201,6 +201,18 @@
 <li class="toctree-l1"><a class="reference internal" href="autocorrelated.html">Autocorrelated energy signature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hmm.html">Hidden Markov models</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">State-space models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="statespace_intro.html">Principle of SSMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statespace_simple.html">A simple RC model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysip.html">The pySIP library</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Gaussian Processes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gaussianprocess.html">Introduction to Gaussian Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_forecast.html">GP for prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_timeseries.html">GP as state-space models</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
@@ -420,13 +432,14 @@ document.write(`
 <a class="reference internal image-reference" href="_images/logo.png"><img alt="logo" class="align-center" src="_images/logo.png" style="width: 400px;" />
 </a>
 <p>This website promotes the use of Bayesian inference and prediction for building energy use. It includes some background on the Bayesian data analysis workflow, and tutorials with common building energy models.</p>
-<p><strong>Latest update: November 25th 2025</strong>: this website is being migrated from bookdown (R) to jupyter-book (Python). Here is the current checklist of remaining chapters:</p>
+<p><strong>Latest update: December 1st 2025</strong>: this website is being migrated from bookdown (R) to jupyter-book (Python). Here is the current checklist of remaining chapters:</p>
 <ul class="contains-task-list simple">
 <li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Background</p></li>
 <li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Simple regression</p></li>
 <li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Time series</p></li>
-<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> State-space models</p></li>
-<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Gaussian process</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> State-space models</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Gaussian processes: in progress</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Links to data files</p></li>
 </ul>
 <section id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
@@ -444,10 +457,10 @@ document.write(`
 </ul>
 <p>Then, the rest of the book shows some applications. It is a series of Python notebooks classified into chapters, each focusing on a type of model. The notebooks are self-sufficient, and mention whether non-standard libraries or other software should be installed.</p>
 <ul class="simple">
-<li><p>Regression and mixture models</p></li>
+<li><p>Regression</p></li>
 <li><p>Time series analysis</p></li>
-<li><p>State-space models for</p></li>
-<li><p>Gaussian Process models</p></li>
+<li><p>State-space models</p></li>
+<li><p>Gaussian processes</p></li>
 </ul>
 <p>The target of the book is that the basics of Bayesian data analysis are explained to building energy practitioners who don’t necessarily have a large background on statistics.</p>
 <p>The book <strong>does not</strong> cover:</p>
@@ -470,6 +483,10 @@ document.write(`
 <p>This website is the beta version of a future book. It possibly still has some typos and inconsistencies: I welcome all feedback by <a class="reference external" href="https://srouchier.github.io/">email</a> or through the book’s <a class="reference external" href="https://github.com/srouchier/buildingenergygeeks">Github repo</a>.</p>
 <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Ce(tte) œuvre est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.</p>
 </section>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
