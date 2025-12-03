@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'pysip';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data" href="data.html" />
+    <link rel="next" title="Introduction to Gaussian Processes" href="gaussianprocess.html" />
     <link rel="prev" title="A simple RC model" href="statespace_simple.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -205,6 +205,12 @@
 <li class="toctree-l1"><a class="reference internal" href="statespace_intro.html">Principle of SSMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="statespace_simple.html">A simple RC model</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">The pySIP library</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Gaussian Processes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gaussianprocess.html">Introduction to Gaussian Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_forecast.html">GP for prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_timeseries.html">GP as state-space models</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -412,7 +418,7 @@ document.write(`
 <p>The previous chapters on this series showed the theory behind linear stochastic state-space models. The theory was then applied by calibrating a simple 2R2C model on the heat dynamics of an unoccupied test house. The purpose was to give a transparent overview of the mechanics of state-space models and the Kalman filter. In practical applications however, we will wish to ensure that we obtained a robust predictive model, suitable for building energy performance assessment and prediction of energy use. Additional tools are required to assist in model selection, diagnostics of convergence, validation of calibrated models, and eventually Bayesian inference. This is why <a class="reference external" href="https://github.com/locie/pySIP">the pySIP python library for stochastic state-space inference and prediction</a> was developed.</p>
 <p>pySIP provides a framework for infering continuous time linear stochastic state-space models. For that purpose, it is possible to chose between a frequentist and a Bayesian workflow. Each workflow allows to estimate the parameters, assess the inference and model reliability, and perform model selection.</p>
 <p>This page is an example of how pySIP can be used, with the same data and model structure as the previous notebook on state-space models. The following code is provided as an example in the pySIP repository.</p>
-<p>We are considering the same experimental building, and the same measurement period, as in the previous notebook.</p>
+<p>We are considering the same experimental building, and the same measurement period, as in the <a class="reference internal" href="statespace_simple.html#statespace-simple"><span class="std std-ref">previous notebook</span></a>.</p>
 <figure class="align-center" id="rcexample-armadillo">
 <a class="reference internal image-reference" href="_images/rcexample_armadillo.jpg"><img alt="_images/rcexample_armadillo.jpg" src="_images/rcexample_armadillo.jpg" style="width: 400px;" />
 </a>
@@ -421,7 +427,7 @@ document.write(`
 </figcaption>
 </figure>
 <p>The building is monitored by a variety of sensors, but the present study only uses records of indoor temperature and prescribed heating power, in addition to weather data. The indoor temperature profiles used here have been averaged over several sensors distributed in the living space. An experimental sequence of four days was used in this study.</p>
-<p>Some imports first, then we load the data.</p>
+<p>Some imports first, then we load the <a class="reference external" href="https://github.com/srouchier/buildingenergygeeks/blob/master/data/statespace.csv">data</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -556,11 +562,11 @@ x0_i     30.272107   0.934865  0.000000e+00  0.000001  0.000000e+00
       </div>
     </a>
     <a class="right-next"
-       href="data.html"
+       href="gaussianprocess.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data</p>
+        <p class="prev-next-title">Introduction to Gaussian Processes</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

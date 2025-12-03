@@ -1,0 +1,695 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introduction to Gaussian Processes &#8212; Building energy probabilistic modelling</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gaussianprocess';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GP for prediction" href="gp_forecast.html" />
+    <link rel="prev" title="The pySIP library" href="pysip.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Building energy probabilistic modelling - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Building energy probabilistic modelling - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Building energy probabilistic modelling
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Background</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="background.html">Motivation for probabilistic modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling.html">Simplified building energy modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">A Bayesian data analysis workflow</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simple regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="linearregression.html">Linear regression (PyMC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linearregression_stan.html">Linear regression (Stan)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changepoint.html">Energy signature</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Time series</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="timeseries_intro.html">Time series models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="armax.html">ARMAX models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autocorrelated.html">Autocorrelated energy signature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hmm.html">Hidden Markov models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">State-space models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="statespace_intro.html">Principle of SSMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statespace_simple.html">A simple RC model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysip.html">The pySIP library</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Gaussian Processes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Gaussian Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_forecast.html">GP for prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_timeseries.html">GP as state-space models</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/srouchier/buildingenergygeeks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/srouchier/buildingenergygeeks/issues/new?title=Issue%20on%20page%20%2Fgaussianprocess.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/gaussianprocess.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction to Gaussian Processes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-process-regression">Gaussian process regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction">Prediction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-processes-as-surrogate-models-bayesian-calibration">Gaussian Processes as surrogate models: Bayesian calibration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-processes-as-state-space-models">Gaussian Processes as state-space models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latent-force-models">Latent Force Models</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-gaussian-processes">
+<span id="gp-theory"></span><h1>Introduction to Gaussian Processes<a class="headerlink" href="#introduction-to-gaussian-processes" title="Link to this heading">#</a></h1>
+<section id="gaussian-process-regression">
+<h2>Gaussian process regression<a class="headerlink" href="#gaussian-process-regression" title="Link to this heading">#</a></h2>
+<section id="definition">
+<h3>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h3>
+<p>In machine learning, Gaussian Process (GP) regression is a widely used tool for solving modelling problems <span id="id1">[<a class="reference internal" href="references.html#id39" title="Carl Edward Rasmussen. Gaussian processes in machine learning. Springer, 2003.">Rasmussen, 2003</a>]</span>. The appeal of GP models comes from their flexibility and ease of encoding prior information into the model.</p>
+<p>A GP is a generalization of the Gaussian probability distribution to infinite dimensions. Instead of having a mean vector and a covariance matrix, the Gaussian process <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span> is a random function in a <span class="math notranslate nohighlight">\(d\)</span>-dimensional input space, characterized by a mean function <span class="math notranslate nohighlight">\(m: \mathbb{R}^d \rightarrow \mathbb{R}\)</span> and a covariance	function (kernel) <span class="math notranslate nohighlight">\(\kappa: \mathbb{R}^{d\times d} \rightarrow \mathbb{R}\)</span></p>
+<div class="math notranslate nohighlight" id="equation-gpmodelgeneral">
+<span class="eqno">(75)<a class="headerlink" href="#equation-gpmodelgeneral" title="Link to this equation">#</a></span>\[f\left(\mathbf{x}\right) \sim \mathrm{GP}(m(\mathbf{x}),\,\kappa(\mathbf{x}, \mathbf{x}^\prime))\]</div>
+<p>The variable <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is the (possibly multi-dimensional) input of the Gaussian process.</p>
+<p>The notation of equation <a class="reference internal" href="#equation-gpmodelgeneral">(75)</a> implies that any finite collection of random variables <span class="math notranslate nohighlight">\(\{f(\mathbf{x}_i)\}^n_{i=1}\)</span> has a multidimensional Gaussian distribution (Gaussian process prior)</p>
+<div class="math notranslate nohighlight" id="equation-jointgp">
+<span class="eqno">(76)<a class="headerlink" href="#equation-jointgp" title="Link to this equation">#</a></span>\[\begin{split}\begin{bmatrix} f(x_1) \\ \vdots \\ f(x_n) \end{bmatrix} = \mathcal{N} \left(
+    \begin{bmatrix} m(x_1) \\ \vdots \\ m(x_n) \end{bmatrix} ,
+    \begin{bmatrix} \kappa(x_1,x_1) &amp; \cdots &amp; \kappa(x_1,x_n) \\
+    \vdots &amp; \ddots &amp; \vdots \\
+     \kappa(x_n,x_1) &amp; \cdots &amp; \kappa(x_n,x_n) \end{bmatrix}
+    \right)\end{split}\]</div>
+<p>The mean function is often, without loss of generality, fixed to zero (e.g. <span class="math notranslate nohighlight">\(m(\mathbf{x}) = \mathbf{0}\)</span>) if no prior information is available; assumption regarding the mean behavior of the process can be encoded into the covariance function instead <span id="id2">[<a class="reference internal" href="references.html#id40" title="Arno Solin and others. Stochastic differential equation methods for spatio-temporal gaussian process regression. Aalto University, 2016.">Solin and others, 2016</a>]</span>. Indeed, the choice of covariance function allows encoding any prior belief about the properties of the stochatic process <span class="math notranslate nohighlight">\(f(\mathbf{x})\)</span>, e.g. linearity, smoothness, periodicity, etc.</p>
+<p>New covariance functions can be formulated by combining existing covariance functions. The sum <span class="math notranslate nohighlight">\(\kappa(\mathbf{x}, \mathbf{x}^\prime) = \kappa_1(\mathbf{x}, \mathbf{x}^\prime) + \kappa_2(\mathbf{x}, \mathbf{x}^\prime)\)</span>, or the product <span class="math notranslate nohighlight">\(\kappa(\mathbf{x}, \mathbf{x}^\prime) = \kappa_1(\mathbf{x}, \mathbf{x}^\prime) \times \kappa_2(\mathbf{x}, \mathbf{x}^\prime)\)</span> of two covariance functions is a valid covariance function.</p>
+</section>
+<section id="prediction">
+<h3>Prediction<a class="headerlink" href="#prediction" title="Link to this heading">#</a></h3>
+<p>The Gaussian process regression is concerned by the problem of estimating the value of an unknown function <span class="math notranslate nohighlight">\(f(x)\)</span> at a set of test points <span class="math notranslate nohighlight">\(\mathbf{x}^* = \left\{x_1^*, ..., x_m^* \right\}\)</span>, given measurements <span class="math notranslate nohighlight">\(\mathbf{y} = \left\{y_1,\,y_2,\,\ldots,\,y_n\right\}\)</span> at observed input points <span class="math notranslate nohighlight">\(\mathbf{x} = \left\{x_1, ..., x_n \right\}\)</span>. The measurements can be noisy, such that:</p>
+<div class="math notranslate nohighlight" id="equation-gpnoise">
+<span class="eqno">(77)<a class="headerlink" href="#equation-gpnoise" title="Link to this equation">#</a></span>\[y_k = f(x_k) + \varepsilon_k, \quad \varepsilon_k \sim \mathcal{N}\left(0, \sigma^2\right)\]</div>
+<p>The joint distribution between the output at the test points <span class="math notranslate nohighlight">\(f(\mathbf{x}^*)\)</span> and the measurements <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> is Gaussian:</p>
+<div class="math notranslate nohighlight" id="equation-jointgp2">
+<span class="eqno">(78)<a class="headerlink" href="#equation-jointgp2" title="Link to this equation">#</a></span>\[\begin{split}\begin{bmatrix} \mathbf{y} \\ f(\mathbf{x}^*) \end{bmatrix} = \mathcal{N} \left(
+    \begin{bmatrix} \mathbf{m} \\ \mathbf{m^*} \end{bmatrix} ,
+    \begin{bmatrix} \mathbf{\kappa(x,x)} + \sigma^2 \mathbf{I}  &amp; \mathbf{\kappa(x^*,x)}^T \\
+    \mathbf{\kappa(x^*,x)} &amp; \mathbf{\kappa(x^*,x^*)} \end{bmatrix}
+    \right)\end{split}\]</div>
+<p>and the conditional mean and covariance are given as <span id="id3">[<a class="reference internal" href="references.html#id41" title="Simo Särkkä and Arno Solin. Applied stochastic differential equations. Volume 10. Cambridge University Press, 2019.">Särkkä and Solin, 2019</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{E}\left[f(\mathbf{x}^*)|\mathbf{y}\right] = \mathbf{m^*} + \mathbf{\kappa(x^*,x)} \,\left(\mathbf{\kappa(x,x)} + \sigma^2 \mathbf{I} \right)^{-1}\,\left(\mathbf{y} - \mathbf{m}\right)\]</div>
+<div class="math notranslate nohighlight" id="equation-gpposteriorstats">
+<span class="eqno">(79)<a class="headerlink" href="#equation-gpposteriorstats" title="Link to this equation">#</a></span>\[\mathrm{Cov}\left[f(\mathbf{x}^*)|\mathbf{y}\right] = \mathbf{\kappa(x^*,x^*)} -
+ \mathbf{\kappa(x^*,x)} \,\left(\mathbf{\kappa(x,x)} + \sigma^2 \mathbf{I} \right)^{-1}\,\mathbf{\kappa(x^*,x)}^T\]</div>
+<p>The estimated function model represents dependencies between function values at different inputs through the correlation structure given by the covariance function. Thus, the function values at the observed points give information also of the unobserved points.</p>
+</section>
+</section>
+<section id="gaussian-processes-as-surrogate-models-bayesian-calibration">
+<h2>Gaussian Processes as surrogate models: Bayesian calibration<a class="headerlink" href="#gaussian-processes-as-surrogate-models-bayesian-calibration" title="Link to this heading">#</a></h2>
+<p>The first application of Gaussian Processes in building energy modelling is based on the developments of <span id="id4">[<a class="reference internal" href="references.html#id44" title="Marc C Kennedy and Anthony O'Hagan. Bayesian calibration of computer models. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 63(3):425–464, 2001.">Kennedy and O'Hagan, 2001</a>]</span> which they called <em>Bayesian calibration</em>. Bayesian model calibration refers to using a GP as a surrogate model to reproduce a reference model, then training a second GP as the discrepancy function between this model and observations, then evaluating the posterior distribution of calibration parameters. In this context GPs have static inputs and are not dynamic models.</p>
+<div class="math notranslate nohighlight" id="equation-koh">
+<span class="eqno">(80)<a class="headerlink" href="#equation-koh" title="Link to this equation">#</a></span>\[z_i = \zeta(\mathbf{x}_i) +e_i =\rho \, \eta(\mathbf{x}_i,\theta)+\delta(\mathbf{x}_i)+e_i\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span> is a series of known model inputs, <span class="math notranslate nohighlight">\(z_i\)</span> are observations, <span class="math notranslate nohighlight">\(\zeta(\mathbf{x}_i)\)</span> is the true value of the real process, <span class="math notranslate nohighlight">\(\eta(\mathbf{x}_i,\theta)\)</span> is a computer model output with parameter <span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\delta(\mathbf{x}_i)\)</span> is the discrepancy function and <span class="math notranslate nohighlight">\(e_i \sim N(0,\lambda)\)</span> are the observation errors. In Kennedy and O’Hagan’s work, GP are used to represent prior information about both <span class="math notranslate nohighlight">\(\eta(\cdot,\cdot)\)</span> and <span class="math notranslate nohighlight">\(\delta(\cdot)\)</span>. <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span> are hyperparameters, to be added to the list of hyperparameters of the covariance functions into a global hyperparameter vector <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<p>Before attempting prediction of the true phenomenon using the calibrated code, the first step is to derive the posterior distribution of the parameters <span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span> (parameters of the GP mean functions) and <span class="math notranslate nohighlight">\(\phi\)</span>. Hyperparameters are estimated in two stages: <span class="math notranslate nohighlight">\(\eta(\cdot,\cdot)\)</span> is estimated from a series of code outputs, and <span class="math notranslate nohighlight">\(\delta(\cdot)\)</span> is estimated from observations. The authors restrict their study to having analytical, tractable posterior distributions that do not require methods such as MCMC. Therefore they fix the value of some hyperparameters to make these functions tractable, and have to resort to some simplifications.</p>
+<p>The first application of this method to building energy modelling was the work of <span id="id5">[<a class="reference internal" href="references.html#id45" title="Yeonsook Heo, Ruchi Choudhary, and GA Augenbroe. Calibration of building energy models for retrofit analysis under uncertainty. Energy and Buildings, 47:550–560, 2012.">Heo <em>et al.</em>, 2012</a>]</span>. They followed the formulation of Bayesian calibration developed by Kennedy and O’Hagan, and used three sets of data as input: (1) monthly gas consumption values as observations <span class="math notranslate nohighlight">\(y(x)\)</span>, (2) computer outputs from exploring the space of calibration parameters <span class="math notranslate nohighlight">\(\eta(x,\theta)\)</span>, and (3) the prior PDF of calibration parameters <span class="math notranslate nohighlight">\(p(\theta)\)</span>. The model outputs <span class="math notranslate nohighlight">\(\eta(x,\theta)\)</span> and the bias term <span class="math notranslate nohighlight">\(\delta(x)\)</span> are both modeled as GPs. Calibration parameters are for instance: infiltration rate, indoor temperature, <span class="math notranslate nohighlight">\(U\)</span>-values, etc. With very little data, results are posterior PDFs which are very close to the priors.</p>
+<p>GP learning scales poorly with the amount of data, which restricts its applicability to lower observation time steps. <span id="id6">[<a class="reference internal" href="references.html#id48" title="Martin Heine Kristensen, Ruchi Choudhary, and Steffen Petersen. Bayesian calibration of building energy models: comparison of predictive accuracy using metered utility data of different temporal resolution. Energy Procedia, 122:277–282, 2017.">Kristensen <em>et al.</em>, 2017</a>]</span> studied the influence of time resolution on the predictive accuracy and showed the advantage of higher resolutions. More recently, <span id="id7">[<a class="reference internal" href="references.html#id46" title="Adrian Chong, Khee Poh Lam, Matteo Pozzi, and Junjing Yang. Bayesian calibration of building energy models with large datasets. Energy and Buildings, 154:343–355, 2017.">Chong <em>et al.</em>, 2017</a>]</span> used the NUTS algorithm for the MCMC sampling in order to accelerate learning. Later, <span id="id8">[<a class="reference internal" href="references.html#id14" title="Adrian Chong and Kathrin Menberg. Guidelines for the bayesian calibration of building energy models. Energy and Buildings, 174:527–547, 2018.">Chong and Menberg, 2018</a>]</span> gave a summary of publications using Bayesian calibration in building energy. In <span id="id9">[<a class="reference internal" href="references.html#id47" title="Francesco Massa Gray and Michael Schmidt. A hybrid approach to thermal building modelling using a combination of gaussian processes and grey-box models. Energy and Buildings, 165:56–63, 2018.">Gray and Schmidt, 2018</a>]</span>, a hybrid model was implemented. A zero mean GP is trained to learn the error between the grey-box model and the reference data. As in the previous references, both models are added to obtain the final predicted output. They are trained in sequence: the GB model has some inputs <span class="math notranslate nohighlight">\(\mathbf{u}_\mathrm{GB}\)</span> and is trained first; then the GP has some other inputs <span class="math notranslate nohighlight">\(\mathbf{u}_\mathrm{GP}\)</span> and is trained on the GB model’s prediction error. Results are the hyperparameters of the GP.</p>
+<p>Models trained by this method are said to have very good prediction performance, since the GP predicts the inadequacy of the GB as a function of new inputs, not included in the physical model. However, the method may not be fit for the interpretation of physical parameters. Indeed, since the GB model is first trained independently from the GP, it is biased and its parameter estimates are not interpretable.</p>
+</section>
+<section id="gaussian-processes-as-state-space-models">
+<span id="gp-statespace"></span><h2>Gaussian Processes as state-space models<a class="headerlink" href="#gaussian-processes-as-state-space-models" title="Link to this heading">#</a></h2>
+<p>Gaussian process are non-parametric models, which means that the latent function <span class="math notranslate nohighlight">\(f(t)\)</span> is represented by an infinite-dimensional parameter space. Unlike parametric methods, the number of parameters is not fixed, but grows with the size of the dataset <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, which is an advantage and a limitation. Non-parametric models are memory-based, which means that they can represent more complex mapping as the data set grows but in order to make predictions they have to “remember” the full dataset <span id="id10">[<a class="reference internal" href="references.html#id49" title="Roger Frigola. Bayesian time series learning with Gaussian processes. PhD thesis, University of Cambridge, 2015.">Frigola, 2015</a>]</span>.</p>
+<p>The computational complexities of the analytical regression equations <a class="reference internal" href="#equation-gpposteriorstats">(79)</a> are cubic <span class="math notranslate nohighlight">\(\mathcal{O}(N^3)\)</span> in the number of measurements <span class="math notranslate nohighlight">\(N\)</span>, which is not suited for long time series. However, for a certain class of covariance function, temporal Gaussian process regression is equivalent to state inference problem which can be solved with Kalman filter and Rauch-Tung-Striebel smoother <span id="id11">[<a class="reference internal" href="references.html#id50" title="Jouni Hartikainen and Simo Särkkä. Kalman filtering and smoothing solutions to temporal gaussian process regression models. In 2010 IEEE international workshop on machine learning for signal processing, 379–384. IEEE, 2010.">Hartikainen and Särkkä, 2010</a>]</span>. The computational complexity of these sequential methods is linear <span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span> instead of cubic in the number of measurements <span class="math notranslate nohighlight">\(N\)</span>.</p>
+<p>A stationary Gaussian process (i.e. the covariance function depends only on the time difference <span class="math notranslate nohighlight">\(\kappa(t, t^\prime) = \kappa(\tau)\)</span>, with <span class="math notranslate nohighlight">\(\tau=\lvert t - t^\prime \rvert\)</span>) can be exactly represented or well approximated by a stochastic state-space model:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{d}\mathbf{f} = \mathbf{A_{gp}} \, \mathbf{f} \, \mathrm{d}t
+			+ \mathbf{\sigma}_{\mathbf{gp}} \, \mathrm{d}\mathbf{w}\]</div>
+<div class="math notranslate nohighlight" id="equation-gpssm">
+<span class="eqno">(81)<a class="headerlink" href="#equation-gpssm" title="Link to this equation">#</a></span>\[y_k = \mathbf{C}_{\mathbf{gp}} \, \mathbf{f}(t_k) + v_k\]</div>
+<p>where the matrices of the system are defined by the choice of covariance function.</p>
+<p>A list of widely used covariance function with this dual representation is given in <span id="id12">[<a class="reference internal" href="references.html#id40" title="Arno Solin and others. Stochastic differential equation methods for spatio-temporal gaussian process regression. Aalto University, 2016.">Solin and others, 2016</a>]</span>, <span id="id13">[<a class="reference internal" href="references.html#id41" title="Simo Särkkä and Arno Solin. Applied stochastic differential equations. Volume 10. Cambridge University Press, 2019.">Särkkä and Solin, 2019</a>]</span>. As example, consider the Mat’ern covariance function with decay parameter <span class="math notranslate nohighlight">\(\nu=3/2\)</span></p>
+<div class="math notranslate nohighlight" id="equation-materncovariance">
+<span class="eqno">(82)<a class="headerlink" href="#equation-materncovariance" title="Link to this equation">#</a></span>\[\kappa \left(\tau\right) = \sigma^2 \, \left(1 + \frac{\sqrt{3}\tau}{\ell}\right) \, \exp\left(-\frac{\sqrt{3}\tau}{\ell}\right)\]</div>
+<p>which has the following equivalent state-space representation</p>
+<div class="math notranslate nohighlight" id="equation-maternssm">
+<span class="eqno">(83)<a class="headerlink" href="#equation-maternssm" title="Link to this equation">#</a></span>\[\begin{split}	\mathbf{A_{gp}} = \begin{pmatrix}
+		0 &amp; 1 \\[0.5em]
+		-\lambda^2 &amp; -2\lambda
+	\end{pmatrix}
+	\quad
+	\mathbf{\sigma}_{\mathbf{gp}} = \begin{pmatrix}
+		0 &amp; 0 \\[0.5em]
+		0 &amp; 2\lambda^{3/2}\sigma
+	\end{pmatrix}
+	\quad
+	\mathbf{C}_{\mathbf{gp}} =
+		\begin{pmatrix} 1 &amp; 0 \end{pmatrix}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\lambda=\sqrt{2\,\nu} / \ell\)</span> and where <span class="math notranslate nohighlight">\(\sigma, \ell &gt; 0\)</span> are the magnitude and length-scale parameters.</p>
+<p>The parameter <span class="math notranslate nohighlight">\(\ell\)</span> controls the smoothness (i.e. how much time difference <span class="math notranslate nohighlight">\(\tau\)</span> is required to observe a significant change in the function value) and the parameter <span class="math notranslate nohighlight">\(\sigma\)</span> controls the overall variance of the function (i.e. the expected magnitude of function values).</p>
+</section>
+<section id="latent-force-models">
+<h2>Latent Force Models<a class="headerlink" href="#latent-force-models" title="Link to this heading">#</a></h2>
+<p>The stochastic part of the state-space model can accommodate for unmodelled disturbances, which do not have a significant influence on the thermal dynamics. This assumption holds if the disturbances have white noise properties and are uncorrelated accross time lags, which is seldom the case in practice <span id="id14">[<a class="reference internal" href="references.html#id51" title="Siddhartha Ghosh, Steve Reece, Alex Rogers, Stephen Roberts, Areej Malibari, and Nicholas R Jennings. Modeling the thermal dynamics of buildings: a latent-force-model-based approach. ACM Transactions on Intelligent Systems and Technology (TIST), 6(1):1–27, 2015.">Ghosh <em>et al.</em>, 2015</a>]</span>. Usually, the model complexity is increased to erase the structure in the model residuals. However, this strategy may lead to unnecessarily complex models because non-linear dynamics are often modelled by linear approximations. Increasing the model complexity often requires more prior knowledge about the underlying physical systems and additional measurements, which may not be available in practice.</p>
+<p>Another strategy is to model these unknown disturbances as Gaussian processes with certain parametrized covariance structures <span id="id15">[<a class="reference internal" href="references.html#id42" title="Simo Särkkä, Mauricio A Álvarez, and Neil D Lawrence. Gaussian process latent force models for learning and stochastic control of physical systems. IEEE Transactions on Automatic Control, 64(7):2953–2960, 2018.">Särkkä <em>et al.</em>, 2018</a>]</span>. The resulting latent force model <span id="id16">[<a class="reference internal" href="references.html#id43" title="Mauricio Alvarez, David Luengo, and Neil D Lawrence. Latent force models. In Artificial Intelligence and Statistics, 9–16. PMLR, 2009.">Alvarez <em>et al.</em>, 2009</a>]</span> is a combination of parametric grey-box model and non-parametric Gaussian process model.</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{d}\mathbf{x} = \left(\mathbf{A_{rc} \, \mathbf{x}
+			+ \mathbf{M_{rc}} \, \mathbf{C_{gp}}\mathbf{f}
+			+ \mathbf{B_{rc}} \, \mathbf{u}} \right) \, \mathrm{d}t
+			+ \mathbf{\sigma}_{\mathbf{rc}} \, \mathrm{d}\mathbf{w}\]</div>
+<div class="math notranslate nohighlight">
+\[\mathrm{d}\mathbf{f} = \mathbf{A_{gp}} \, \mathbf{f} \, \mathrm{d}t
+			+ \mathbf{\sigma}_{\mathbf{gp}} \, \mathrm{d}\mathbf{w}\]</div>
+<div class="math notranslate nohighlight" id="equation-lfmsde">
+<span class="eqno">(84)<a class="headerlink" href="#equation-lfmsde" title="Link to this equation">#</a></span>\[y_k = \mathbf{C}_{\mathbf{rc}} \, \mathbf{x}(t_k) + v_k\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{M_{rc}}\)</span> is the input matrix corresponding to the unknown latent forces.</p>
+<p>The augmented state-space representation of the latent force model</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{d}\mathbf{z} = \mathbf{A} \, \mathbf{z} \, \mathrm{d}t
+			+ \mathbf{B} \, \mathbf{u} \, \mathrm{d}t
+			+ \mathbf{\sigma} \, \mathrm{d}\mathbf{w}\]</div>
+<div class="math notranslate nohighlight" id="equation-lfmsde2">
+<span class="eqno">(85)<a class="headerlink" href="#equation-lfmsde2" title="Link to this equation">#</a></span>\[y_k = \mathbf{C} \, \mathbf{z}(t_k) + v_k\]</div>
+<p>is obtained by combining the grey-box model and the gaussian process model <a class="reference internal" href="#equation-gpssm">(81)</a>, such that</p>
+<div class="math notranslate nohighlight" id="equation-lfmsde3">
+<span class="eqno">(86)<a class="headerlink" href="#equation-lfmsde3" title="Link to this equation">#</a></span>\[\begin{split}\begin{alignedat}{3}
+\mathbf{z}&amp;=\begin{pmatrix}
+	\mathbf{x} \\
+	\mathbf{f}
+\end{pmatrix}
+\quad &amp;
+\mathbf{A}&amp;=\begin{pmatrix}
+	\mathbf{A_{rc}} &amp;  \mathbf{M_{rc}} \, \mathbf{C_{gp}} \\
+	\mathbf{0} &amp; \mathbf{A_{gp}}
+\end{pmatrix}
+\quad &amp;
+\mathbf{B}=\begin{pmatrix}
+	\mathbf{B_{rc}} \\
+	\mathbf{0}
+\end{pmatrix}
+\\
+\mathbf{C}&amp;=\begin{pmatrix} \mathbf{C}_{\mathbf{rc}} &amp; \mathbf{0} \end{pmatrix}
+\quad &amp;
+\mathbf{\sigma}&amp;=\begin{pmatrix}
+	\mathbf{\sigma}_{\mathbf{rc}} &amp;  \mathbf{0} \\
+	\mathbf{0} &amp; \mathbf{\sigma}_{\mathbf{gp}}
+\end{pmatrix}
+\end{alignedat}\end{split}\]</div>
+<p>The latent force model representation allows to incorporate prior information about the overall dynamic of the physical system, but also about the behavior of the unknown inputs.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pysip.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">The pySIP library</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gp_forecast.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">GP for prediction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-process-regression">Gaussian process regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction">Prediction</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-processes-as-surrogate-models-bayesian-calibration">Gaussian Processes as surrogate models: Bayesian calibration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-processes-as-state-space-models">Gaussian Processes as state-space models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latent-force-models">Latent Force Models</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Simon Rouchier
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

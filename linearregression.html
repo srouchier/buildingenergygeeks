@@ -203,6 +203,14 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">State-space models</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="statespace_intro.html">Principle of SSMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statespace_simple.html">A simple RC model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysip.html">The pySIP library</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Gaussian Processes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gaussianprocess.html">Introduction to Gaussian Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_forecast.html">GP for prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_timeseries.html">GP as state-space models</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -450,7 +458,7 @@ document.write(`
 <p>This tutorial will serve as an introduction to <a class="reference external" href="https://www.pymc.io/welcome.html">PyMC</a>. It is not a complete course on how this library works, but links to the relevant parts of the PyMC documentation will be provided. We also cover some basics of the <a class="reference external" href="https://python.arviz.org/en/stable/">ArviZ</a> library.</p>
 <section id="data">
 <h3>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h3>
-<p>The data are two years of monthly energy consumption of a school, along with two independent variables: heating degree days (HDD) and number of class days.</p>
+<p>The data are two years of monthly energy consumption of a school, along with two independent variables: heating degree days (HDD) and number of class days. The data file can be downloaded <a class="reference external" href="https://github.com/srouchier/buildingenergygeeks/blob/master/data/linreg.csv">here</a>.</p>
 <p>The first half of the data is labeled <code class="docutils literal notranslate"><span class="pre">pre</span></code> and will be used for training. The second half is labeled <code class="docutils literal notranslate"><span class="pre">post</span></code> and will be used for validating model forecasts.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

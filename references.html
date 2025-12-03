@@ -200,6 +200,12 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">State-space models</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="statespace_intro.html">Principle of SSMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statespace_simple.html">A simple RC model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysip.html">The pySIP library</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Gaussian process models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gaussianprocess.html">Theory on GP models</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="current nav bd-sidenav">
@@ -446,6 +452,10 @@ document.write(`
 <span class="label"><span class="fn-bracket">[</span>CAY21<span class="fn-bracket">]</span></span>
 <p>Adrian Chong, Godfried Augenbroe, and Da Yan. Occupancy data at different spatial resolutions: building energy performance and model calibration. <em>Applied Energy</em>, 286:116492, 2021.</p>
 </div>
+<div class="citation" id="id46" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CLPY17<span class="fn-bracket">]</span></span>
+<p>Adrian Chong, Khee Poh Lam, Matteo Pozzi, and Junjing Yang. Bayesian calibration of building energy models with large datasets. <em>Energy and Buildings</em>, 154:343–355, 2017.</p>
+</div>
 <div class="citation" id="id14" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>CM18<span class="fn-bracket">]</span></span>
 <p>Adrian Chong and Kathrin Menberg. Guidelines for the bayesian calibration of building energy models. <em>Energy and Buildings</em>, 174:527–547, 2018.</p>
@@ -458,6 +468,10 @@ document.write(`
 <span class="label"><span class="fn-bracket">[</span>DdFMR00<span class="fn-bracket">]</span></span>
 <p>Arnaud Doucet, Nando de Freitas, Kevin Murphy, and Stuart Russell. Rao-blackwellised particle filtering for dynamic bayesian networks. In <em>Uncertainty in Artificial Intelligence (UAI)</em>, 176–183. San Francisco, CA, 2000.</p>
 </div>
+<div class="citation" id="id49" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Fri15<span class="fn-bracket">]</span></span>
+<p>Roger Frigola. <em>Bayesian time series learning with Gaussian processes</em>. PhD thesis, University of Cambridge, 2015.</p>
+</div>
 <div class="citation" id="id12" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>GSV+19<span class="fn-bracket">]</span></span>
 <p>Jonah Gabry, Daniel Simpson, Aki Vehtari, Michael Betancourt, and Andrew Gelman. Visualization in bayesian workflow. <em>Journal of the Royal Statistical Society Series A: Statistics in Society</em>, 182(2):389–402, 2019.</p>
@@ -466,13 +480,29 @@ document.write(`
 <span class="label"><span class="fn-bracket">[</span>GCS+13<span class="fn-bracket">]</span></span>
 <p>Andrew Gelman, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. <em>Bayesian data analysis</em>. CRC press, 2013.</p>
 </div>
+<div class="citation" id="id51" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GRR+15<span class="fn-bracket">]</span></span>
+<p>Siddhartha Ghosh, Steve Reece, Alex Rogers, Stephen Roberts, Areej Malibari, and Nicholas R Jennings. Modeling the thermal dynamics of buildings: a latent-force-model-based approach. <em>ACM Transactions on Intelligent Systems and Technology (TIST)</em>, 6(1):1–27, 2015.</p>
+</div>
 <div class="citation" id="id17" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>GR07<span class="fn-bracket">]</span></span>
 <p>Tilmann Gneiting and Adrian E Raftery. Strictly proper scoring rules, prediction, and estimation. <em>Journal of the American statistical Association</em>, 102(477):359–378, 2007.</p>
 </div>
+<div class="citation" id="id47" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>GS18<span class="fn-bracket">]</span></span>
+<p>Francesco Massa Gray and Michael Schmidt. A hybrid approach to thermal building modelling using a combination of gaussian processes and grey-box models. <em>Energy and Buildings</em>, 165:56–63, 2018.</p>
+</div>
+<div class="citation" id="id50" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HSarkka10<span class="fn-bracket">]</span></span>
+<p>Jouni Hartikainen and Simo Särkkä. Kalman filtering and smoothing solutions to temporal gaussian process regression models. In <em>2010 IEEE international workshop on machine learning for signal processing</em>, 379–384. IEEE, 2010.</p>
+</div>
 <div class="citation" id="id7" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>HTF09<span class="fn-bracket">]</span></span>
 <p>Trevor Hastie, Robert Tibshirani, and Jerome Friedman. <em>The elements of statistical learning: data mining, inference, and prediction</em>. Springer Science &amp; Business Media, 2009.</p>
+</div>
+<div class="citation" id="id45" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>HCA12<span class="fn-bracket">]</span></span>
+<p>Yeonsook Heo, Ruchi Choudhary, and GA Augenbroe. Calibration of building energy models for retrofit analysis under uncertainty. <em>Energy and Buildings</em>, 47:550–560, 2012.</p>
 </div>
 <div class="citation" id="id21" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>JWHT13<span class="fn-bracket">]</span></span>
@@ -485,6 +515,14 @@ document.write(`
 <div class="citation" id="id33" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>KDS+15<span class="fn-bracket">]</span></span>
 <p>Nikolas Kantas, Arnaud Doucet, Sumeetpal S Singh, Jan Maciejowski, Nicolas Chopin, and others. On particle methods for parameter estimation in state-space models. <em>Statistical science</em>, 30(3):328–351, 2015.</p>
+</div>
+<div class="citation" id="id44" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KOHagan01<span class="fn-bracket">]</span></span>
+<p>Marc C Kennedy and Anthony O'Hagan. Bayesian calibration of computer models. <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em>, 63(3):425–464, 2001.</p>
+</div>
+<div class="citation" id="id48" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>KCP17<span class="fn-bracket">]</span></span>
+<p>Martin Heine Kristensen, Ruchi Choudhary, and Steffen Petersen. Bayesian calibration of building energy models: comparison of predictive accuracy using metered utility data of different temporal resolution. <em>Energy Procedia</em>, 122:277–282, 2017.</p>
 </div>
 <div class="citation" id="id15" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>LundstromA19<span class="fn-bracket">]</span></span>
@@ -505,6 +543,10 @@ document.write(`
 <div class="citation" id="id25" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Mur02<span class="fn-bracket">]</span></span>
 <p>Kevin Patrick Murphy. Dynamic bayesian networks: representation, inference and learning. <em>University of California, Berkeley Berkeley, CA</em>, 2002.</p>
+</div>
+<div class="citation" id="id39" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Ras03<span class="fn-bracket">]</span></span>
+<p>Carl Edward Rasmussen. <em>Gaussian processes in machine learning</em>. Springer, 2003.</p>
 </div>
 <div class="citation" id="id6" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Red06<span class="fn-bracket">]</span></span>
@@ -530,9 +572,21 @@ document.write(`
 <span class="label"><span class="fn-bracket">[</span>SSS00<span class="fn-bracket">]</span></span>
 <p>Robert H Shumway, David S Stoffer, and David S Stoffer. <em>Time series analysis and its applications</em>. Volume 3. Springer, 2000.</p>
 </div>
+<div class="citation" id="id40" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>S+16<span class="fn-bracket">]</span></span>
+<p>Arno Solin and others. Stochastic differential equation methods for spatio-temporal gaussian process regression. <em>Aalto University</em>, 2016.</p>
+</div>
 <div class="citation" id="id38" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>Sarkka13<span class="fn-bracket">]</span></span>
 <p>Simo Särkkä. <em>Bayesian filtering and smoothing</em>. Cambridge University Press, 2013.</p>
+</div>
+<div class="citation" id="id41" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SarkkaS19<span class="fn-bracket">]</span></span>
+<p>Simo Särkkä and Arno Solin. <em>Applied stochastic differential equations</em>. Volume 10. Cambridge University Press, 2019.</p>
+</div>
+<div class="citation" id="id42" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>SarkkaAlvarezL18<span class="fn-bracket">]</span></span>
+<p>Simo Särkkä, Mauricio A Álvarez, and Neil D Lawrence. Gaussian process latent force models for learning and stochastic control of physical systems. <em>IEEE Transactions on Automatic Control</em>, 64(7):2953–2960, 2018.</p>
 </div>
 <div class="citation" id="id19" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>VGB16<span class="fn-bracket">]</span></span>

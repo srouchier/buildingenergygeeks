@@ -203,6 +203,14 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">State-space models</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="statespace_intro.html">Principle of SSMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statespace_simple.html">A simple RC model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysip.html">The pySIP library</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Gaussian Processes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gaussianprocess.html">Introduction to Gaussian Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_forecast.html">GP for prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gp_timeseries.html">GP as state-space models</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul class="nav bd-sidenav">
@@ -508,7 +516,7 @@ document.write(`
 <span class="eqno">(44)<a class="headerlink" href="#equation-acp5" title="Link to this equation">#</a></span>\[y_n = \alpha + \beta_{h}(\tau_{h}-x_n)^+ + \beta_{c}(x_n-\tau_{c})^+ + \theta_1 \varepsilon_{n-1} + \varepsilon_n\]</div>
 <div class="math notranslate nohighlight" id="equation-acp6">
 <span class="eqno">(45)<a class="headerlink" href="#equation-acp6" title="Link to this equation">#</a></span>\[\varepsilon_n \sim \mathrm{normal}\left(0, \sigma\right) \]</div>
-<p>The Stan code for this model is in a separate file <code class="docutils literal notranslate"><span class="pre">changepoint_101_ma1.stan</span></code>, and is more complicated than the original.</p>
+<p>The Stan code for this model is in a separate file <a class="reference external" href="https://github.com/srouchier/buildingenergygeeks/blob/master/models/changepoint_101_ma1.stan">changepoint_101_ma1.stan</a>, and is more complicated than the original.</p>
 <p>Firstly, there is a new block called <code class="docutils literal notranslate"><span class="pre">transformed</span> <span class="pre">parameters</span></code>, between <code class="docutils literal notranslate"><span class="pre">parameters</span></code> and <code class="docutils literal notranslate"><span class="pre">model</span></code>, which calculates the main terms of <a class="reference internal" href="#equation-acp5">(44)</a> so that the model itself is written concisely.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">f_post</span></code> are the values of the change-point function itself, respectively during the pre and post periods.</p></li>
