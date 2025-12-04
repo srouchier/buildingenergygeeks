@@ -413,10 +413,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p>(gp_ssm)</p>
-<section class="tex2jax_ignore mathjax_ignore" id="gp-as-state-space-models">
-<h1>GP as state-space models<a class="headerlink" href="#gp-as-state-space-models" title="Link to this heading">#</a></h1>
-<p>In <a class="reference internal" href="gaussianprocess.html#gp-statespace"><span class="std std-ref">this section</span></a>, we described how temporal Gaussian process regression could formulated as a state-space model. This allows reducing the computational cost of prediction from <span class="math notranslate nohighlight">\(\mathcal{O}(N^3)\)</span> <span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span>. This tutorial illustrates this method on the same building 1298 example as the <a class="reference internal" href="gp_forecast.html#gp-prediction"><span class="std std-ref">GP prediction</span></a> notebook.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="gp-as-state-space-models">
+<span id="gp-ssm"></span><h1>GP as state-space models<a class="headerlink" href="#gp-as-state-space-models" title="Link to this heading">#</a></h1>
+<p>In <a class="reference internal" href="gaussianprocess.html#gp-statespace"><span class="std std-ref">this section</span></a>, we described how temporal Gaussian process regression could formulated as a state-space model. This allows reducing the computational cost of prediction from <span class="math notranslate nohighlight">\(\mathcal{O}(N^3)\)</span> to <span class="math notranslate nohighlight">\(\mathcal{O}(N)\)</span>. This tutorial illustrates this method on the same building 1298 example as the <a class="reference internal" href="gp_forecast.html#gp-prediction"><span class="std std-ref">GP prediction</span></a> notebook.</p>
 <p>It uses the <a class="reference external" href="https://github.com/locie/pySIP">pySIP</a> library, which has an implementation of temporal GPs along with regular state-space models.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
