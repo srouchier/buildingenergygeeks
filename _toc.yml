@@ -17,6 +17,8 @@ parts:
     - file: armax.ipynb
     - file: autocorrelated.ipynb
     - file: hmm.ipynb
+    - file: rnn_intro.md
+    - file: rnn_implementation.ipynb
   - caption: State-space models
     chapters:
     - file: statespace_intro.md
